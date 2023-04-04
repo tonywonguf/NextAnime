@@ -6,10 +6,11 @@ import React from "react";
 export default function NextAnime(props) {
     return (
         <div className="min-h-screen flex flex-col h-screen p-3">
-            {/* Title */}
+            {/* Counter */}
             <div>
                 <ExampleComponent startNum={1}/>
             </div>
+
             <hr className={"my-2"}/>
 
             {/* Main of Builder */}

@@ -21,7 +21,7 @@ export default class ExampleComponent extends Component<Props, States> {
 
     render() {
         return (
-            <div className={"flex-col h-screen"}>
+            <div>
                 <p className={"mb-2"}>
                     <b>Current #:</b> <a className={"font-mono"}>{this.state.num}</a>
                 </p>
