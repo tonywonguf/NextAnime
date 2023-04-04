@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <div className={"p-1"}>
-            <ExampleComponent startNum={3.14}/>
+            <ExampleComponent startNum={1}/>
         </div>
     </React.StrictMode>
 );
