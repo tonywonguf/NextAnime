@@ -1,5 +1,5 @@
 import {Component} from "react";
-import AnimeDataDisplay from "./AnimeDataDisplay";
+import ExampleGraphDisplay from "./ExampleGraphDisplay";
 
 interface Props {
     startNum: number
@@ -27,14 +27,13 @@ export default class ExampleComponent extends Component<Props, States> {
                 </p>
 
                 <button onClick={this.increment.bind(this)}
-                        className={"bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"}
-                >
+                        className={"bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"}>
                     Increment
                 </button>
 
                 <hr className={"my-2"}/>
 
-                <AnimeDataDisplay/>
+                <ExampleGraphDisplay/>
             </div>
         )
     }
