@@ -1,4 +1,5 @@
 import {Component} from "react";
+import AnimeDataDisplay from "./AnimeDataDisplay";
 
 interface Props {
     startNum: number
@@ -30,6 +31,10 @@ export default class ExampleComponent extends Component<Props, States> {
                 >
                     Increment
                 </button>
+
+                <hr className={"my-2"}/>
+
+                <AnimeDataDisplay/>
             </div>
         )
     }
