@@ -5,6 +5,7 @@ import {useState} from "react";
 
 export default function GraphDisplay(props) {
     let [graphKey, setGraphKey] = useState(uuidv4());
+    const [network, setNetwork] = useState(null);
     let [nodes, setGraph] = useState([
         {
             "id": 0,
@@ -401,17 +402,14 @@ export default function GraphDisplay(props) {
         setEdges(newEdges);
     }
 
-    const refit = (graph) => {
-        graph.fit({ animation: { duration: 1000 }, nodes: nodes.map(node => node.id) });
-    }
-
     const options = {
         layout: {
             hierarchical: false
         },
         nodes: {
             font: {
-                color: '#80848e'
+                color: '#80848e',
+                face: 'monospace'
             },
             shape: 'image',
             image: 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg',
@@ -420,11 +418,11 @@ export default function GraphDisplay(props) {
         edges: {
             color: "#000000",
             width: 3,
-            length: 200
+            length: 100
         },
         physics: {
             forceAtlas2Based: {
-                gravitationalConstant: -500,
+                gravitationalConstant: -100,
                 centralGravity: 0.02,
                 springLength: 200
             },
@@ -439,17 +437,18 @@ export default function GraphDisplay(props) {
     };
 
     return (
-        <div className={"w-3/4 bg-[#2c2f33] m-1 rounded"}>
+        <div className={"w-3/4 bg-[#2c2f33] m-1 rounded font-mono"}>
             <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
                     onClick={() => recolor.bind(this)(edges)}>Recolor!
             </button>
             <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
-                    onClick={() => refit.bind(this)(graphKey.current.getGraph())}>Refit!
+                    onClick={() => network.fit()}>Refit!
             </button>
             <Graph
                 key={graphKey}
                 graph={{nodes: nodes, edges: edges}}
                 options={options}
+                getNetwork={network => setNetwork(network)}
             />
         </div>
     );
