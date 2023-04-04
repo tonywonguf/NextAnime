@@ -401,6 +401,9 @@ export default function GraphDisplay(props) {
         setEdges(newEdges);
     }
 
+    const refit = (graph) => {
+        graph.fit({ animation: { duration: 1000 }, nodes: nodes.map(node => node.id) });
+    }
 
     const options = {
         layout: {
@@ -437,14 +440,14 @@ export default function GraphDisplay(props) {
             <button className={"bg-purple-200 rounded p-2 ml-3"}
                     onClick={() => recolor.bind(this)(edges)}>Recolor!
             </button>
-
-            <div className={"bg-amber-50"}>
-                <Graph
-                    key={graphKey}
-                    graph={{nodes: nodes, edges: edges}}
-                    options={options}
-                />
-            </div>
+            <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
+                    onClick={() => refit.bind(this)(graphKey.current.getGraph())}>Refit!
+            </button>
+            <Graph
+                key={graphKey}
+                graph={{nodes: nodes, edges: edges}}
+                options={options}
+            />
         </div>
     );
 
