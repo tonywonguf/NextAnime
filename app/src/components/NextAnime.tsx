@@ -1,5 +1,6 @@
 import ExampleComponent from "./ExampleComponent";
 import ExampleGraphDisplay from "./ExampleGraphDisplay";
+import SideBar from "./SideBar";
 import React from "react";
 
 
@@ -15,6 +16,7 @@ export default function NextAnime(props) {
             {/* Example Graph */}
             <main className="flex overflow-y-hidden h-full">
                 <ExampleGraphDisplay/>
+                <SideBar/>
             </main>
         </div>
     );
