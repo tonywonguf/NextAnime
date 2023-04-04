@@ -10,6 +10,7 @@ export default function NextAnime(props) {
             <div>
                 <ExampleComponent startNum={1}/>
             </div>
+            <hr className={"my-2"}/>
 
             {/* Main of Builder */}
             <main className="flex flex-row overflow-y-hidden h-full p-1">
