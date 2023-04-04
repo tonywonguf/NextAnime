@@ -2,14 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import ExampleComponent from "./components/ExampleComponent";
+import NextAnime from "./components/NextAnime";
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
-        <div className={"p-1"}>
-            <ExampleComponent startNum={1}/>
-        </div>
+    <NextAnime/>
     // </React.StrictMode>
 );
 
