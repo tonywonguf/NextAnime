@@ -2,6 +2,7 @@ import requests
 import time
 import json
 
+
 # Here we define our query as a multi-line string
 query = '''
 query ($page: Int) {
@@ -73,7 +74,9 @@ for x in range(parseResponse['data']['Page']['pageInfo']['lastPage']):
                     #data.append((desiredMedia[k]['id'], desiredMedia[k]['title'], desiredMedia[k]['genres'], desiredMedia[k]['popularity']))
                 data.append(lis)
     #print(response.json())
+    print("Completed", len(data))
     time.sleep(60/90)
 
-for d in range(len(data)//8):
-    print(data[d])
+
+with open("data.json", "w+") as f:
+   json.dump(data, f)
