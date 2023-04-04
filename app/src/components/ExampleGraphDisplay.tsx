@@ -6,199 +6,199 @@ import {useState} from "react";
 export default function GraphDisplay(props) {
     let [graphKey, setGraphKey] = useState(uuidv4());
     let [nodes, setGraph] = useState([
-            {
-                "id": 0,
-                "label": "Cowboy Bebop",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1-CXtrrkMpJ8Zq.png"
-            },
-            {
-                "id": 1,
-                "label": "Cowboy Bebop: The Movie - Knockin' on Heaven's Door",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5-NozHwXWdNLCz.jpg"
-            },
-            {
-                "id": 2,
-                "label": "Trigun",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6-Zzun7PHNNgPt.jpg"
-            },
-            {
-                "id": 3,
-                "label": "Witch Hunter ROBIN",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx7-6uh1fPvbgS9t.png"
-            },
-            {
-                "id": 4,
-                "label": "Beet the Vandel Buster",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b8-ReS3TwSgrDDi.jpg"
-            },
-            {
-                "id": 5,
-                "label": "Eyeshield 21",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx15-A4F2t0TgWoi4.png"
-            },
-            {
-                "id": 6,
-                "label": "Honey and Clover",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16-5fJZ2Sy2ThRA.jpg"
-            },
-            {
-                "id": 7,
-                "label": "",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx17-6kqIbdUk3dgi.png"
-            },
-            {
-                "id": 8,
-                "label": "Initial D 4th Stage",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b18-r7IirVmwP89u.jpg"
-            },
-            {
-                "id": 9,
-                "label": "Monster",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx19-ham53gnijfiN.jpg"
-            },
-            {
-                "id": 10,
-                "label": "Naruto",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20-YJvLbgJQPCoI.jpg"
-            },
-            {
-                "id": 11,
-                "label": "ONE PIECE",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx21-tXMN3Y20PIL9.jpg"
-            },
-            {
-                "id": 12,
-                "label": "The Prince of Tennis",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx22-8Qg3NZXH6asP.png"
-            },
-            {
-                "id": 13,
-                "label": "",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx23-OwtP69d9B9kg.jpg"
-            },
-            {
-                "id": 14,
-                "label": "School Rumble",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx24-InbFkgWGvqIK.png"
-            },
-            {
-                "id": 15,
-                "label": "Desert Punk",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx25-H1etX7IgfFtQ.jpg"
-            },
-            {
-                "id": 16,
-                "label": "Texhnolyze",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx26-u2SawALYH3w3.jpg"
-            },
-            {
-                "id": 17,
-                "label": "Trinity Blood",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx27-MOAaiBHHLfOY.png"
-            },
-            {
-                "id": 18,
-                "label": "",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx28-QuKcZpUjTXzV.png"
-            },
-            {
-                "id": 19,
-                "label": "",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx29-0PsnJVadMG7k.jpg"
-            },
-            {
-                "id": 20,
-                "label": "Neon Genesis Evangelion",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx30-wmNoX3m2qTzz.jpg"
-            },
-            {
-                "id": 21,
-                "label": "Neon Genesis Evangelion: Death & Rebirth",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx31-3zRThtzQH62E.png"
-            },
-            {
-                "id": 22,
-                "label": "Neon Genesis Evangelion: The End of Evangelion",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx32-i4ijZI4MuPiV.jpg"
-            },
-            {
-                "id": 23,
-                "label": "Berserk",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx33-CTtcRjqe7UnM.jpg"
-            },
-            {
-                "id": 24,
-                "label": "Ghost in the Shell",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx43-LMGXobx4D6in.png"
-            },
-            {
-                "id": 25,
-                "label": "Samurai X: Trust and Betrayal",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx44-MG5I672UbWAy.png"
-            },
-            {
-                "id": 26,
-                "label": "Rurouni Kenshin",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx45-DEFgZRCxiGmF.png"
-            },
-            {
-                "id": 27,
-                "label": "Samurai X: The Motion Picture",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx46-Steq4sQpA6fq.png"
-            },
-            {
-                "id": 28,
-                "label": "Akira",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx47-Sjkc8RDBjqwT.jpg"
-            },
-            {
-                "id": 29,
-                "label": ".hack//Sign",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx48-YKktSuM10DRK.png"
-            },
-            {
-                "id": 30,
-                "label": "Oh! My Goddess",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx49-jv1G7rSP4lxg.png"
-            },
-            {
-                "id": 31,
-                "label": "Oh! My Goddess (TV)",
-                "shape": "image",
-                "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx50-OdzAFLX6X6Hf.png"
-            }
-        ]);
+        {
+            "id": 0,
+            "label": "Cowboy Bebop",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1-CXtrrkMpJ8Zq.png"
+        },
+        {
+            "id": 1,
+            "label": "Cowboy Bebop: The Movie - Knockin' on Heaven's Door",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5-NozHwXWdNLCz.jpg"
+        },
+        {
+            "id": 2,
+            "label": "Trigun",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6-Zzun7PHNNgPt.jpg"
+        },
+        {
+            "id": 3,
+            "label": "Witch Hunter ROBIN",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx7-6uh1fPvbgS9t.png"
+        },
+        {
+            "id": 4,
+            "label": "Beet the Vandel Buster",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b8-ReS3TwSgrDDi.jpg"
+        },
+        {
+            "id": 5,
+            "label": "Eyeshield 21",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx15-A4F2t0TgWoi4.png"
+        },
+        {
+            "id": 6,
+            "label": "Honey and Clover",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16-5fJZ2Sy2ThRA.jpg"
+        },
+        {
+            "id": 7,
+            "label": "",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx17-6kqIbdUk3dgi.png"
+        },
+        {
+            "id": 8,
+            "label": "Initial D 4th Stage",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b18-r7IirVmwP89u.jpg"
+        },
+        {
+            "id": 9,
+            "label": "Monster",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx19-ham53gnijfiN.jpg"
+        },
+        {
+            "id": 10,
+            "label": "Naruto",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20-YJvLbgJQPCoI.jpg"
+        },
+        {
+            "id": 11,
+            "label": "ONE PIECE",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx21-tXMN3Y20PIL9.jpg"
+        },
+        {
+            "id": 12,
+            "label": "The Prince of Tennis",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx22-8Qg3NZXH6asP.png"
+        },
+        {
+            "id": 13,
+            "label": "",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx23-OwtP69d9B9kg.jpg"
+        },
+        {
+            "id": 14,
+            "label": "School Rumble",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx24-InbFkgWGvqIK.png"
+        },
+        {
+            "id": 15,
+            "label": "Desert Punk",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx25-H1etX7IgfFtQ.jpg"
+        },
+        {
+            "id": 16,
+            "label": "Texhnolyze",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx26-u2SawALYH3w3.jpg"
+        },
+        {
+            "id": 17,
+            "label": "Trinity Blood",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx27-MOAaiBHHLfOY.png"
+        },
+        {
+            "id": 18,
+            "label": "",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx28-QuKcZpUjTXzV.png"
+        },
+        {
+            "id": 19,
+            "label": "",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx29-0PsnJVadMG7k.jpg"
+        },
+        {
+            "id": 20,
+            "label": "Neon Genesis Evangelion",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx30-wmNoX3m2qTzz.jpg"
+        },
+        {
+            "id": 21,
+            "label": "Neon Genesis Evangelion: Death & Rebirth",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx31-3zRThtzQH62E.png"
+        },
+        {
+            "id": 22,
+            "label": "Neon Genesis Evangelion: The End of Evangelion",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx32-i4ijZI4MuPiV.jpg"
+        },
+        {
+            "id": 23,
+            "label": "Berserk",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx33-CTtcRjqe7UnM.jpg"
+        },
+        {
+            "id": 24,
+            "label": "Ghost in the Shell",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx43-LMGXobx4D6in.png"
+        },
+        {
+            "id": 25,
+            "label": "Samurai X: Trust and Betrayal",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx44-MG5I672UbWAy.png"
+        },
+        {
+            "id": 26,
+            "label": "Rurouni Kenshin",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx45-DEFgZRCxiGmF.png"
+        },
+        {
+            "id": 27,
+            "label": "Samurai X: The Motion Picture",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx46-Steq4sQpA6fq.png"
+        },
+        {
+            "id": 28,
+            "label": "Akira",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx47-Sjkc8RDBjqwT.jpg"
+        },
+        {
+            "id": 29,
+            "label": ".hack//Sign",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx48-YKktSuM10DRK.png"
+        },
+        {
+            "id": 30,
+            "label": "Oh! My Goddess",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx49-jv1G7rSP4lxg.png"
+        },
+        {
+            "id": 31,
+            "label": "Oh! My Goddess (TV)",
+            "shape": "image",
+            "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx50-OdzAFLX6X6Hf.png"
+        }
+    ]);
     let [edges, setEdges] = useState([
         {
             "from": 0,
@@ -429,7 +429,7 @@ export default function GraphDisplay(props) {
             selectable: false,
             selectConnectedEdges: false
         },
-        height: 650
+        height: window.innerHeight + 'px',
     };
 
     return (
@@ -438,11 +438,14 @@ export default function GraphDisplay(props) {
                     onClick={() => recolor.bind(this)(edges)}>Recolor!
             </button>
 
-            <Graph
-                key={graphKey}
-                graph={{nodes: nodes, edges: edges}}
-                options={options}
-            />
+            <div>
+                <Graph
+                    key={graphKey}
+                    graph={{nodes: nodes, edges: edges}}
+                    options={options}
+                />
+            </div>
         </div>
     );
+
 }
