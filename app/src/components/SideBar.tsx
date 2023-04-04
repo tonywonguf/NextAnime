@@ -1,7 +1,6 @@
 export default function SideBar(props) {
     return (
         <div id = "sidebar" className={"w-1/4 flex-shrink-0 bg-[#2c2f33] min-w-500 flex-grow m-1 rounded"}>
-            <p className={"p-2 pl-3 text-white"}>SEARCH-BAR</p>
             <div className={"flex"}>
                 <input type={"text"} placeholder={"Enter Anime Title"} className={"m-3 p-4 h-8 w-72"}></input>
                 <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-4 my-2 w-32 hover:brightness-150"}>SEARCH</button>
