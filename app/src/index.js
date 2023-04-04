@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ExampleComponent from "./components/ExampleComponent";
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <div className={"p-1"}>
+            <ExampleComponent startNum={0}/>
+        </div>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
