@@ -37,15 +37,22 @@ export default function SideBar(props) {
                 </div>
 
             </div>
-            <div id = "selected-Anime-Container" className={"bg-violet-200 rounded p-2 m-2 h-80 flex"}>
-                <div className={"bg-violet-300 rounded p-2 m-2 h-72 w-1/2"}></div>
-                <div className={"bg-violet-300 rounded p-2 m-2 h-72 w-1/2"}></div>
-
+            <div id = "selected-Anime-Container" className={"bg-violet-200 rounded p-2 m-2 h-80"}>
+                <label id={"selected-Anime-Container"} className={"flex"}>Selected Anime</label>
+                <hr></hr>
+                <div className={"flex"}>
+                    <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2"}></div>
+                    <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2"}></div>
+                </div>
             </div>
-            <div id = "suggested-Anime-Container" className={"bg-violet-200 rounded p-2 m-2 h-80 flex"}>
-                <div className={"bg-violet-300 rounded p-2 m-2 h-72 w-1/2"}></div>
-                <div className={"bg-violet-300 rounded p-2 m-2 h-72 w-1/2"}></div>
 
+            <div id = "suggested-Anime-Container" className={"bg-violet-200 rounded p-2 m-2 h-80"}>
+                <label id={"suggested-Anime-Container"} className={"flex"}>Suggested Anime</label>
+                <hr></hr>
+                <div className={"flex"}>
+                    <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2"}></div>
+                    <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2"}></div>
+                </div>
             </div>
         </div>
 
