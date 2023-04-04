@@ -435,7 +435,7 @@ export default function GraphDisplay(props) {
             selectable: false,
             selectConnectedEdges: false
         },
-        height: window.innerHeight + 'px',
+        height: '100%'
     };
 
     return (
