@@ -2,6 +2,6 @@
 
 ## Authors
 
-* Tony Wong
-* Raul Valle
 * Robert Conde
+* Raul Valle
+* Tony Wong
