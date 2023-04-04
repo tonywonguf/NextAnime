@@ -434,11 +434,11 @@ export default function GraphDisplay(props) {
 
     return (
         <div>
-            <button className={"bg-purple-200 rounded p-2"}
+            <button className={"bg-purple-200 rounded p-2 ml-3"}
                     onClick={() => recolor.bind(this)(edges)}>Recolor!
             </button>
 
-            <div>
+            <div className={"bg-amber-50"}>
                 <Graph
                     key={graphKey}
                     graph={{nodes: nodes, edges: edges}}
