@@ -6,4 +6,4 @@
 * Raul Valle
 * Tony Wong
 
-![beauty](https://imgur.com/a/VdSqIti)
+![beauty](https://i.imgur.com/NWFanWg.jpeg)
