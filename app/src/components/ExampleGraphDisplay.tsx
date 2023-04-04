@@ -439,7 +439,7 @@ export default function GraphDisplay(props) {
     };
 
     return (
-        <div className={"bg-[#2c2f33] m-1 rounded"}>
+        <div className={"w-3/4 bg-[#2c2f33] m-1 rounded"}>
             <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
                     onClick={() => recolor.bind(this)(edges)}>Recolor!
             </button>
