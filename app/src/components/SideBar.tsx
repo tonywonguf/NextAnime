@@ -15,23 +15,23 @@ export default function SideBar(props) {
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="staff" type="checkbox" className={"flex"}></input>
-                        <label htmlFor="genres" id={"staff"} className={"flex m-1"}>Staff</label>
+                        <label htmlFor="staff" id={"staff"} className={"flex m-1"}>Staff</label>
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="studio" type="checkbox" className={"flex"}></input>
-                        <label htmlFor="genres" id={"studio"} className={"flex m-1"}>Studio</label>
+                        <label htmlFor="studio" id={"studio"} className={"flex m-1"}>Studio</label>
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="year" type="checkbox" className={"flex"}></input>
-                        <label htmlFor="genres" id={"year"} className={"flex m-1"}>Year</label>
+                        <label htmlFor="year" id={"year"} className={"flex m-1"}>Year</label>
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="episodes" type="checkbox" className={"flex"}></input>
-                        <label htmlFor="genres" id={"episodes"} className={"flex m-1"}>Episodes</label>
+                        <label htmlFor="episodes" id={"episodes"} className={"flex m-1"}>Episodes</label>
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="popularity" type="checkbox" className={"flex"}></input>
-                        <label htmlFor="genres" id={"popularity"} className={"flex m-1"}>Popularity</label>
+                        <label htmlFor="popularity" id={"popularity"} className={"flex m-1"}>Popularity</label>
                     </div>
                 </div>
 
