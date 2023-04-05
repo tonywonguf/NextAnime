@@ -2,7 +2,6 @@ import Graph from "react-graph-vis";
 import {v4 as uuidv4} from 'uuid';
 import {useState} from "react";
 
-
 export default function GraphDisplay(props) {
     let [graphKey, setGraphKey] = useState(uuidv4());
     const [network, setNetwork] = useState(null);
@@ -437,12 +436,12 @@ export default function GraphDisplay(props) {
     };
 
     return (
-        <div className={"w-3/4 bg-[#2c2f33] m-1 rounded"}>
+        <div className={"w-11/16 bg-[#2c2f33] m-1 rounded"}>
             <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
                     onClick={() => recolor.bind(this)(edges)}>Recolor!
             </button>
             <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
-                    onClick={() => network.fit()}>Refit!
+                    onClick={() => network.fit({animation: {duration: 1000}})}>Refit!
             </button>
             <Graph
                 key={graphKey}

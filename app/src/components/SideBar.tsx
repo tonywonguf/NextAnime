@@ -1,6 +1,6 @@
 export default function SideBar(props) {
     return (
-        <div id = "sidebar" className={"w-1/4 flex-shrink-0 bg-[#2c2f33] min-w-500 flex-grow m-1 rounded"}>
+        <div id = "sidebar" className={"w-5/16 flex-shrink-0 bg-[#2c2f33] min-w-500 flex-grow m-1 rounded"}>
             <div className={"flex"}>
                 <input type={"text"} placeholder={"Enter Anime Title"} className={"m-3 p-4 h-8 w-72"}></input>
                 <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-4 my-2 w-32 hover:brightness-150"}>SEARCH</button>
@@ -11,27 +11,27 @@ export default function SideBar(props) {
                 <div className={"flex"}>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="genres" type="checkbox" className={"flex"}></input>
-                        <label id={"genres"} className={"flex m-1"}>Genres</label>
+                        <label htmlFor="genres" id={"genres"} className={"flex m-1"}>Genres</label>
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="staff" type="checkbox" className={"flex"}></input>
-                        <label id={"staff"} className={"flex m-1"}>Staff</label>
+                        <label htmlFor="genres" id={"staff"} className={"flex m-1"}>Staff</label>
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="studio" type="checkbox" className={"flex"}></input>
-                        <label id={"studio"} className={"flex m-1"}>Studio</label>
+                        <label htmlFor="genres" id={"studio"} className={"flex m-1"}>Studio</label>
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="year" type="checkbox" className={"flex"}></input>
-                        <label id={"year"} className={"flex m-1"}>Year</label>
+                        <label htmlFor="genres" id={"year"} className={"flex m-1"}>Year</label>
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="episodes" type="checkbox" className={"flex"}></input>
-                        <label id={"episodes"} className={"flex m-1"}>Episodes</label>
+                        <label htmlFor="genres" id={"episodes"} className={"flex m-1"}>Episodes</label>
                     </div>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="popularity" type="checkbox" className={"flex"}></input>
-                        <label id={"popularity"} className={"flex m-1"}>Popularity</label>
+                        <label htmlFor="genres" id={"popularity"} className={"flex m-1"}>Popularity</label>
                     </div>
                 </div>
 
