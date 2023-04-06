@@ -3,9 +3,9 @@ import {v4 as uuidv4} from 'uuid';
 import {useState} from "react";
 
 export default function GraphDisplay(props) {
-    let [graphKey, setGraphKey] = useState(uuidv4());
+    let [graphKey] = useState(uuidv4());
     const [network, setNetwork] = useState(null);
-    let [nodes, setGraph] = useState([
+    let [nodes] = useState([
         {
             "id": 0,
             "label": "Cowboy Bebop",
@@ -438,11 +438,15 @@ export default function GraphDisplay(props) {
     return (
         <div className={"w-11/16 bg-[#2c2f33] m-1 rounded"}>
             <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
-                    onClick={() => recolor.bind(this)(edges)}>Recolor!
+                    onClick={() => recolor.bind(this)(edges)}>
+                Recolor!
             </button>
+
             <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
-                    onClick={() => network.fit({animation: {duration: 1000}})}>Refit!
+                    onClick={() => network.fit({animation: {duration: 1000}})}>
+                Refit!
             </button>
+            
             <Graph
                 key={graphKey}
                 graph={{nodes: nodes, edges: edges}}

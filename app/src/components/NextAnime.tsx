@@ -1,4 +1,3 @@
-import ExampleComponent from "./ExampleComponent";
 import ExampleGraphDisplay from "./ExampleGraphDisplay";
 import SideBar from "./SideBar";
 import React from "react";

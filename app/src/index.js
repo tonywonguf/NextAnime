@@ -1,15 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import ExampleComponent from "./components/ExampleComponent";
 import NextAnime from "./components/NextAnime";
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    // <React.StrictMode>
-        <NextAnime/>
-    // </React.StrictMode>
+    <NextAnime/>
 );
 
 // If you want to start measuring performance in your app, pass a function
