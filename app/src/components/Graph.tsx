@@ -2,6 +2,20 @@ import Graph from "react-graph-vis";
 import {v4 as uuidv4} from 'uuid';
 import {useState} from "react";
 
+class Node{
+    private id: number;
+    private title: string;
+    private shape: "image";
+    private image: string;
+    private popScore: number;
+    private episodes: number;
+    private year: number;
+    private staff: [];
+    private studio: [];
+
+    constructor() {
+    }
+}
 export default class AnimeGraph<T> {
     private nodes: Map<T, Set<T>>;
 
