@@ -436,8 +436,8 @@ export default function GraphDisplay(props) {
     };
 
     return (
-        <div className={"w-11/16 bg-[#2c2f33] m-1 rounded flex"}>
-            <div id = "visbar" className={"w-5/16"}>
+        <div className={"bg-[#2c2f33] rounded flex h-full"}>
+            <div id = "visbar" className={"float-left"}>
                 <div>
                     <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
                             onClick={() => recolor.bind(this)(edges)}>
@@ -452,7 +452,7 @@ export default function GraphDisplay(props) {
                 </div>
             </div>
 
-            <div id = "graph" className={"w-11/16"}>
+            <div id="graph" className={"clear-none"}>
                 <Graph
                     key={graphKey}
                     graph={{nodes: nodes, edges: edges}}

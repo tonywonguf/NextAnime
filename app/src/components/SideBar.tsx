@@ -1,16 +1,19 @@
 export default function SideBar(props) {
     return (
-        <div id="sidebar" className={"w-5/16 flex-shrink-0 bg-[#2c2f33] min-w-500 flex-grow m-1 rounded "}>
-            <div className={"flex"}>
-                <input type={"text"} placeholder={"Enter Anime Title"} className={"m-3 p-4 h-8 w-72"}></input>
-                <button
-                    className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-4 my-2 w-32 hover:brightness-150"}>SEARCH
-                </button>
+        <div id="sidebar" className={"flex-shrink-0 bg-[#2c2f33] min-w-500 flex-grow rounded "}>
+            <div className={"py-2"}>
+                <div className={"flex justify-between mx-2 gap-2"}>
+                    <input type={"text"} placeholder={"Enter Anime Title"} className={"p-4 h-10 grow rounded "}></input>
+                    <button
+                        className={"bg-[#23272a] text-[#80848e] rounded p-2 h-10 w-32 hover:brightness-150"}>SEARCH
+                    </button>
+                </div>
             </div>
-            <div id="parameter-container" className={"bg-violet-300 rounded p-2 m-2 h-20"}>
+
+            <div id="parameter-container" className={"bg-violet-300 rounded px-2 py-1 mx-2"}>
                 <label id={"parameter-container"}>Parameters</label>
                 <hr></hr>
-                <div className={"flex"}>
+                <div className={"flex text-sm"}>
                     <div className={"flex m-0.5 p-0.5"}>
                         <input id="genres" type="checkbox" className={"flex"}></input>
                         <label htmlFor="genres" id={"genres"} className={"flex m-1"}>Genres</label>
@@ -38,7 +41,7 @@ export default function SideBar(props) {
                 </div>
 
             </div>
-            <div id="selected-Anime-Container" className={"bg-violet-200 rounded p-2 m-2 h-80"}>
+            <div id="selected-Anime-Container" className={"bg-violet-200 rounded p-2 m-2"}>
                 <label id={"selected-Anime-Container"} className={"flex"}>Selected Anime</label>
                 <hr></hr>
                 <div className={"flex"}>
@@ -47,7 +50,7 @@ export default function SideBar(props) {
                 </div>
             </div>
 
-            <div id="suggested-Anime-Container" className={"bg-violet-200 rounded p-2 m-2 h-80"}>
+            <div id="suggested-Anime-Container" className={"bg-violet-200 rounded p-2 m-2"}>
                 <label id={"suggested-Anime-Container"} className={"flex"}>Suggested Anime</label>
                 <hr></hr>
                 <div className={"flex"}>

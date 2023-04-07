@@ -1,7 +1,6 @@
 import ExampleGraphDisplay from "./ExampleGraphDisplay";
 import SideBar from "./SideBar";
 import React from "react";
-//import VisBar from "./VisBar";
 
 
 export default function NextAnime(props) {
@@ -15,8 +14,13 @@ export default function NextAnime(props) {
 
             {/* Example Graph */}
             <main className="flex overflow-y-hidden h-full">
-                <ExampleGraphDisplay/>
-                <SideBar/>
+                <div className={"w-8/12 h-full p-1"}>
+                    <ExampleGraphDisplay/>
+                </div>
+
+                <div className={"w-4/12 overflow-y-scroll overflow-x-clip p-1"}>
+                    <SideBar/>
+                </div>
             </main>
         </div>
     );
