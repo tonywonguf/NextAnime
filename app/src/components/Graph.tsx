@@ -13,7 +13,8 @@ class Node{
     private staff: [];
     private studio: [];
 
-    constructor() {
+    constructor(T) {
+        T
     }
 }
 export default class AnimeGraph<T> {
