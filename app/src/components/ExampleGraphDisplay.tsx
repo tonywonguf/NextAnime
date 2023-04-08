@@ -1,10 +1,12 @@
 import Graph from "react-graph-vis";
+import {Network, FitOptions} from "vis-network"
+import {AnimeGraph, Node, Edge} from "./Graph"
 import {v4 as uuidv4} from 'uuid';
 import {useState} from "react";
 
 export default function GraphDisplay(props) {
     let [graphKey] = useState(uuidv4());
-    const [network, setNetwork] = useState(null);
+    const [network, setNetwork] = useState<Network>(null);
     let [nodes] = useState([
         {
             "id": 0,
@@ -434,6 +436,13 @@ export default function GraphDisplay(props) {
         },
         height: '100%'
     };
+
+    const fitOptions: FitOptions = {
+        animation: {
+            duration: 1000,
+            easingFunction: "linear"
+        }
+    }
 
     return (
         <div className={"bg-[#2c2f33] rounded flex h-full relative"}>
