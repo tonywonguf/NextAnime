@@ -436,20 +436,16 @@ export default function GraphDisplay(props) {
     };
 
     return (
-        <div className={"bg-[#2c2f33] rounded flex h-full"}>
-            <div id = "visbar" className={"float-left"}>
-                <div>
-                    <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
-                            onClick={() => recolor.bind(this)(edges)}>
-                        Recolor!
-                    </button>
-                </div>
-                <div>
-                    <button className={"bg-[#23272a] text-[#80848e] rounded p-2 ml-3 my-2 hover:brightness-150"}
-                            onClick={() => network.fit({animation: {duration: 1000}})}>
-                        Refit!
-                    </button>
-                </div>
+        <div className={"bg-[#2c2f33] rounded flex h-full relative"}>
+            <div className={"absolute z-10"}>
+                <button className={"btn"}
+                        onClick={animeGraph.recolor.bind(animeGraph)}>
+                    Recolor!
+                </button>
+                <button className={"btn"}
+                        onClick={animeGraph.refit.bind(animeGraph)}>
+                    Refit!
+                </button>
             </div>
 
             <div id="graph" className={"clear-none"}>
