@@ -393,13 +393,13 @@ export default function GraphDisplay(props) {
             "id": "7fe0babb-17a2-402c-a9c4-407d2bcd8014"
         }
     ]);
+    let [animeGraph, setAnimeGraph] = useState(new AnimeGraph({network: null, nodes: nodes.map(node => new Node(node)), edges}));
 
-    const randColor = () => Math.floor(Math.random() * 16777215).toString(16);
 
-    const recolor = (E) => {
-        const newEdges = E.map(e => ({from: e.from, to: e.to, color: randColor()}));
-        setEdges(newEdges);
-    }
+    edges.forEach((edge : Edge) => {
+        animeGraph.nodes[edge.from].edgeNodes.push(animeGraph.nodes[edge.to]);
+        animeGraph.nodes[edge.to].edgeNodes.push(animeGraph.nodes[edge.from]);
+    })
 
     const options = {
         layout: {
@@ -448,14 +448,12 @@ export default function GraphDisplay(props) {
                 </button>
             </div>
 
-            <div id="graph" className={"clear-none"}>
-                <Graph
-                    key={graphKey}
-                    graph={{nodes: nodes, edges: edges}}
-                    options={options}
-                    getNetwork={network => setNetwork(network)}
-                />
-            </div>
+            <Graph
+                key={graphKey}
+                graph={{nodes: animeGraph.nodes, edges: animeGraph.edges}}
+                options={options}
+                getNetwork={network => setNetwork(network)}
+            />
         </div>
     );
 

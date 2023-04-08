@@ -1,47 +1,86 @@
-import Graph from "react-graph-vis";
-import {v4 as uuidv4} from 'uuid';
-import {useState} from "react";
+import {Network, FitOptions} from "vis-network";
 
-class Node{
-    private id: number;
-    private title: string;
-    private shape: "image";
-    private image: string;
-    private popScore: number;
-    private episodes: number;
-    private year: number;
-    private staff: [];
-    private studio: [];
+const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
 
-    constructor(T) {
-        T
+const fitOptions: FitOptions = {
+    animation: {
+        duration: 750,
+        easingFunction: "linear"
     }
 }
-export default class AnimeGraph<T> {
-    private nodes: Map<T, Set<T>>;
 
-    constructor() {
-        this.nodes = new Map();
+export type NodeInfo = {
+    id: number,
+    label: string,
+    image: string,
+    description?: string,
+    tags?: string[]
+}
+
+export type Edge = {
+    from: number,
+    to: number,
+    color?: string,
+    id?: string
+}
+
+export class Node {
+    static defaultProps = {
+        description: "default value",
+        tags: [],
+        shape: "image",
+        edgeNodes: []
+    }
+    id: number
+    label: string
+    image: string
+    description?: string
+    tags?: string[]
+    edgeNodes: Node[]
+    shape: string
+
+    constructor(info: NodeInfo) {
+        this.id = info.id;
+        this.label = info.label;
+        this.image = info.image;
+        this.description = info.description;
+        this.tags = info.tags;
+        this.edgeNodes = Node.defaultProps.edgeNodes;
+        this.shape = Node.defaultProps.shape;
+    }
+}
+
+export type AnimeGraphInfo = {
+    network: Network
+    nodes: Node[]
+    edges: Edge[]
+}
+
+export class AnimeGraph {
+    network: Network
+    nodes: Node[]
+    edges: Edge[]
+
+    constructor(info : AnimeGraphInfo) {
+        this.network = info.network;
+        this.nodes = info.nodes;
+        this.edges = info.edges
     }
 
-    newNode(node: T): void {
-        if (!this.nodes.has(node)) {
-            this.nodes.set(node, new Set());
+    recolor() {
+        this.edges = this.edges.map(e => ({...e, color: randColor()}));
+        console.log(this.edges);
+    }
+
+    refit() {
+        const fitOptions: FitOptions = {
+            animation: {
+                duration: 750,
+                easingFunction: "linear"
+            }
         }
+        this.network.fit(fitOptions);
     }
 
-    insertEdge(node1: T, node2: T): void {
-        if (!this.nodes.has(node1)) {
-            this.nodes.set(node1, new Set());
-        }
-        if (!this.nodes.has(node2)) {
-            this.nodes.set(node2, new Set());
-        }
-        this.nodes.get(node1)?.add(node2);
-        this.nodes.get(node2)?.add(node1);
-    }
 
-    getNeighbors(node: T): Set<T> {
-        return this.nodes.get(node) || new Set();
-    }
 }
