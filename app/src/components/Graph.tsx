@@ -48,6 +48,17 @@ export class Node {
         this.edgeNodes = Node.defaultProps.edgeNodes;
         this.shape = Node.defaultProps.shape;
     }
+
+    // DFS for edges [given depth] (0 gets current)
+    getEdges(depth: number, edges: Set<Edge> = new Set<Edge>()): Set<Edge> {
+        if (depth > 0) { // Add edges
+            this.edgeNodes.forEach((child: Node) => {
+                edges.add({from: this.id, to: child.id})
+                child.getEdges(depth - 1, edges);
+            });
+        }
+        return edges;
+    }
 }
 
 export type AnimeGraphInfo = {
