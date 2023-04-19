@@ -7,7 +7,7 @@ import {useState} from "react";
 export default function GraphDisplay(props) {
     let [graphKey] = useState(uuidv4());
     const [network, setNetwork] = useState<Network>(null);
-    let [nodes] = useState([
+    let [nodes, setNodes] = useState([
         {
             "id": 0,
             "label": "Cowboy Bebop",
@@ -395,7 +395,14 @@ export default function GraphDisplay(props) {
             "id": "7fe0babb-17a2-402c-a9c4-407d2bcd8014"
         }
     ]);
-    let [animeGraph, setAnimeGraph] = useState(new AnimeGraph({network: null, nodes: nodes.map(node => new Node(node)), edges}));
+    let animeGraph = new AnimeGraph(
+        {
+            network: network,
+            nodes: nodes.map(node => new Node(node)),
+            edges: edges,
+            setNodes: setNodes,
+            setNetwork: setNetwork,
+            setEdges: setEdges});
 
 
     edges.forEach((edge : Edge) => {
@@ -437,13 +444,6 @@ export default function GraphDisplay(props) {
         height: '100%'
     };
 
-    const fitOptions: FitOptions = {
-        animation: {
-            duration: 1000,
-            easingFunction: "linear"
-        }
-    }
-
     return (
         <div className={"bg-[#2c2f33] rounded flex h-full relative"}>
             <div className={"absolute z-10"}>
@@ -454,7 +454,7 @@ export default function GraphDisplay(props) {
                 </button>
 
                 <button className={"btn"}
-                        onClick={animeGraph.recolor.bind(animeGraph)}>
+                        onClick={animeGraph.refit.bind(animeGraph)}>
                     Refit!
                 </button>
 
@@ -464,8 +464,9 @@ export default function GraphDisplay(props) {
                 key={graphKey}
                 graph={{nodes: animeGraph.nodes, edges: animeGraph.edges}}
                 options={options}
-                getNetwork={network => setNetwork(network)}
+                getNetwork={newNetwork => animeGraph.setNetwork(newNetwork)}
             />
+
         </div>
     );
 
