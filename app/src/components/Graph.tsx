@@ -71,16 +71,22 @@ export class AnimeGraph {
     network: Network
     nodes: Node[]
     edges: Edge[]
+    setNodes: (nodes) => void;
+    setEdges: (edges) => void;
+    setNetwork: (network) => void;
 
-    constructor(info : AnimeGraphInfo) {
-        this.network = info.network;
-        this.nodes = info.nodes;
-        this.edges = info.edges
+    constructor({ network, nodes, edges, setNodes, setEdges, setNetwork }) {
+        this.network = network;
+        this.nodes = nodes;
+        this.edges = edges
+        this.setNodes = setNodes;
+        this.setEdges = setEdges;
+        this.setNetwork = setNetwork;
     }
 
     recolor() {
         this.edges = this.edges.map(e => ({...e, color: randColor()}));
-        console.log(this.edges);
+        this.setEdges(this.edges);
     }
 
     refit() {
