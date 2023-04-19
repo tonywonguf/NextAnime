@@ -1,13 +1,7 @@
 import {Network, FitOptions} from "vis-network";
+import Graph from "react-graph-vis";
 
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
-
-const fitOptions: FitOptions = {
-    animation: {
-        duration: 750,
-        easingFunction: "linear"
-    }
-}
 
 export type NodeInfo = {
     id: number,
@@ -25,31 +19,26 @@ export type Edge = {
 }
 
 export class Node {
-    static defaultProps = {
-        description: "default value",
-        tags: [],
-        shape: "image",
-        edgeNodes: []
-    }
     id: number
     label: string
     image: string
     description?: string
     tags?: string[]
-    edgeNodes: Node[]
-    shape: string
+    edgeNodes?: Node[]
+    shape?: string
 
     constructor(info: NodeInfo) {
         this.id = info.id;
         this.label = info.label;
         this.image = info.image;
-        this.description = info.description;
-        this.tags = info.tags;
-        this.edgeNodes = Node.defaultProps.edgeNodes;
-        this.shape = Node.defaultProps.shape;
+        this.description = "default value"
+        this.tags = [];
+        this.edgeNodes = [];
+        this.shape = "image"
     }
 
     // DFS for edges [given depth] (0 gets current)
+    // returns Set<Edge>
     getEdges(depth: number, edges: Set<Edge> = new Set<Edge>()): Set<Edge> {
         if (depth > 0) { // Add edges
             this.edgeNodes.forEach((child: Node) => {
@@ -62,26 +51,47 @@ export class Node {
 }
 
 export type AnimeGraphInfo = {
-    network: Network
-    nodes: Node[]
-    edges: Edge[]
-}
-
-export class AnimeGraph {
+    graphKey: string
     network: Network
     nodes: Node[]
     edges: Edge[]
     setNodes: (nodes) => void;
     setEdges: (edges) => void;
     setNetwork: (network) => void;
+    fitOptions?: FitOptions
+    options: object
+}
 
-    constructor({ network, nodes, edges, setNodes, setEdges, setNetwork }) {
-        this.network = network;
-        this.nodes = nodes;
-        this.edges = edges
-        this.setNodes = setNodes;
-        this.setEdges = setEdges;
-        this.setNetwork = setNetwork;
+export class AnimeGraph {
+    graphKey: string
+    network: Network
+    nodes: Node[]
+    edges: Edge[]
+    setNodes: (nodes) => void;
+    setEdges: (edges) => void;
+    setNetwork: (network) => void;
+    fitOptions: FitOptions
+    options: object
+
+    constructor(info : AnimeGraphInfo) {
+        this.network = info.network;
+        this.nodes = info.nodes;
+        this.edges = info.edges
+        this.setNodes = info.setNodes;
+        this.setEdges = info.setEdges;
+        this.setNetwork = info.setNetwork;
+        this.fitOptions = {
+            animation: {
+                duration: 750,
+                easingFunction: "linear"
+            }
+        }
+        this.options = info.options;
+
+        this.edges.forEach((edge : Edge) => {
+            this.nodes[edge.from].edgeNodes.push(this.nodes[edge.to]);
+            this.nodes[edge.to].edgeNodes.push(this.nodes[edge.from]);
+        })
     }
 
     recolor() {
@@ -90,14 +100,18 @@ export class AnimeGraph {
     }
 
     refit() {
-        const fitOptions: FitOptions = {
-            animation: {
-                duration: 750,
-                easingFunction: "linear"
-            }
-        }
-        this.network.fit(fitOptions);
+        this.network.fit(this.fitOptions);
     }
 
+    display() {
+        return (
+        <Graph
+            key={this.graphKey}
+            graph={{nodes: this.nodes, edges: this.edges}}
+            options={this.options}
+            getNetwork={newNetwork => this.setNetwork(newNetwork)}
+        />
+        )
+    }
 
 }
