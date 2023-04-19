@@ -444,15 +444,23 @@ export default function GraphDisplay(props) {
         }
     }
 
+    const handleRefitClick = () => {
+        animeGraph.refit();
+    }
+
+    const handleRecolorClick = () => {
+        animeGraph.recolor();
+    }
+
     return (
         <div className={"bg-[#2c2f33] rounded flex h-full relative"}>
             <div className={"absolute z-10"}>
                 <button className={"btn"}
-                        onClick={animeGraph.recolor.bind(animeGraph)}>
+                        onClick={handleRecolorClick}>
                     Recolor!
                 </button>
                 <button className={"btn"}
-                        onClick={animeGraph.refit.bind(animeGraph)}>
+                        onClick={handleRefitClick}>
                     Refit!
                 </button>
             </div>
