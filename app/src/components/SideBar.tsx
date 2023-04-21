@@ -36,7 +36,11 @@ function SearchBar({animeGraph}) {
             <div className={"bg-white rounded-b absolute w-full max-h-48 shadow-lg overflow-y-auto"}>
                 {isFocused && (
                         searchResults.map((node) => (
-                            <div key={node.id} className={"hover:bg-purple-500 order-last p-0.5"}>
+                            <div key={node.id} className={"hover:bg-purple-500 order-last p-0.5 cursor-pointer z-1 pointer-events-auto"}
+                                onMouseDown={()=>{
+                                    const updatedNode = { ...node, image: "https://ichef.bbci.co.uk/news/976/cpsprodpb/1362E/production/_128860497_334922667_762325655074030_2740480103230960428_n.jpg" };
+                                    animeGraph.network.body.data.nodes.update(updatedNode);
+                                }}>
                                 {node.label}
                             </div>
                         ))
@@ -60,7 +64,7 @@ function CheckBox({name}) {
 
 function AnimeBox({title}) {
     return (
-        <div id="selected-Anime-Container" className={"bg-violet-200 rounded mt-2 p-0.5"}>
+        <div id="selected-Anime-Container" className={"bg-violet-200 rounded mt-2 p-0.5"} onClick={() => console.log("boobs")}>
             <label id={"selected-Anime-Container"} className={"p-2"}>{title}</label>
             <hr/>
             <div className={"flex"}>
