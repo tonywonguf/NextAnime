@@ -4,11 +4,33 @@ import React, {useState} from "react";
 import {AnimeGraph, Node} from "./Graph";
 import {v4 as uuidv4} from 'uuid';
 import {Network} from "vis-network"
+import animegraph from "../data/animedata.json"
 
 export default function NextAnime(props) {
     let [graphKey] = useState(uuidv4());
     const [network, setNetwork] = useState<Network>(null);
-    let [nodes, setNodes] = useState([
+    let [nodes, setNodes] = useState([]);
+    let [edges, setEdges] = useState([]);
+    for(let i = 0; i < animegraph.length; i++){
+        let currentMedia = animegraph[i];
+        setNodes(this.nodes.append({
+            "id": currentMedia[0],
+            "label": currentMedia[1]['english'],
+            "tags": currentMedia[2],
+            "popularity": currentMedia[3],
+            "media" : currentMedia[4],
+            "episodes": currentMedia[5],
+            "year": currentMedia[6],
+            "chapters": currentMedia[7],
+            "image": currentMedia[8]['medium'],
+            "description": "A-man walks into a bar...",
+            "trending": currentMedia[9],
+            "staff": currentMedia[10],
+            "studios": currentMedia[11],
+            "shape": "image"
+        }));
+    }
+    /*let [nodes, setNodes] = useState([
         {
             "id": 0,
             "label": "Cowboy Bebop",
@@ -201,8 +223,8 @@ export default function NextAnime(props) {
             "shape": "image",
             "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx50-OdzAFLX6X6Hf.png"
         }
-    ]);
-    let [edges, setEdges] = useState([
+    ]);*/
+    /*let [edges, setEdges] = useState([
         {
             "from": 0,
             "to": 10,
@@ -395,7 +417,7 @@ export default function NextAnime(props) {
             "color": "b5adb9",
             "id": "7fe0babb-17a2-402c-a9c4-407d2bcd8014"
         }
-    ]);
+    ]);*/
     const options = {
         layout: {
             hierarchical: false

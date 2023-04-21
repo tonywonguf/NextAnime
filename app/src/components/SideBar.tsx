@@ -1,11 +1,18 @@
 import {useState} from "react"
 import {Node} from "./Graph"
+import animedata from "../data/animedata.json"
 
+//console.log(animedata[0]);
 function SearchBar({animeGraph}) {
     let [searchString, setSearchString] = useState("")
     let [isFocused, setIsFocused] = useState(false);
+    let [selectedItem, setSelectedItem] = useState(null);
 
     let handleChange = e => setSearchString(e.target.value);
+    let handleSearchClick = (node) => {
+        setSelectedItem(node);
+        setSearchString(node.name);
+    }
 
     function getSearchAnime(): Node[] {
         return animeGraph.nodes.filter((node) => {
@@ -36,10 +43,13 @@ function SearchBar({animeGraph}) {
             <div className={"bg-white rounded-b absolute w-full max-h-48 shadow-lg overflow-y-auto"}>
                 {isFocused && (
                         searchResults.map((node) => (
-                            <div key={node.id} className={"hover:bg-purple-500 order-last p-0.5"}>
+                            <div key={node.id} onClick={() => handleSearchClick(node)} className={"hover:bg-purple-500 order-last p-0.5"}>
                                 {node.label}
                             </div>
                         ))
+                )}
+                {selectedItem && (
+                    <p>Selected item: {selectedItem.name}</p>
                 )}
             </div>
 
@@ -85,7 +95,6 @@ export default function SideBar({animeGraph}) {
                 <CheckBox name="Episodes"/>
                 <CheckBox name="Popularity"/>
             </div>
-
 
             <AnimeBox title="Selected Anime"/>
             <AnimeBox title="Suggested Anime"/>
