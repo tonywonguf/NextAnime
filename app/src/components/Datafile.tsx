@@ -1,32 +1,32 @@
 import animedata from "../data/animedata.json"
 
 export type NodeInfo = {
-    id?: any;
-    label?: any;
-    tags?: any;
-    popScore?: any;
-    mediaType?: any;
-    episodes?: any;
-    year?: any;
-    chapters?: any;
-    image?: any;
-    trendScore?: any;
-    staff?: any;
-    studios?: any;
+    id?
+    label?
+    tags?
+    popScore?
+    mediaType?
+    episodes?
+    year?
+    chapters?
+    image?
+    trendScore?
+    staff?
+    studios?
 }
 export class Node {
-    id?: any;
-    label?: any;
-    tags?: any;
-    popScore?: any;
-    mediaType?: any;
-    episodes?: any;
-    year?: any;
-    chapters?: any;
-    image?: any;
-    trendScore?: any;
-    staff?: any;
-    studios?: any;
+    id?
+    label?
+    tags?
+    popScore?
+    mediaType?
+    episodes?
+    year?
+    chapters?
+    image?
+    trendScore?
+    staff?
+    studios?
 
     constructor(info : NodeInfo) {
         this.id = info.id;
