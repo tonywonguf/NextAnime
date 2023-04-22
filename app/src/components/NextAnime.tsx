@@ -1,6 +1,6 @@
 import SideBar from "./SideBar";
 import React, {useLayoutEffect, useRef} from "react";
-import {AnimeGraph} from "./Graph";
+import {AnimeGraph} from "./AnimeGraph";
 import {Network} from "vis-network"
 import {DataSet} from "vis-data"
 
