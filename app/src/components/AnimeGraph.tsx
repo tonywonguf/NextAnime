@@ -44,29 +44,4 @@ export class AnimeGraph {
         this.network.fit(this.fitOptions);
     }
 
-    display() {
-        return (
-            <div className={"w-8/12 h-full p-1"}>
-                <div className={"bg-[#2c2f33] rounded flex h-full relative"}>
-                    <div className={"absolute z-10"}>
-
-                        <button className={"btn"}
-                                onClick={this.recolor.bind(this)}>
-                            Recolor!
-                        </button>
-
-                        <button className={"btn"}
-                                onClick={() => this.network.fit(this.fitOptions)}>
-                            Refit!
-                        </button>
-
-                    </div>
-
-                    <div ref={this.containerRef} className={"flex"}></div>
-
-                </div>
-            </div>
-        )
-    }
-
 }

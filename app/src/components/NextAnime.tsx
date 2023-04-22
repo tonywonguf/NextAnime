@@ -463,7 +463,7 @@ export default function NextAnime() {
                         <div className={"absolute z-10"}>
 
                             <button className={"btn"}
-                                    onClick={animeGraph.refit.bind(animeGraph)}>
+                                    onClick={() => animeGraph.refit()}>
                                 Refit!
                             </button>
 
