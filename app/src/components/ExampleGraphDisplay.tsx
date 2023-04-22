@@ -19,5 +19,4 @@ export default function GraphDisplay({animeGraph}) {
 
         </div>
     );
-
 }

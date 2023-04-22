@@ -1,4 +1,4 @@
-import ExampleGraphDisplay from "./ExampleGraphDisplay";
+import GraphDisplay from "./ExampleGraphDisplay";
 import SideBar from "./SideBar";
 import React, {useState} from "react";
 import {AnimeGraph, Node} from "./Graph";
@@ -452,7 +452,7 @@ export default function NextAnime(props) {
             {/* Example Graph */}
             <main className="flex overflow-y-hidden h-full">
                 <div className={"w-8/12 h-full p-1"}>
-                    <ExampleGraphDisplay animeGraph={animeGraph}/>
+                    <GraphDisplay animeGraph={animeGraph}/>
                 </div>
 
                 <div className={"w-4/12 overflow-y-hidden overflow-x-clip p-1"}>
