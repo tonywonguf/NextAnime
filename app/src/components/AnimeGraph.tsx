@@ -91,7 +91,25 @@ export class AnimeGraph {
         this.edges.forEach((edge: Edge) => {
             this.nodes[edge.from].edgeNodes.push(this.nodes[edge.to]);
             this.nodes[edge.to].edgeNodes.push(this.nodes[edge.from]);
-        })
+        });
+    }
+
+    clear() {
+        this.nodes = [];
+        this.setNodes(this.nodes);
+
+        this.edges = [];
+        this.setEdges(this.edges);
+    }
+
+    load(nodes, edges) {
+        this.nodes = nodes;
+        this.setNodes(this.nodes);
+
+        this.edges = edges;
+        this.setEdges(this.edges);
+
+        this.refit();
     }
 
     recolor() {

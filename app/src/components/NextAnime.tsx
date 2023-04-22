@@ -441,6 +441,20 @@ export default function NextAnime(props) {
             options: options
         });
 
+    let newNodes = [{
+        "id": 0,
+        "label": "LMAO",
+        "shape": "image",
+        "image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1-CXtrrkMpJ8Zq.png"
+    }]
+    let newEdges = [{
+        "from": 0,
+        "to": 0,
+        "color": "eb2735",
+        "id": "7a0407af-84bc-4fe1-be59-812407816943"
+    }];
+
+
     return (
         <div className="min-h-screen flex flex-col h-screen bg-[#23272a]">
             {/* Title */}
@@ -456,6 +470,10 @@ export default function NextAnime(props) {
                 </div>
 
                 <div className={"w-4/12 overflow-y-hidden overflow-x-clip p-1"}>
+                    <button className={"btn"}
+                            onClick={() => animeGraph.load.bind(animeGraph)(newNodes, newEdges)}>Change!
+                    </button>
+
                     <SideBar animeGraph={animeGraph}/>
                 </div>
             </main>
