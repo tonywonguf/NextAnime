@@ -1,4 +1,4 @@
-import GraphDisplay from "./ExampleGraphDisplay";
+import GraphDisplay from "./GraphDisplay";
 import SideBar from "./SideBar";
 import React, {useState} from "react";
 import {AnimeGraph, Node} from "./Graph";
