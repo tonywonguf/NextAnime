@@ -1,48 +1,34 @@
 import animedata from "../data/animedata.json"
 
 export type NodeInfo = {
-    id?: number;
-    label?: string[];
-    tags?: string[];
-    popScore?: number;
-    mediaType?: string;
-    episodes?: number;
-    year?: number;
-    chapters?: number;
-    image?: string;
-    trendScore?: number;
-    staff?: string[];
-    studios?: string[];
+    id?: any;
+    label?: any;
+    tags?: any;
+    popScore?: any;
+    mediaType?: any;
+    episodes?: any;
+    year?: any;
+    chapters?: any;
+    image?: any;
+    trendScore?: any;
+    staff?: any;
+    studios?: any;
 }
 export class Node {
-    id?: number;
-    label?: string[];
-    tags?: string[];
-    popScore?: number;
-    mediaType?: string;
-    episodes?: number;
-    year?: number;
-    chapters?: number;
-    image?: string;
-    trendScore?: number;
-    staff?: string[];
-    studios?: string[];
+    id?: any;
+    label?: any;
+    tags?: any;
+    popScore?: any;
+    mediaType?: any;
+    episodes?: any;
+    year?: any;
+    chapters?: any;
+    image?: any;
+    trendScore?: any;
+    staff?: any;
+    studios?: any;
 
-    constructor(info: {
-        id?: number;
-        label?: string[];
-        tags?: string[];
-        popScore?: number;
-        mediaType?: string;
-        episodes?: number;
-        year?: number;
-        chapters?: number;
-        image?: string;
-        trendScore?: number;
-        staff?: string[];
-        studios?: string[];
-
-    }) {
+    constructor(info : NodeInfo) {
         this.id = info.id;
         this.label = info.label;
         this.tags = info.tags;
@@ -55,68 +41,25 @@ export class Node {
         this.trendScore = info.trendScore;
         this.staff = info.staff;
         this.studios = info.studios;
-
-        /*this.id = NodeInfo[0];
-        this.label = NodeInfo[1]["english"];
-        this.tags = NodeInfo[2];
-        this.popScore = NodeInfo[3];
-        this.mediaType = NodeInfo[4];
-        this.episodes = NodeInfo[5];
-        this.year = NodeInfo[6];
-        this.chapters = NodeInfo[7]
-        this.image = NodeInfo[8]["medium"];
-        this.trendScore = NodeInfo[9];
-        for(let x in NodeInfo[10]["nodes"]){
-            if(!this.staff.includes(x["name"]["full"])) {
-                this.staff.append(x["name"]["full"]);
-            }
-        }
-        for(let x in NodeInfo[11]["nodes"]){
-            if(!this.studios.include(x["name"])){
-                this.studios.append(x["name"]["full"]);
-            }
-        }*/
     }
 }
 
-function findData({SideBar}){
-    let nodes = [];
-    let edges = [];
-
-    const searching = SideBar.searchString;
-
-    for(let i = 0; i < animedata.length; i++){
-        const item = animedata[i];
-
-    }
-
-}
-
-let Nodes = [];
-console.log(animedata.length);
-console.log(animedata[0][0])
-
-for(let index = 0; index < 1; index++){
-    //const nodeInfo: NodeInfo = animedata[index];
-    const id : number = animedata[index][0];
-    //console.log(id);
-
-    let node = new Node(
-        {
-            id : id
-            /*label : nodeInfo[1]["english"],
-            tags : nodeInfo[2],
-            popScore : nodeInfo[3],
-            mediaType : nodeInfo[4],
-            episodes : nodeInfo[5],
-            year : nodeInfo[6],
-            chapters : nodeInfo[7],
-            image : nodeInfo[8]["medium"],
-            trendScore : nodeInfo[9],
-            staff : nodeInfo[10]["nodes"],
-            studios : nodeInfo[11]["nodes"]*/
-
-        }
-    );
-    Nodes.push(node);
+export function poop() {
+    let nodes : Node[] = [];
+    let node : Node = new Node({
+        id: animedata[0][0],
+        label: animedata[0][1],
+        tags: animedata[0][2],
+        popScore: animedata[0][3],
+        mediaType: animedata[0][4],
+        episodes: animedata[0][5],
+        year: animedata[0][6],
+        chapters: animedata[0][7],
+        image: animedata[0][8],
+        trendScore: animedata[0][9],
+        staff: animedata[0][10],
+        studios: animedata[0][11]
+    });
+    nodes.push(node);
+    console.log(node);
 }
