@@ -6,18 +6,9 @@ const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16
 export type NodeInfo = {
     id: number,
     label: string,
-    tags?: string[],
-    popularity: number,
-    media: string,
-    episodes: number,
-    year: number,
-    chapters: number,
     image: string,
     description?: string,
-    trending: number,
-    staff: string[],
-    studios: string[]
-
+    tags?: string[]
 }
 
 export type Edge = {
@@ -28,37 +19,20 @@ export type Edge = {
 }
 
 export class Node {
-    id: number;
-    label: string;
-    tags?: string[];
-    popularity: number;
-    media: string;
-    episodes: number;
-    year: number;
-    chapters: number;
-    image: string;
-    description?: string;
-    trending: number;
-    staff: string[];
-    studios: string[];
-    edgeNodes?: Node[];
-    shape?: string;
+    id: number
+    label: string
+    image: string
+    description?: string
+    tags?: string[]
+    edgeNodes?: Node[]
+    shape?: string
 
     constructor(info: NodeInfo) {
         this.id = info.id;
         this.label = info.label;
-        this.tags = [];
-        this.popularity = info.popularity;
-        this.media = info.media;
-        this.episodes = info.episodes;
-        this.year = info.year;
-        this.chapters = info.chapters;
         this.image = info.image;
         this.description = "default value"
-        this.trending = info.trending;
-        this.staff = info.staff;
-        this.studios = info.studios;
-
+        this.tags = [];
         this.edgeNodes = [];
         this.shape = "image"
     }
