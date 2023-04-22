@@ -1,16 +1,24 @@
 import {Network, FitOptions} from "vis-network";
 import {DataSet} from "vis-data";
-import React, {useRef, createRef, RefObject} from 'react';
+import React from 'react';
 
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
 
 export type AnimeGraphInfo = {
     containerRef
-    network: Network
     nodes: DataSet<any>
     edges: DataSet<any>
     fitOptions?: FitOptions
     options: object
+}
+
+function visButton(name, func: Function) {
+    return (
+        <button className={"btn"}
+                onClick={func.bind(this)}>
+            {name}
+        </button>
+    );
 }
 
 export class AnimeGraph {
@@ -32,8 +40,6 @@ export class AnimeGraph {
                 easingFunction: "linear"
             }
         }
-
-        this.network = new Network(this.containerRef.current, {nodes: this.nodes, edges: this.edges}, this.options)
     }
 
     recolor() {
@@ -42,6 +48,23 @@ export class AnimeGraph {
 
     refit() {
         this.network.fit(this.fitOptions);
+    }
+
+    display() {
+        return (
+            <div className={"bg-[#2c2f33] rounded flex h-full relative w-8/12 h-full p-1"}>
+
+                {/* Visualization Buttons*/}
+                <div className={"absolute z-10"}>
+                    {visButton("Refit!", () => this.refit())}
+                    {visButton("Recolor!", () => this.recolor())}
+                </div>
+
+                {/* reference to the actual graph */}
+                <div ref={this.containerRef} className={"flex"}></div>
+
+            </div>
+        );
     }
 
 }

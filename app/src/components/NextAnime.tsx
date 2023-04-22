@@ -427,25 +427,19 @@ const options = {
 };
 
 export default function NextAnime() {
-    let containerRef = useRef<HTMLDivElement>(document.createElement("div"));
-    let network: Network = null
+    let containerRef = useRef<HTMLDivElement>(null);
     let nodesDataSet = new DataSet(initialNodes)
     let edgesDataSet = new DataSet(initialEdges)
     let animeGraph = new AnimeGraph(
         {
             containerRef: containerRef,
-            network: network,
             nodes: nodesDataSet,
             edges: edgesDataSet,
             options: options
         });
 
     useLayoutEffect(() => {
-        animeGraph = new AnimeGraph(
-            {
-                ...animeGraph,
-                containerRef: containerRef
-            });
+        animeGraph.network = new Network(containerRef.current, {nodes: nodesDataSet, edges: edgesDataSet}, options)
     }, []);
 
     return (
@@ -458,31 +452,11 @@ export default function NextAnime() {
 
             {/* Example Graph */}
             <main className="flex overflow-y-hidden h-full">
-                <div className={"w-8/12 h-full p-1"}>
-                    <div className={"bg-[#2c2f33] rounded flex h-full relative"}>
-                        <div className={"absolute z-10"}>
 
-                            <button className={"btn"}
-                                    onClick={() => animeGraph.refit()}>
-                                Refit!
-                            </button>
+                {animeGraph.display()}
 
-                            <button className={"btn"}
-                                    onClick={animeGraph.recolor.bind(animeGraph)}>
-                                Recolor!
-                            </button>
+                <SideBar animeGraph={animeGraph}/>
 
-                        </div>
-
-                        <div ref={animeGraph.containerRef} className={"flex"}></div>
-
-                    </div>
-                </div>
-
-
-                <div className={"w-4/12 overflow-y-hidden overflow-x-clip p-1"}>
-                    <SideBar animeGraph={animeGraph}/>
-                </div>
             </main>
         </div>
     );

@@ -5,24 +5,31 @@ function SearchBar({animeGraph}) {
     let [searchString, setSearchString] = useState("")
     let [isFocused, setIsFocused] = useState(false);
 
-    let handleChange = e => setSearchString(e.target.value);
-
+    // reads all the current nodes and creates the search results, depending on searchString
     function getSearchAnime(): Node[] {
         return animeGraph.nodes.get().filter((node) => {
-            // If the search string is empty, show all nodes
-            if (node.label.length == 0) return false;
-            if (!searchString) return true;
-            // Convert the title to lowercase for case-insensitive search
-            const label = node.label.toLowerCase();
-
-            // If the title contains the search string, show the node
-            return label.includes(searchString.toLowerCase());
-        }).sort((lhs, rhs) => {
-            return lhs.label.localeCompare(rhs.label);
+            return (
+                node.label &&
+                node.label.toLowerCase().includes(searchString.toLowerCase()));
+        }).sort((l, r) => {
+            return l.label.localeCompare(r.label);
         });
     }
 
-    const searchResults = getSearchAnime();
+    // creates Divs for putting in search dropdown
+    function searchAnimeDivs() {
+        return (
+            getSearchAnime().map((node) => (
+                <div key={node.id} className={"hover:bg-purple-500 order-last p-0.5"}
+                     onMouseDown={() => {
+                         const updatedNode = { ...node,
+                             image: "https://ichef.bbci.co.uk/news/976/cpsprodpb/1362E/production/_128860497_334922667_762325655074030_2740480103230960428_n.jpg" };
+                         animeGraph.nodes.update(updatedNode)}}>
+                    {node.label}
+                </div>
+            ))
+        )
+    }
 
     return (
         <div className={"pb-2 relative"}>
@@ -30,22 +37,13 @@ function SearchBar({animeGraph}) {
                    placeholder={"Enter Anime Title"}
                    className={"p-2 w-full rounded"}
                    value={searchString}
-                   onChange={(e) => handleChange(e)}
-                   onFocus={() => setIsFocused(true)}
-                   onBlur={() => setIsFocused(false)}/>
-            <div className={"bg-white rounded-b absolute w-full max-h-48 shadow-lg overflow-y-auto"}>
-                {isFocused && (
-                        searchResults.map((node) => (
-                            <div key={node.id} className={"hover:bg-purple-500 order-last p-0.5"}
-                                 onMouseDown={() => {
-                                const updatedNode = { ...node, image: "https://ichef.bbci.co.uk/news/976/cpsprodpb/1362E/production/_128860497_334922667_762325655074030_2740480103230960428_n.jpg" };
-                                 animeGraph.nodes.update(updatedNode)}}>
-                                {node.label}
-                            </div>
-                        ))
-                )}
-            </div>
+                   onChange={e => setSearchString(e.target.value)}
+                   onFocus={setIsFocused.bind(this, true)}
+                   onBlur={setIsFocused.bind(this, false)}/>
 
+            <div className={"bg-white rounded-b absolute w-full max-h-48 shadow-lg overflow-y-auto"}>
+                {isFocused && searchAnimeDivs()}
+            </div>
         </div>
     )
 }
@@ -76,10 +74,11 @@ function AnimeBox({title}) {
 
 export default function SideBar({animeGraph}) {
     return (
-        <div id="sidebar" className={"flex-shrink-0 bg-[#2c2f33] min-w-500 flex-grow rounded"}>
+        <div id="sidebar" className={"flex-shrink-0 bg-[#2c2f33] min-w-500 flex-grow rounded w-4/12 overflow-y-hidden overflow-x-clip p-1"}>
 
             <SearchBar animeGraph={animeGraph}/>
 
+            {/**/}
             <div className={"flex bg-violet-300 rounded text-sm px-2 p-1"}>
                 <CheckBox name="Genre"/>
                 <CheckBox name="Staff"/>
