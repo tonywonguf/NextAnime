@@ -1,5 +1,5 @@
 import {useState} from "react"
-import {Node} from "./Graph"
+import {Node} from "vis-network"
 
 function SearchBar({animeGraph}) {
     let [searchString, setSearchString] = useState("")
@@ -8,7 +8,7 @@ function SearchBar({animeGraph}) {
     let handleChange = e => setSearchString(e.target.value);
 
     function getSearchAnime(): Node[] {
-        return animeGraph.nodes.filter((node) => {
+        return animeGraph.nodes.get().filter((node) => {
             // If the search string is empty, show all nodes
             if (node.label.length == 0) return false;
             if (!searchString) return true;
@@ -39,7 +39,7 @@ function SearchBar({animeGraph}) {
                             <div key={node.id} className={"hover:bg-purple-500 order-last p-0.5"}
                                  onMouseDown={() => {
                                 const updatedNode = { ...node, image: "https://ichef.bbci.co.uk/news/976/cpsprodpb/1362E/production/_128860497_334922667_762325655074030_2740480103230960428_n.jpg" };
-                                animeGraph.network.body.data.nodes.update(updatedNode);}}>
+                                 animeGraph.nodes.update(updatedNode)}}>
                                 {node.label}
                             </div>
                         ))
