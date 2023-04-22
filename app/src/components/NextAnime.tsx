@@ -3,7 +3,7 @@ import React, {useLayoutEffect, useRef} from "react";
 import {AnimeGraph} from "./AnimeGraph";
 import {Network} from "vis-network"
 import {DataSet} from "vis-data"
-import {poop} from "./Datafile"
+import {initNodes} from "./Datafile"
 
 const initialNodes = [
     {
@@ -431,7 +431,7 @@ export default function NextAnime() {
     let containerRef = useRef<HTMLDivElement>(null);
     let nodesDataSet = new DataSet(initialNodes)
     let edgesDataSet = new DataSet(initialEdges)
-    poop();
+    let nodes = initNodes();
     let animeGraph = new AnimeGraph(
         {
             containerRef: containerRef,

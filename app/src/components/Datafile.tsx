@@ -1,5 +1,7 @@
-import animedata from "../data/animedata.json"
+import animedata from "../data/animedata.json";
+import SideBar from "./SideBar";
 
+let nodes = [];
 export type NodeInfo = {
     id?
     label?
@@ -44,22 +46,28 @@ export class Node {
     }
 }
 
-export function poop() {
-    let nodes : Node[] = [];
-    let node : Node = new Node({
-        id: animedata[0][0],
-        label: animedata[0][1],
-        tags: animedata[0][2],
-        popScore: animedata[0][3],
-        mediaType: animedata[0][4],
-        episodes: animedata[0][5],
-        year: animedata[0][6],
-        chapters: animedata[0][7],
-        image: animedata[0][8],
-        trendScore: animedata[0][9],
-        staff: animedata[0][10],
-        studios: animedata[0][11]
-    });
-    nodes.push(node);
-    console.log(node);
+export function initNodes() {
+    //let nodes : Node[] = [];
+    for(let i = 0; i < animedata.length; i++){
+        let node : Node = new Node({
+            id: animedata[i][0],
+            label: animedata[i][1]["english"],
+            tags: animedata[i][2],
+            popScore: animedata[i][3],
+            mediaType: animedata[i][4],
+            episodes: animedata[i][5],
+            year: animedata[i][6],
+            chapters: animedata[i][7],
+            image: animedata[i][8]["medium"],
+            trendScore: animedata[i][9],
+            staff: animedata[i][10]["nodes"],
+            studios: animedata[i][11]["nodes"]
+        });
+        nodes.push(node);
+    }
+}
+
+export function initSearch(SideBar){
+    const searchNode = nodes.find(n => n.label === SideBar.searchString);
+    console.log(searchNode);
 }
