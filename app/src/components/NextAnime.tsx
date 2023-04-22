@@ -443,12 +443,7 @@ export default function NextAnime() {
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col h-screen bg-[#23272a]">
-            {/* Title */}
-            <div className={"p-3"}>
-                <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
-                <hr/>
-            </div>
+        <div className="min-h-screen flex flex-col h-screen ">
 
             {/* Example Graph */}
             <main className="flex overflow-y-hidden h-full">

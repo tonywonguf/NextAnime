@@ -1,4 +1,4 @@
-import {useState} from "react"
+import React, {useState} from "react"
 import {Node} from "vis-network"
 
 function SearchBar({animeGraph}) {
@@ -74,25 +74,30 @@ function AnimeBox({title}) {
 
 export default function SideBar({animeGraph}) {
     return (
-        <div id="sidebar" className={"flex-shrink-0 bg-[#2c2f33] min-w-500 flex-grow rounded w-4/12 overflow-y-hidden overflow-x-clip p-1"}>
-
-            <SearchBar animeGraph={animeGraph}/>
-
-            {/**/}
-            <div className={"flex bg-violet-300 rounded text-sm px-2 p-1"}>
-                <CheckBox name="Genre"/>
-                <CheckBox name="Staff"/>
-                <CheckBox name="Studio"/>
-                <CheckBox name="Year"/>
-                <CheckBox name="Episodes"/>
-                <CheckBox name="Popularity"/>
+        <div className={"relative w-4/12 h-full bg-[#23272a]"}>
+            <div id="hide-button" className={"w-6 h-12 rounded-tl-lg rounded-bl-lg bg-gray-700 cursor-pointer"}>
             </div>
+            <div id="sidebar" className={" w-full overflow-y-hidden overflow-x-clip p-1"}>
+                {/* Title */}
+                <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
 
+                <SearchBar animeGraph={animeGraph}/>
 
-            <AnimeBox title="Selected Anime"/>
-            <AnimeBox title="Suggested Anime"/>
+                {/* Check boxes */}
+                <div className={"flex bg-violet-300 rounded text-sm px-2 p-1"}>
+                    <CheckBox name="Genre"/>
+                    <CheckBox name="Staff"/>
+                    <CheckBox name="Studio"/>
+                    <CheckBox name="Year"/>
+                    <CheckBox name="Episodes"/>
+                    <CheckBox name="Popularity"/>
+                </div>
 
+                {/* Container boxes */}
+                <AnimeBox title="Selected Anime"/>
+                <AnimeBox title="Suggested Anime"/>
+
+            </div>
         </div>
-
     );
 }

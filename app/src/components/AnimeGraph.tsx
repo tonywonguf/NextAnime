@@ -50,14 +50,28 @@ export class AnimeGraph {
         this.network.fit(this.fitOptions);
     }
 
+    chooseRandomNodeAndColorAdjacents() {
+        const randomNodeId = this.nodes.getIds()[Math.floor(Math.random() * this.nodes.length)];
+        console.log(this.nodes.get(randomNodeId).label);
+        // Color the adjacent edges and nodes
+        const adjacentEdges = this.network.getConnectedEdges(randomNodeId);
+        const color = "#ffffff"
+        const updatedEdges = adjacentEdges.map((edgeId) => ({ ...this.edges.get(edgeId), color: color }));
+
+        // Update the data sets and the network
+        this.edges.update(updatedEdges);
+        // this.network.redraw();
+    }
+
     display() {
         return (
-            <div className={"bg-[#2c2f33] rounded flex h-full relative w-8/12 h-full p-1"}>
+            <div className={"bg-[#2c2f33] flex h-full relative w-8/12 h-full"}>
 
                 {/* Visualization Buttons*/}
                 <div className={"absolute z-10"}>
                     {visButton("Refit!", () => this.refit())}
                     {visButton("Recolor!", () => this.recolor())}
+                    {visButton("Poop!", () => this.chooseRandomNodeAndColorAdjacents())}
                 </div>
 
                 {/* reference to the actual graph */}
