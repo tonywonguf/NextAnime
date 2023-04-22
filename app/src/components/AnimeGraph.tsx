@@ -1,4 +1,4 @@
-import {Network, FitOptions} from "vis-network";
+import {FitOptions, Network} from "vis-network";
 import Graph from "react-graph-vis";
 
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
@@ -73,7 +73,7 @@ export class AnimeGraph {
     fitOptions: FitOptions
     options: object
 
-    constructor(info : AnimeGraphInfo) {
+    constructor(info: AnimeGraphInfo) {
         this.network = info.network;
         this.nodes = info.nodes;
         this.edges = info.edges
@@ -88,7 +88,7 @@ export class AnimeGraph {
         }
         this.options = info.options;
 
-        this.edges.forEach((edge : Edge) => {
+        this.edges.forEach((edge: Edge) => {
             this.nodes[edge.from].edgeNodes.push(this.nodes[edge.to]);
             this.nodes[edge.to].edgeNodes.push(this.nodes[edge.from]);
         })
@@ -105,13 +105,12 @@ export class AnimeGraph {
 
     display() {
         return (
-        <Graph
-            key={this.graphKey}
-            graph={{nodes: this.nodes, edges: this.edges}}
-            options={this.options}
-            getNetwork={newNetwork => this.setNetwork(newNetwork)}
-        />
+            <Graph
+                key={this.graphKey}
+                graph={{nodes: this.nodes, edges: this.edges}}
+                options={this.options}
+                getNetwork={newNetwork => this.setNetwork(newNetwork)}
+            />
         )
     }
-
 }

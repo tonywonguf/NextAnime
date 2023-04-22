@@ -1,5 +1,5 @@
 import {useState} from "react"
-import {Node} from "./Graph"
+import {Node} from "./AnimeGraph"
 
 function SearchBar({animeGraph}) {
     let [searchString, setSearchString] = useState("")

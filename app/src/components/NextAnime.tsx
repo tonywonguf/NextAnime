@@ -1,7 +1,7 @@
 import GraphDisplay from "./GraphDisplay";
 import SideBar from "./SideBar";
 import React, {useState} from "react";
-import {AnimeGraph, Node} from "./Graph";
+import {AnimeGraph, Node} from "./AnimeGraph";
 import {v4 as uuidv4} from 'uuid';
 import {Network} from "vis-network"
 
