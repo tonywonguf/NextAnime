@@ -65,7 +65,7 @@ export class AnimeGraph {
 
     display() {
         return (
-            <div className={"bg-[#2c2f33] flex h-full relative w-8/12 h-full"}>
+            <div className={"flex h-full relative w-8/12 h-full"}>
 
                 {/* Visualization Buttons*/}
                 <div className={"absolute z-10"}>
