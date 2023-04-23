@@ -65,7 +65,7 @@ for(let i = 0; i < animeData.length; i++){
     if(nodes.at(-1).isAdult){
         nodes.at(-1)["image"] = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
         nodes.at(-1)["imageLarge"] = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
-        console.log(nodes.at(-1)["label"])
+        console.log(nodes.at(-1)["label"]) // print out the BAD BAD images
     }
 }
 export const edges = [];
