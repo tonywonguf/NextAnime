@@ -1,7 +1,8 @@
 import React, {useState} from "react"
 import {Node} from "vis-network"
+import {nodes} from "./Datafile";
 
-function SearchBar({animeGraph}) {
+function SearchBar({animeGraph, setSelectedAnime}) {
     let [searchString, setSearchString] = useState("")
     let [isFocused, setIsFocused] = useState(false);
 
@@ -22,9 +23,7 @@ function SearchBar({animeGraph}) {
             getSearchAnime().map((node) => (
                 <div key={node.id} className={"hover:bg-purple-500 order-last p-0.5"}
                      onMouseDown={() => {
-                         const updatedNode = { ...node,
-                             image: "https://ichef.bbci.co.uk/news/976/cpsprodpb/1362E/production/_128860497_334922667_762325655074030_2740480103230960428_n.jpg" };
-                         animeGraph.nodes.update(updatedNode)}}>
+                         setSelectedAnime(node)}}>
                     {node.label}
                 </div>
             ))
@@ -59,20 +58,33 @@ function CheckBox({name}) {
 
 }
 
-function AnimeBox({title}) {
+function AnimeBox({title, selectedAnime}) {
     return (
         <div id="selected-Anime-Container" className={"bg-violet-200 rounded mt-2 p-0.5"}>
             <label id={"selected-Anime-Container"} className={"p-2"}>{title}</label>
             <hr/>
             <div className={"flex"}>
-                <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2"}></div>
-                <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2"}></div>
+                <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2"}>
+                    <p>
+                        Title:  {selectedAnime["label"]} <br/>
+                        Genres:  {selectedAnime["tags"].join(", ")} <br/>
+                        MediaType:  {selectedAnime["mediaType"]} <br/>
+                        Episodes:  {selectedAnime["episodes"]??"None"} <br/>
+                        Chapters:  {selectedAnime["chapters"]??"None"} <br/>
+                        Year:  {selectedAnime["year"]} <br/>
+                    </p>
+                </div>
+                <div className={"bg-violet-300 rounded flex items-stretch justify-center m-1.5 h-64 w-1/2"}>
+                    <img src={selectedAnime["image"]} alt={selectedAnime["image"]}/>
+                </div>
             </div>
         </div>
     )
 }
 
 export default function SideBar({animeGraph}) {
+    let [selectedAnime, setSelectedAnime] = useState(nodes[0]);
+    let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(nodes[0]);
     return (<div className={"w-4/12 h-full relative"}>
         <div id="hide-button" className={"w-6 h-12 rounded-tl-lg flex rounded-bl-lg cursor-pointer absolute -left-5 top-[70%] bg-[#1e2124]"}
             /* onClick={}*/>
@@ -90,8 +102,7 @@ export default function SideBar({animeGraph}) {
             {/* Title */}
             <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
 
-            <SearchBar animeGraph={animeGraph}/>
-
+            <SearchBar animeGraph={animeGraph} setSelectedAnime={setSelectedAnime}/>
             {/* Check boxes */}
             <div className={"flex bg-violet-300 rounded text-sm px-2 p-1"}>
                 <CheckBox name="Genre"/>
@@ -103,8 +114,8 @@ export default function SideBar({animeGraph}) {
             </div>
 
             {/* Container boxes */}
-            <AnimeBox title="Selected Anime"/>
-            <AnimeBox title="Suggested Anime"/>
+            <AnimeBox title="Selected Anime" selectedAnime={selectedAnime}/>
+            <AnimeBox title="Suggested Anime" selectedAnime={selectedAnime}/>
 
         </div>
     </div>);
