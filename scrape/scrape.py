@@ -39,6 +39,7 @@ query ($page: Int) {
                     name
                 }
             }
+            isAdult
         }
     }
 }
@@ -57,7 +58,7 @@ parseResponse = (response.json())
 
 x = 1
 while (parseResponse['data']['Page']['pageInfo']['hasNextPage']):
-    if x == 150:
+    if x == 20:
         break
     variables = {
         'page': x
@@ -80,5 +81,5 @@ while (parseResponse['data']['Page']['pageInfo']['hasNextPage']):
 
 print("Successful!\nType any key to exit: ")
 exit = input()
-with open("data.json", "w+") as f:
+with open("animedata.json", "w+") as f:
    json.dump(data, f)
