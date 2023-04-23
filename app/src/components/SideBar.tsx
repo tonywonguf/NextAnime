@@ -79,7 +79,7 @@ function AnimeBox({title, selectedAnime}) {
                     </p>
                 </div>
                 <div className={"bg-violet-300 rounded flex items-center justify-center m-1.5 p-1 h-64 w-1/2"}>
-                    <a href={selectedAnime["image"]}> <img src={selectedAnime["image"]} alt={selectedAnime["image"]}/> </a>
+                    <img className={"object-fill max-h-full max-w-full"} src={selectedAnime["imageLarge"]} alt={selectedAnime["imageLarge"]}/>
                 </div>
             </div>
         </div>
