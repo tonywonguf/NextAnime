@@ -7,7 +7,7 @@ query = '''
 query ($page: Int) {
     Page(page: $page){ # Insert our variables into the query arguments (page) (type: ANIME is hard-coded in the query)
         pageInfo{
-            lastPage
+            hasNextPage
         }
         media{
             id
@@ -42,9 +42,11 @@ query ($page: Int) {
     }
 }
 '''
+
 variables = {
     'page': 1
 }
+
 url = 'https://graphql.anilist.co'
 
 data = []
@@ -52,7 +54,9 @@ data = []
 response = requests.post(url, json={'query': query, 'variables': variables})
 parseResponse = (response.json())
 #print(parseResponse)
-for x in range(parseResponse['data']['Page']['pageInfo']['lastPage']):
+
+x = 1
+while (parseResponse['data']['Page']['pageInfo']['hasNextPage']):
     variables = {
         'page': x
     }
@@ -75,6 +79,7 @@ for x in range(parseResponse['data']['Page']['pageInfo']['lastPage']):
     #print(response.json())
     print("Completed", len(data))
     time.sleep(60/90)
+    x += 1
 
 
 with open("data.json", "w+") as f:
