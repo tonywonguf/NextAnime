@@ -9,9 +9,24 @@ function SearchBar({setSelectedAnime}) {
     // reads all the current nodes and creates the search results, depending on searchString
     function getSearchAnime(): Node[] {
         return nodes.filter((node) => {
-            return (
-                node.label &&
-                node.label.toLowerCase().includes(searchString.toLowerCase()));
+            let found = false;
+            //console.log(typeof(node.titles))
+            for (let label of Object.keys(node.titles)) {
+                if(node.titles[label]?.toLowerCase().includes(searchString.toLowerCase())){
+                    found=true;
+                    break;
+                }
+            }
+            /*if(node.titles["english"].toLowerCase().includes(searchString.toLowerCase())){
+                found=true;
+            }
+            if(node.titles["romaji"].toLowerCase().includes(searchString.toLowerCase())){
+                found=true;
+            }
+            if(node.titles["native"].toLowerCase().includes(searchString.toLowerCase())){
+                found=true;
+            }*/
+            return (node.label && found);
         }).sort((l, r) => {
             return l.label.localeCompare(r.label);
         });
