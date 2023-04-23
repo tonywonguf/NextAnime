@@ -10,7 +10,9 @@
     "react-dom": "^18.2.0",
     "react-graph-vis": "^1.0.7",
     "react-scripts": "5.0.1",
+    "util": "^0.12.5",
     "uuid": "^9.0.0",
+    "uuidv4": "^6.2.13",
     "vis-data": "^7.1.6",
     "web-vitals": "^2.1.4"
   },
