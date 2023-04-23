@@ -1,19 +1,5 @@
-import animedata from "../data/animedata.json";
+import animeData from "../data/animedata.json";
 
-export type NodeInfo = {
-    id?
-    label?
-    tags?
-    popScore?
-    mediaType?
-    episodes?
-    year?
-    chapters?
-    image?
-    trendScore?
-    staff?
-    studios?
-}
 export class Node {
     id?
     label?
@@ -24,11 +10,13 @@ export class Node {
     year?
     chapters?
     image?
+    imageMedium?
+    imageLarge?
     trendScore?
     staff?
     studios?
 
-    constructor(info : NodeInfo) {
+    constructor(info : Node) {
         this.id = info.id;
         this.label = info.label;
         this.tags = info.tags;
@@ -38,6 +26,8 @@ export class Node {
         this.year = info.year;
         this.chapters = info.chapters;
         this.image = info.image;
+        this.imageMedium = info.imageMedium;
+        this.imageLarge = info.imageLarge;
         this.trendScore = info.trendScore;
         this.staff = info.staff;
         this.studios = info.studios;
@@ -45,21 +35,24 @@ export class Node {
 }
 
 export const nodes = [];
-for(let i = 0; i < animedata.length; i++){
+// @ts-ignore
+for(let i = 0; i < animeData.length; i++){
     nodes.push(
     new Node({
-        id: animedata[i][0],
-        label: animedata[i][1]["english"],
-        tags: animedata[i][2],
-        popScore: animedata[i][3],
-        mediaType: animedata[i][4],
-        episodes: animedata[i][5],
-        year: animedata[i][6],
-        chapters: animedata[i][7],
-        image: animedata[i][8]["medium"],
-        trendScore: animedata[i][9],
-        staff: animedata[i][10]["nodes"],
-        studios: animedata[i][11]["nodes"]
+        id: animeData[i][0],
+        label: animeData[i][1]["english"],
+        tags: animeData[i][2],
+        popScore: animeData[i][3],
+        mediaType: animeData[i][4],
+        episodes: animeData[i][5],
+        year: animeData[i][6],
+        chapters: animeData[i][7],
+        image: animeData[i][8]["medium"],
+        imageMedium: animeData[i][8]["medium"],
+        imageLarge: animeData[i][8]["large"],
+        trendScore: animeData[i][9],
+        staff: animeData[i][10]["nodes"],
+        studios: animeData[i][11]["nodes"]
     }));
 }
 export const edges = [];
