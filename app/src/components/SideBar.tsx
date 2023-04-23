@@ -107,14 +107,20 @@ function AnimeBox({title, selectedAnime}) {
 export default function SideBar() {
     let [selectedAnime, setSelectedAnime] = useState(null);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
+    let [isOpen, setIsOpen] = useState(true);
 
-    return (<div className={"w-4/12 h-full relative flex-grow"}>
-        <div id="hide-button" className={"hideBtn"}>
+    return (
+    <div className={`h-full relative w-4/12 flex-grow ${isOpen ? '' : 'left-[33.3333%]'}`}>
+        {/* Sidebar collapse button*/}
+        <div id="hide-button" className={"hideBtn"}
+             onClick={setIsOpen.bind(this,!isOpen)}>
             <svg viewBox="0 0 24 24"
-                 className="w-full h-100 items-center justify-center text-white stroke-2 stroke-current rounded-full">
-                <path d="M9 18L15 12L9 6"></path>
+                 className={`hideBtnSVG ${isOpen ? '' : '-scale-100'}`}>
+                <path d="M9 18L15 12L9 6" strokeLinecap="round"></path>
             </svg>
+
         </div>
+
         <div id="sidebar" className={"relative w-full h-full overflow-y-hidden overflow-x-clip p-1 bg-[#36393e]"}>
             {/* Title */}
             <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
@@ -133,7 +139,7 @@ export default function SideBar() {
             {/* Container boxes */}
             <AnimeBox title="Selected Anime" selectedAnime={selectedAnime}/>
             <AnimeBox title="Suggested Anime" selectedAnime={selectedAnime}/>
-
         </div>
+
     </div>);
 }

@@ -7,5 +7,9 @@
 }
 
 .hideBtn {
-    @apply w-6 h-12 rounded-tl-lg flex rounded-bl-lg cursor-pointer absolute -left-5 top-[70%] bg-[#1e2124]
+    @apply w-5 h-12 rounded-tl-lg rounded-bl-lg flex cursor-pointer absolute -left-5 top-[70%] bg-violet-400
+}
+
+.hideBtnSVG {
+    @apply w-full h-full items-center justify-center stroke-2 rounded stroke-white fill-none
 }
