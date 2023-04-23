@@ -28,7 +28,7 @@ export class AnimeGraph {
     edges: DataSet<any>
     fitOptions: FitOptions
     options: object
-//hello
+
     constructor(info : AnimeGraphInfo) {
         this.containerRef = info.containerRef;
         this.nodes = info.nodes;

@@ -2,13 +2,13 @@ import React, {useState} from "react"
 import {Node} from "vis-network"
 import {nodes} from "./Datafile";
 
-function SearchBar({animeGraph, setSelectedAnime}) {
+function SearchBar({setSelectedAnime}) {
     let [searchString, setSearchString] = useState("")
     let [isFocused, setIsFocused] = useState(false);
 
     // reads all the current nodes and creates the search results, depending on searchString
     function getSearchAnime(): Node[] {
-        return animeGraph.nodes.get().filter((node) => {
+        return nodes.filter((node) => {
             return (
                 node.label &&
                 node.label.toLowerCase().includes(searchString.toLowerCase()));
@@ -22,8 +22,7 @@ function SearchBar({animeGraph, setSelectedAnime}) {
         return (
             getSearchAnime().map((node) => (
                 <div key={node.id} className={"hover:bg-purple-500 order-last p-0.5"}
-                     onMouseDown={() => {
-                         setSelectedAnime(node)}}>
+                     onMouseDown={setSelectedAnime.bind(this, node)}>
                     {node.label}
                 </div>
             ))
@@ -64,27 +63,33 @@ function AnimeBox({title, selectedAnime}) {
             <label id={"selected-Anime-Container"} className={"p-2"}>{title}</label>
             <hr/>
             <div className={"flex"}>
-                <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2"}>
+                <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2 font-mono p-1"}>
                     <p>
                         Title:  {selectedAnime["label"]} <br/>
+                        <hr/>
                         Genres:  {selectedAnime["tags"].join(", ")} <br/>
+                        <hr/>
                         MediaType:  {selectedAnime["mediaType"]} <br/>
+                        <hr/>
                         Episodes:  {selectedAnime["episodes"]??"None"} <br/>
+                        <hr/>
                         Chapters:  {selectedAnime["chapters"]??"None"} <br/>
+                        <hr/>
                         Year:  {selectedAnime["year"]} <br/>
                     </p>
                 </div>
-                <div className={"bg-violet-300 rounded flex items-stretch justify-center m-1.5 h-64 w-1/2"}>
-                    <img src={selectedAnime["image"]} alt={selectedAnime["image"]}/>
+                <div className={"bg-violet-300 rounded flex items-center justify-center m-1.5 p-1 h-64 w-1/2"}>
+                    <a href={selectedAnime["image"]}> <img src={selectedAnime["image"]} alt={selectedAnime["image"]}/> </a>
                 </div>
             </div>
         </div>
     )
 }
 
-export default function SideBar({animeGraph}) {
+export default function SideBar() {
     let [selectedAnime, setSelectedAnime] = useState(nodes[0]);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(nodes[0]);
+
     return (<div className={"w-4/12 h-full relative"}>
         <div id="hide-button" className={"w-6 h-12 rounded-tl-lg flex rounded-bl-lg cursor-pointer absolute -left-5 top-[70%] bg-[#1e2124]"}
             /* onClick={}*/>
@@ -102,7 +107,7 @@ export default function SideBar({animeGraph}) {
             {/* Title */}
             <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
 
-            <SearchBar animeGraph={animeGraph} setSelectedAnime={setSelectedAnime}/>
+            <SearchBar setSelectedAnime={setSelectedAnime}/>
             {/* Check boxes */}
             <div className={"flex bg-violet-300 rounded text-sm px-2 p-1"}>
                 <CheckBox name="Genre"/>

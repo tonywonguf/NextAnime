@@ -84,7 +84,7 @@ export default function NextAnime() {
 
                 {animeGraph.display()}
 
-                <SideBar animeGraph={animeGraph}/>
+                <SideBar/>
 
             </main>
         </div>
