@@ -15,6 +15,7 @@ export class Node {
     trendScore?
     staff?
     studios?
+    isAdult?
 
     constructor(info : Node) {
         this.id = info.id;
@@ -31,12 +32,14 @@ export class Node {
         this.trendScore = info.trendScore;
         this.staff = info.staff;
         this.studios = info.studios;
+        this.isAdult = info.isAdult;
     }
 }
 
 export const nodes = [];
 // @ts-ignore
 for(let i = 0; i < animeData.length; i++){
+
     nodes.push(
     new Node({
         id: animeData[i][0],
@@ -52,8 +55,14 @@ for(let i = 0; i < animeData.length; i++){
         imageLarge: animeData[i][8]["large"],
         trendScore: animeData[i][9],
         staff: animeData[i][10]["nodes"],
-        studios: animeData[i][11]["nodes"]
+        studios: animeData[i][11]["nodes"],
+        isAdult: animeData[i][12]
     }));
+    if(nodes.at(-1).isAdult){
+        nodes.at(-1)["image"] = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
+        nodes.at(-1)["imageLarge"] = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
+        console.log(nodes.at(-1)["label"])
+    }
 }
 export const edges = [];
 

@@ -63,7 +63,7 @@ function AnimeBox({title, selectedAnime}) {
             <label id={"selected-Anime-Container"} className={"p-2"}>{title}</label>
             <hr/>
             <div className={"flex"}>
-                <div className={"bg-violet-300 rounded m-1.5 h-64 w-1/2 font-mono p-1"}>
+                <div className={"bg-violet-300 rounded m-1.5 h-80 w-1/2 font-mono p-1"}>
                     <p>
                         Title:  {selectedAnime["label"]} <br/>
                         <hr/>
@@ -76,9 +76,12 @@ function AnimeBox({title, selectedAnime}) {
                         Chapters:  {selectedAnime["chapters"]??"None"} <br/>
                         <hr/>
                         Year:  {selectedAnime["year"]} <br/>
+                        <hr/>
+                        Studio: {selectedAnime["studios"].map(x => x["name"]).filter((name, index, arr) => arr.indexOf(name) === index).join(", ")} <br/>
                     </p>
+                    {/*Staff: {selectedAnime["staff"].map(x => x["name"]).map(y => y["full"]).filter((name, index, arr) => arr.indexOf(name) === index).join(", ")} <br/>*/}
                 </div>
-                <div className={"bg-violet-300 rounded flex items-center justify-center m-1.5 p-1 h-64 w-1/2"}>
+                <div className={"bg-violet-300 rounded flex items-center justify-center m-1.5 p-1 h-80 w-1/2"}>
                     <img className={"object-fill max-h-full max-w-full"} src={selectedAnime["imageLarge"]} alt={selectedAnime["imageLarge"]}/>
                 </div>
             </div>
