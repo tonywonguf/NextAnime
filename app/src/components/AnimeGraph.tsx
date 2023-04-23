@@ -64,21 +64,17 @@ export class AnimeGraph {
     }
 
     display() {
-        return (
-            <div className={"flex flex-grow h-full relative w-8/12 h-full"}>
-
+        return (<>
+            <div className={"absolute z-10"}>
                 {/* Visualization Buttons*/}
-                <div className={"absolute z-10"}>
-                    {visButton("Refit!", () => this.refit())}
-                    {visButton("Recolor!", () => this.recolor())}
-                    {visButton("Poop!", () => this.chooseRandomNodeAndColorAdjacents())}
-                </div>
-
-                {/* reference to the actual graph */}
-                <div ref={this.containerRef} className={"flex-grow"}></div>
-
+                {visButton("Refit!", () => this.refit())}
+                {visButton("Recolor!", () => this.recolor())}
+                {visButton("Poop!", () => this.chooseRandomNodeAndColorAdjacents())}
             </div>
-        );
+
+            <div ref={this.containerRef} className={"flex flex-grow flex-shrink-0 h-full relative w-8/12"}/>
+
+            </>);
     }
 
 }
