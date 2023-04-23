@@ -5,3 +5,7 @@
 .btn {
     @apply bg-[#23272a] text-[#80848e] rounded p-2 m-3 hover:brightness-150 block
 }
+
+.hideBtn {
+    @apply w-6 h-12 rounded-tl-lg flex rounded-bl-lg cursor-pointer absolute -left-5 top-[70%] bg-[#1e2124]
+}

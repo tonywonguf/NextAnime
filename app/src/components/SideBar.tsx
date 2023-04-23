@@ -90,9 +90,8 @@ export default function SideBar() {
     let [selectedAnime, setSelectedAnime] = useState(nodes[0]);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(nodes[0]);
 
-    return (<div className={"w-4/12 h-full relative"}>
-        <div id="hide-button" className={"w-6 h-12 rounded-tl-lg flex rounded-bl-lg cursor-pointer absolute -left-5 top-[70%] bg-[#1e2124]"}
-            /* onClick={}*/>
+    return (<div className={"w-4/12 h-full relative flex-grow"}>
+        <div id="hide-button" className={"hideBtn"}>
             <svg viewBox="0 0 24 24"
                  stroke="currentColor"
                  fill="none"
