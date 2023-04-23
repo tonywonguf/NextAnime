@@ -73,31 +73,39 @@ function AnimeBox({title}) {
 }
 
 export default function SideBar({animeGraph}) {
-    return (
-        <div className={"relative w-4/12 h-full bg-[#23272a]"}>
-            <div id="hide-button" className={"w-6 h-12 rounded-tl-lg rounded-bl-lg bg-gray-700 cursor-pointer"}>
-            </div>
-            <div id="sidebar" className={" w-full overflow-y-hidden overflow-x-clip p-1"}>
-                {/* Title */}
-                <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
-
-                <SearchBar animeGraph={animeGraph}/>
-
-                {/* Check boxes */}
-                <div className={"flex bg-violet-300 rounded text-sm px-2 p-1"}>
-                    <CheckBox name="Genre"/>
-                    <CheckBox name="Staff"/>
-                    <CheckBox name="Studio"/>
-                    <CheckBox name="Year"/>
-                    <CheckBox name="Episodes"/>
-                    <CheckBox name="Popularity"/>
-                </div>
-
-                {/* Container boxes */}
-                <AnimeBox title="Selected Anime"/>
-                <AnimeBox title="Suggested Anime"/>
-
-            </div>
+    return (<div className={"w-4/12 h-full relative"}>
+        <div id="hide-button" className={"w-6 h-12 rounded-tl-lg flex rounded-bl-lg cursor-pointer absolute -left-5 top-[70%] bg-[#1e2124]"}
+            /* onClick={}*/>
+            <svg viewBox="0 0 24 24"
+                 stroke="currentColor"
+                 fill="none"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 className="w-full h-100 items-center justify-center text-white">
+                <path d="M9 18L15 12L9 6"></path>
+            </svg>
         </div>
-    );
+        <div id="sidebar" className={"relative w-full h-full overflow-y-hidden overflow-x-clip p-1 bg-[#36393e]"}>
+            {/* Title */}
+            <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
+
+            <SearchBar animeGraph={animeGraph}/>
+
+            {/* Check boxes */}
+            <div className={"flex bg-violet-300 rounded text-sm px-2 p-1"}>
+                <CheckBox name="Genre"/>
+                <CheckBox name="Staff"/>
+                <CheckBox name="Studio"/>
+                <CheckBox name="Year"/>
+                <CheckBox name="Episodes"/>
+                <CheckBox name="Popularity"/>
+            </div>
+
+            {/* Container boxes */}
+            <AnimeBox title="Selected Anime"/>
+            <AnimeBox title="Suggested Anime"/>
+
+        </div>
+    </div>);
 }
