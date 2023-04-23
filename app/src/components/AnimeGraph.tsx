@@ -65,7 +65,7 @@ export class AnimeGraph {
 
     display() {
         return (
-            <div className={"flex h-full relative w-8/12 h-full"}>
+            <div className={"flex flex-grow h-full relative w-8/12 h-full"}>
 
                 {/* Visualization Buttons*/}
                 <div className={"absolute z-10"}>
@@ -75,7 +75,7 @@ export class AnimeGraph {
                 </div>
 
                 {/* reference to the actual graph */}
-                <div ref={this.containerRef} className={"flex"}></div>
+                <div ref={this.containerRef} className={"flex-grow"}></div>
 
             </div>
         );
