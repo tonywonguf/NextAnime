@@ -2,7 +2,6 @@ import requests
 import time
 import json
 
-
 # Here we define our query as a multi-line string
 query = '''
 query ($page: Int) {
