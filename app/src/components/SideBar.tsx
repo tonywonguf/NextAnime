@@ -78,10 +78,11 @@ function AnimeBox({title, selectedAnime}) {
             <hr/>
             <div className={"flex"}>
                 <div className={"bg-violet-300 rounded m-1.5 h-80 w-1/2 font-mono p-1 overflow-y-auto"}>
+                    {selectedAnime &&
                     <p>
                         Title:  {selectedAnime["label"]} <br/>
                         <hr/>
-                        Genres:  {selectedAnime["tags"].join(", ")} <br/>
+                        Genres:  {selectedAnime["tags"].join(", ")??""} <br/>
                         <hr/>
                         MediaType:  {selectedAnime["mediaType"]} <br/>
                         <hr/>
@@ -92,10 +93,11 @@ function AnimeBox({title, selectedAnime}) {
                         Year:  {selectedAnime["year"]} <br/>
                         <hr/>
                         Studio: {selectedAnime["studios"].map(info => info["name"]).join(", ")} <br/>
-                    </p>
+                    </p>}
                 </div>
                 <div className={"bg-violet-300 rounded flex items-center justify-center m-1.5 p-1 h-80 w-1/2"}>
-                    <img className={"object-fill max-h-full max-w-full"} src={selectedAnime["imageLarge"]} alt={selectedAnime["imageLarge"]}/>
+                    {selectedAnime &&
+                    <img className={"object-fill max-h-full max-w-full"} src={selectedAnime["imageLarge"]} alt={selectedAnime["imageLarge"]}/>}
                 </div>
             </div>
         </div>
@@ -103,8 +105,8 @@ function AnimeBox({title, selectedAnime}) {
 }
 
 export default function SideBar() {
-    let [selectedAnime, setSelectedAnime] = useState(nodes[0]);
-    let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(nodes[0]);
+    let [selectedAnime, setSelectedAnime] = useState(null);
+    let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
 
     return (<div className={"w-4/12 h-full relative flex-grow"}>
         <div id="hide-button" className={"hideBtn"}>
