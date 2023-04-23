@@ -76,16 +76,12 @@ export default function NextAnime() {
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col h-screen bg-[#2c2f33]">
+        <main className="h-screen w-screen flex flex-row overflow-y-hidden overflow-x-hidden bg-[#2c2f33]">
 
             {/* Example Graph */}
-            <main className="flex overflow-y-hidden h-full">
+            {animeGraph.display()}
 
-                {animeGraph.display()}
-
-                <SideBar/>
-
-            </main>
-        </div>
+            <SideBar/>
+        </main>
     );
 }
