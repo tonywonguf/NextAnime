@@ -51,7 +51,7 @@ export function initNodes() {
     for(let i = 0; i < animedata.length; i++){
         let node : Node = new Node({
             id: animedata[i][0],
-            label: animedata[i][1]["english"],
+            label: animedata[i][1]["english"]??animedata[i][1]["native"],
             tags: animedata[i][2],
             popScore: animedata[i][3],
             mediaType: animedata[i][4],
@@ -67,7 +67,6 @@ export function initNodes() {
     }
 }
 
-export function initSearch(SideBar){
-    const searchNode = nodes.find(n => n.label === SideBar.searchString);
-    console.log(searchNode);
-}
+initNodes();
+
+export {nodes};
