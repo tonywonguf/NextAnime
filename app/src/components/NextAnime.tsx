@@ -59,7 +59,6 @@ const options = {
 };
 
 export default function NextAnime() {
-    console.log(nodes);
     let containerRef = useRef<HTMLDivElement>(null);
     // let nodesDataSet = new DataSet(nodes)
     let nodesDataSet = new DataSet(initialNodes)

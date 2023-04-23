@@ -2,20 +2,15 @@ import React, {useState} from "react"
 import {Node} from "vis-network"
 import {nodes} from "./Datafile";
 
-function SearchBar({setSelectedAnime}) {
+function SearchBar({selectedAnime, setSelectedAnime}) {
     let [searchString, setSearchString] = useState("")
     let [isFocused, setIsFocused] = useState(false);
 
     // reads all the current nodes and creates the search results, depending on searchString
     function getSearchAnime(): Node[] {
-        return nodes.filter((node) => {
-            let found = false;
-            for (let label of Object.keys(node.titles)) {
-                if (node.titles[label]?.toLowerCase().includes(searchString.toLowerCase())) {
-                    found = true;
-                    break;
-                }
-            }
+        return nodes.filter(node => {
+            const found = Object.values(node.titles)
+            .some((t : String) => t?.toLowerCase().includes(searchString.toLowerCase()));
 
             return (node.label && found);
         }).sort((l, r) => {
@@ -23,11 +18,15 @@ function SearchBar({setSelectedAnime}) {
         });
     }
 
+    const searchedAnime = getSearchAnime();
+
     // creates Divs for putting in search dropdown
     function searchAnimeDivs() {
         return (
-            getSearchAnime().map((node) => (
-                <div key={node.id} className={"hover:bg-purple-500 order-last p-0.5"}
+            searchedAnime.map(node => (
+                <div key={node.id}
+                     className={`hover:bg-purple-500 order-last p-0.5 
+                                ${node === selectedAnime ? 'bg-green-300 font-bold' : ''}`}
                      onMouseDown={setSelectedAnime.bind(this, node)}>
                     {node.label}
                 </div>
@@ -35,15 +34,24 @@ function SearchBar({setSelectedAnime}) {
         )
     }
 
+    function keyboardEvents(keyPressed : String) {
+        if (keyPressed == 'Enter')
+            setSelectedAnime(searchedAnime[0]);
+        if (keyPressed == 'Escape')
+            document.getElementById("search-bar").blur()
+    }
+
     return (
         <div className={"pb-2 relative"}>
-            <input type={"text"}
+            <input id={"search-bar"}
+                   type={"text"}
                    placeholder={"Enter Anime Title"}
                    className={"p-2 w-full rounded"}
                    value={searchString}
                    onChange={e => setSearchString(e.target.value)}
                    onFocus={setIsFocused.bind(this, true)}
-                   onBlur={setIsFocused.bind(this, false)}/>
+                   onBlur={setIsFocused.bind(this, false)}
+                   onKeyDown={e => keyboardEvents(e.key)}/>
 
             <div className={"bg-white rounded-b absolute w-full max-h-48 shadow-lg overflow-y-auto"}>
                 {isFocused && searchAnimeDivs()}
@@ -69,7 +77,7 @@ function AnimeBox({title, selectedAnime}) {
             <label id={"selected-Anime-Container"} className={"p-2"}>{title}</label>
             <hr/>
             <div className={"flex"}>
-                <div className={"bg-violet-300 rounded m-1.5 h-80 w-1/2 font-mono p-1"}>
+                <div className={"bg-violet-300 rounded m-1.5 h-80 w-1/2 font-mono p-1 overflow-y-auto"}>
                     <p>
                         Title:  {selectedAnime["label"]} <br/>
                         <hr/>
@@ -83,7 +91,7 @@ function AnimeBox({title, selectedAnime}) {
                         <hr/>
                         Year:  {selectedAnime["year"]} <br/>
                         <hr/>
-                        Studio: {selectedAnime["studios"].map(x => x["name"]).filter((name, index, arr) => arr.indexOf(name) === index).join(", ")} <br/>
+                        Studio: {selectedAnime["studios"].map(info => info["name"]).join(", ")} <br/>
                     </p>
                 </div>
                 <div className={"bg-violet-300 rounded flex items-center justify-center m-1.5 p-1 h-80 w-1/2"}>
@@ -101,12 +109,7 @@ export default function SideBar() {
     return (<div className={"w-4/12 h-full relative flex-grow"}>
         <div id="hide-button" className={"hideBtn"}>
             <svg viewBox="0 0 24 24"
-                 stroke="currentColor"
-                 fill="none"
-                 stroke-width="2"
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 className="w-full h-100 items-center justify-center text-white">
+                 className="w-full h-100 items-center justify-center text-white stroke-2 stroke-current rounded-full">
                 <path d="M9 18L15 12L9 6"></path>
             </svg>
         </div>
@@ -114,7 +117,7 @@ export default function SideBar() {
             {/* Title */}
             <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
 
-            <SearchBar setSelectedAnime={setSelectedAnime}/>
+            <SearchBar selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
             {/* Check boxes */}
             <div className={"flex bg-violet-300 rounded text-sm px-2 p-1"}>
                 <CheckBox name="Genre"/>
