@@ -49,7 +49,7 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
             <input id={"search-bar"}
                    type={"text"}
                    placeholder={"Enter Anime Title"}
-                   className={"p-2 w-full rounded"}
+                   className={"p-2 w-full rounded text-[2vh]"}
                    value={searchString}
                    onChange={e => setSearchString(e.target.value)}
                    onFocus={setIsFocused.bind(this, true)}
@@ -80,10 +80,10 @@ function CheckButton({name, sP, sSP}) {
 function AnimeBox({title, selectedAnime}) {
     return (
         <div id="selected-Anime-Container" className={"bg-violet-200 rounded mt-2 p-0.5 w-full pointer-events-auto"}>
-            <label id={"selected-Anime-Container"} className={"p-2"}>{title}</label>
+            <label id={"selected-Anime-Container"} className={"p-2 text-[2vh]"}>{title}</label>
             <hr/>
             <div className={"flex"}>
-                <div className={"bg-violet-300 rounded m-1.5 h-80 w-1/2 font-mono p-1 overflow-y-auto"}>
+                <div className={"bg-violet-300 rounded m-1.5 h-80 w-1/2 font-mono p-1 overflow-y-auto text-[2vh]"}>
                     {selectedAnime &&
                         <p>
                             Title: {selectedAnime["label"]} <br/>
@@ -139,7 +139,7 @@ export default function SideBar({animeGraph}) {
             className={"absolute top-0 right-0 w-4/12 h-full flex-grow overflow-y-hidden overflow-x-clip p-1 pointer-events-none"}>
             {/* Title */}
             <div className={""}>
-                <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
+                <p className="text-[3vh] mb-2 text-white font-roboto"> NextAnime </p>
 
                 <SearchBar animeGraph={animeGraph} selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
 
