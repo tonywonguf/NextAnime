@@ -109,9 +109,9 @@ export class AnimeGraph {
                 if (i == 0) {
                     const updatedNode = {...this.nodes.get(e.from), size: 100};
                     this.nodes.update(updatedNode)
-                    return e;
+                    return {...e, color:'rgb(255,255,255)'};
                 }
-                return new Edge({...e, from: sortedWeights[i - 1].to})
+                return new Edge({...e,color:`rgb(${255-i*5},${255-i*5},${255-i*5})` , from: sortedWeights[i - 1].to})
             }
         );
         this.edges.add(sortedWeights);
