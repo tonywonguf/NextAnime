@@ -23,7 +23,7 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
         return (
             searchedAnime.map(node => (
                 <div key={node.id}
-                     className={`hover:bg-purple-500 order-last p-0.5 pointer-events-auto
+                     className={`hover:bg-purple-500 order-last p-[0.25vh] text-[1.5vh] pointer-events-auto
                                 ${node === selectedAnime ? 'bg-green-300 font-bold' : ''}`}
                      onMouseDown={() => {
                          setSelectedAnime(node);
@@ -45,19 +45,19 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     }
 
     return (
-        <div className={"pb-2 relative pointer-events-auto"}>
+        <div className={"flex flex-row pb-[1vh] h-[5.5vh] relative pointer-events-auto"}>
             <input id={"search-bar"}
                    type={"text"}
                    placeholder={"Enter Anime Title"}
-                   className={"p-2 w-full rounded text-[2vh]"}
+                   className={"p-[0.6vh] w-full rounded-[0.5vh] text-[2vh] !outline-none"}
                    value={searchString}
+                   autoComplete={"off"}
                    onChange={e => setSearchString(e.target.value)}
                    onFocus={setIsFocused.bind(this, true)}
                    onBlur={setIsFocused.bind(this, false)}
                    onKeyDown={e => keyboardEvents(e.key)}/>
 
-            <div
-                className={"bg-white rounded-b absolute w-full max-h-48 shadow-lg overflow-y-auto pointer-events-auto"}>
+            <div className={"absolute -z-5 bg-white rounded-b absolute w-full mt-[4.15vh] max-h-[30vh] shadow-lg overflow-y-auto pointer-events-auto"}>
                 {isFocused && searchAnimeDivs()}
             </div>
         </div>
@@ -79,34 +79,36 @@ function CheckButton({name, sP, sSP}) {
 
 function AnimeBox({title, selectedAnime}) {
     return (
-        <div id="selected-Anime-Container" className={"bg-violet-200 rounded mt-2 p-0.5 w-full pointer-events-auto"}>
-            <label id={"selected-Anime-Container"} className={"p-2 text-[2vh]"}>{title}</label>
-            <hr/>
-            <div className={"flex"}>
-                <div className={"bg-violet-300 rounded m-1.5 h-80 w-1/2 font-mono p-1 overflow-y-auto text-[2vh]"}>
+        <div className={"flex flex-col bg-violet-200 rounded-[1vh] mt-[1vh] p-[0.5vh] w-full pointer-events-auto h-[30vh]"}>
+            <label className={"p-[0.5vh] text-[2vh]"}>{title}</label>
+            <hr className={"border-[0.1vh]"}/>
+            <div className={"flex flex-grow"}>
+                <div className={"inner-anime-box"}>
                     {selectedAnime &&
                         <p>
                             Title: {selectedAnime["label"]} <br/>
-                            <hr/>
+                            <hr className={"border-[0.1vh]"}/>
                             Genres: {selectedAnime["tags"].join(", ") ?? ""} <br/>
-                            <hr/>
+                            <hr className={"border-[0.1vh]"}/>
                             MediaType: {selectedAnime["mediaType"]} <br/>
-                            <hr/>
+                            <hr className={"border-[0.1vh]"}/>
                             Episodes: {selectedAnime["episodes"] ?? "None"} <br/>
-                            <hr/>
+                            <hr className={"border-[0.1vh]"}/>
                             Chapters: {selectedAnime["chapters"] ?? "None"} <br/>
-                            <hr/>
+                            <hr className={"border-[0.1vh]"}/>
                             Year: {selectedAnime["seasonYear"]} <br/>
-                            <hr/>
+                            <hr className={"border-[0.1vh]"}/>
                             Studio: {selectedAnime["studios"].map(info => info["name"]).join(", ")??""} <br/>
                         </p>}
                 </div>
-                <div className={"bg-violet-300 rounded flex items-center justify-center m-1.5 p-1 h-80 w-1/2"}>
+                <div className={"inner-anime-box justify-center flex"}>
                     {selectedAnime &&
-                        <img className={"object-fill max-h-full max-w-full"} src={selectedAnime["imageLarge"]}
+                        <img className={"max-h-full max-w-full"} src={selectedAnime["imageLarge"]}
                              alt={selectedAnime["imageLarge"]}/>}
                 </div>
+
             </div>
+
         </div>
     )
 }
@@ -134,28 +136,26 @@ export default function SideBar({animeGraph}) {
             setSelectedSuggestedAnime(animeGraph.nodes.get(id))
         });
 
-    return (
-        <div
-            className={"absolute top-0 right-0 w-4/12 h-full flex-grow overflow-y-hidden overflow-x-clip p-1 pointer-events-none"}>
+    return ( <>
+        <p className="right-[9vw] top-0 absolute text-[2.8vw] text-white font-roboto"> NextAnime </p>
+        <div className={"absolute top-[8.4vh] right-0 w-4/12 h-[90vh] flex-grow overflow-y-hidden overflow-x-clip p-[0.5vh] pointer-events-none"}>
             {/* Title */}
-            <div className={""}>
-                <p className="text-[3vh] mb-2 text-white font-roboto"> NextAnime </p>
 
-                <SearchBar animeGraph={animeGraph} selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
+            <SearchBar animeGraph={animeGraph} selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
 
-                {/* Check boxes */}
-                <div className={"flex bg-violet-300 rounded text-sm px-2 p-1 pointer-events-auto"}>
-                    <CheckButton name="Genre" sP={selectedParameters} sSP={setSelectedParameters}/>
-                    <CheckButton name="Studio" sP={selectedParameters} sSP={setSelectedParameters}/>
-                    <CheckButton name="Year" sP={selectedParameters} sSP={setSelectedParameters}/>
-                    <CheckButton name="Episodes" sP={selectedParameters} sSP={setSelectedParameters}/>
-                    <CheckButton name="MediaType" sP={selectedParameters} sSP={setSelectedParameters}/>
-                </div>
-
-                {/* Container boxes */}
-                <AnimeBox title="Selected Anime" selectedAnime={selectedAnime}/>
-                <AnimeBox title="Suggested Anime" selectedAnime={selectedSuggestedAnime}/>
+            {/* Check boxes */}
+            <div className={"flex bg-violet-300 h-[5.5vh] rounded-[0.5vh] text-[1vh] p-[0.5vh] pointer-events-auto"}>
+                <CheckButton name="Genre" sP={selectedParameters} sSP={setSelectedParameters}/>
+                <CheckButton name="Studio" sP={selectedParameters} sSP={setSelectedParameters}/>
+                <CheckButton name="Year" sP={selectedParameters} sSP={setSelectedParameters}/>
+                <CheckButton name="Episodes" sP={selectedParameters} sSP={setSelectedParameters}/>
+                <CheckButton name="MediaType" sP={selectedParameters} sSP={setSelectedParameters}/>
             </div>
 
-        </div>);
+            {/* Container boxes */}
+            <AnimeBox title="Selected Anime" selectedAnime={selectedAnime}/>
+            <AnimeBox title="Suggested Anime" selectedAnime={selectedSuggestedAnime}/>
+
+        </div>
+    </>);
 }
