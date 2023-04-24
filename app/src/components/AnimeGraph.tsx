@@ -65,7 +65,7 @@ export class AnimeGraph {
 
     display() {
         return (<>
-            <div className={"absolute z-10"}>
+            <div className={"absolute z-10 w-0 h-0"}>
                 {/* Visualization Buttons*/}
                 {visButton("Refit!", () => this.refit())}
                 {visButton("Recolor!", () => this.recolor())}

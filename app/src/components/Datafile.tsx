@@ -53,7 +53,7 @@ for(let i = 0; i < animeData.length; i++){
         episodes: animeData[i][5],
         year: animeData[i][6],
         chapters: animeData[i][7],
-        image: animeData[i][8]["medium"],
+        image: animeData[i][8]["large"],
         imageMedium: animeData[i][8]["medium"],
         imageLarge: animeData[i][8]["large"],
         trendScore: animeData[i][9],
