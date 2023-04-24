@@ -104,16 +104,30 @@ function AnimeBox({title, selectedAnime}) {
     )
 }
 
-export default function SideBar() {
+function sidebarAnimation({animeGraph, isOpen}) {
+    const sidebar = document.getElementById("sidebar");
+    const graph = document.getElementById("graph");
+    const width = graph.offsetWidth;
+    const height = graph.offsetHeight;
+    sidebar.classList.toggle('translate-x-full');
+    animeGraph.network.setSize((isOpen ? width*3/2 : width),height);
+    animeGraph.network.fit();
+}
+
+export default function SideBar({animeGraph}) {
     let [selectedAnime, setSelectedAnime] = useState(null);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
     let [isOpen, setIsOpen] = useState(true);
 
     return (
-    <div className={`h-full relative w-4/12 flex-grow ${isOpen ? '' : 'left-[33.3333%]'}`}>
+    <div id='sidebar'
+        className={`h-full relative w-4/12 flex-grow resize-none transition-all`}>
         {/* Sidebar collapse button*/}
         <div id="hide-button" className={"hideBtn"}
-             onClick={setIsOpen.bind(this,!isOpen)}>
+             onClick={() => {
+                 setIsOpen(!isOpen)
+                 sidebarAnimation({animeGraph, isOpen});
+             }}>
             <svg viewBox="0 0 24 24"
                  className={`hideBtnSVG ${isOpen ? '' : '-scale-100'}`}>
                 <path d="M9 18L15 12L9 6" strokeLinecap="round"></path>
@@ -121,7 +135,7 @@ export default function SideBar() {
 
         </div>
 
-        <div id="sidebar" className={"relative w-full h-full overflow-y-hidden overflow-x-clip p-1 bg-[#36393e]"}>
+        <div className={"relative w-full h-full overflow-y-hidden overflow-x-clip p-1 bg-[#36393e]"}>
             {/* Title */}
             <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
 
