@@ -72,7 +72,6 @@ function CheckBox({name}) {
             <label htmlFor={name} id={name} className="pl-1">{name}</label>
         </span>
     )
-
 }
 
 function AnimeBox({title, selectedAnime}) {
@@ -110,8 +109,11 @@ function AnimeBox({title, selectedAnime}) {
 }
 
 export default function SideBar({animeGraph}) {
+
     let [selectedAnime, setSelectedAnime] = useState(null);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
+
+
     if (animeGraph.network)
         animeGraph.network.on("click", (e) => {
             const id = e.nodes[0]
@@ -130,11 +132,12 @@ export default function SideBar({animeGraph}) {
 
                 {/* Check boxes */}
                 <div className={"flex bg-violet-300 rounded text-sm px-2 p-1 pointer-events-auto"}>
-                    <CheckBox name="Genre"/>
-                    <CheckBox name="Studio"/>
-                    <CheckBox name="Year"/>
-                    <CheckBox name="Episodes"/>
-                    <CheckBox name="MediaType"/>
+                    <CheckButton name="Genre"/>
+                    <CheckButton name="Studio"/>
+                    <CheckButton name="Year"/>
+                    <CheckButton name="Episodes"/>
+                    <CheckButton name="MediaType"/>
+                    {/*<paramButton name="Genre" func={toggleCheck(this.name) }/>*/}
                 </div>
 
                 {/* Container boxes */}

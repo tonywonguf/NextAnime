@@ -5,3 +5,7 @@
 .btn {
     @apply bg-[#23272a] text-[#80848e] rounded-[1vh] text-[2vh] justify-center p-[1vh] m-[1vh] hover:brightness-150 block
 }
+
+.btn-param {
+    @apply bg-violet-400 text-[#222222] rounded-[1vh] text-[2vh] justify-center p-[1vh] m-[1vh] hover:brightness-150 block flex-grow flex-nowrap whitespace-nowrap m-0 mt-1 mb-1 text-sm overflow-hidden
+}
