@@ -143,7 +143,6 @@ export default function SideBar({animeGraph}) {
                     {CheckButton("Year", ()=> console.log(this))}
                     {CheckButton("Episodes", ()=> console.log(this))}
                     {CheckButton("MediaType", ()=> console.log(this))}
-                    {/*<paramButton name="Genre" func={toggleCheck(this.name) }/>*/}
                 </div>
 
                 {/* Container boxes */}
