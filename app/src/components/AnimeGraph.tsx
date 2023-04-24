@@ -54,7 +54,7 @@ export class AnimeGraph {
 
     chooseRandomNodeAndColorAdjacents() {
         const randomNodeId = this.nodes.getIds()[Math.floor(Math.random() * this.nodes.length)];
-        console.log(this.nodes.get(randomNodeId).label);
+        //console.log(this.nodes.get(randomNodeId).label);
         // Color the adjacent edges and nodes
         const adjacentEdges = this.network.getConnectedEdges(randomNodeId);
         const color = "#ffffff"
@@ -117,8 +117,8 @@ export class AnimeGraph {
         this.edges.add(sortedWeights);
         if (this.nodes.length == 1)
             this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
-        console.log(this.nodes.get())
-        console.log(this.edges.get())
+        /*console.log(this.nodes.get())
+        console.log(this.edges.get())*/
     }
 
     display() {
