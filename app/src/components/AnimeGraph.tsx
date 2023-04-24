@@ -80,7 +80,7 @@ export class AnimeGraph {
         const arrayA = a.studios.map(info => info.name)
         const arrayB = b.studios.map(info => info.name)
         const interStudios = arrayA.filter(studio => arrayB.includes(studio));
-        return 500-(interTags.length*2 + interStudios.length*5);
+        return interTags.length*2 + interStudios.length*5;
     }
 
     suggestedAnimeList() {
