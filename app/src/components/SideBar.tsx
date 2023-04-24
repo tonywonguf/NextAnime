@@ -25,7 +25,7 @@ function SearchBar({selectedAnime, setSelectedAnime}) {
         return (
             searchedAnime.map(node => (
                 <div key={node.id}
-                     className={`hover:bg-purple-500 order-last p-0.5 
+                     className={`hover:bg-purple-500 order-last p-0.5 pointer-events-auto
                                 ${node === selectedAnime ? 'bg-green-300 font-bold' : ''}`}
                      onMouseDown={setSelectedAnime.bind(this, node)}>
                     {node.label}
@@ -42,7 +42,7 @@ function SearchBar({selectedAnime, setSelectedAnime}) {
     }
 
     return (
-        <div className={"pb-2 relative"}>
+        <div className={"pb-2 relative pointer-events-auto"}>
             <input id={"search-bar"}
                    type={"text"}
                    placeholder={"Enter Anime Title"}
@@ -53,7 +53,7 @@ function SearchBar({selectedAnime, setSelectedAnime}) {
                    onBlur={setIsFocused.bind(this, false)}
                    onKeyDown={e => keyboardEvents(e.key)}/>
 
-            <div className={"bg-white rounded-b absolute w-full max-h-48 shadow-lg overflow-y-auto"}>
+            <div className={"bg-white rounded-b absolute w-full max-h-48 shadow-lg overflow-y-auto pointer-events-auto"}>
                 {isFocused && searchAnimeDivs()}
             </div>
         </div>
@@ -73,7 +73,7 @@ function CheckBox({name}) {
 
 function AnimeBox({title, selectedAnime}) {
     return (
-        <div id="selected-Anime-Container" className={"bg-violet-200 rounded mt-2 p-0.5"}>
+        <div id="selected-Anime-Container" className={"bg-violet-200 rounded mt-2 p-0.5 w-full pointer-events-auto"}>
             <label id={"selected-Anime-Container"} className={"p-2"}>{title}</label>
             <hr/>
             <div className={"flex"}>
@@ -104,56 +104,33 @@ function AnimeBox({title, selectedAnime}) {
     )
 }
 
-function sidebarAnimation({animeGraph, isOpen}) {
-    const sidebar = document.getElementById("sidebar");
-    const graph = document.getElementById("graph");
-    const width = graph.offsetWidth;
-    const height = graph.offsetHeight;
-    sidebar.classList.toggle('translate-x-full');
-    animeGraph.network.setSize((isOpen ? width*3/2 : width),height);
-    animeGraph.network.fit();
-}
-
 export default function SideBar({animeGraph}) {
     let [selectedAnime, setSelectedAnime] = useState(null);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
-    let [isOpen, setIsOpen] = useState(true);
 
     return (
-    <div id='sidebar'
-        className={`h-full relative w-4/12 flex-grow resize-none transition-all`}>
-        {/* Sidebar collapse button*/}
-        <div id="hide-button" className={"hideBtn"}
-             onClick={() => {
-                 setIsOpen(!isOpen)
-                 sidebarAnimation({animeGraph, isOpen});
-             }}>
-            <svg viewBox="0 0 24 24"
-                 className={`hideBtnSVG ${isOpen ? '' : '-scale-100'}`}>
-                <path d="M9 18L15 12L9 6" strokeLinecap="round"></path>
-            </svg>
+    <div className={"absolute top-0 right-0 w-4/12 h-full flex-grow overflow-y-hidden overflow-x-clip p-1 pointer-events-none"}>
+        {/* Title */}
+        <div className={""}>
+        <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
 
+        <SearchBar selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
+
+        {/* Check boxes */}
+        <div className={"flex bg-violet-300 rounded text-sm px-2 p-1 pointer-events-auto"}>
+            <CheckBox name="Genre"/>
+            <CheckBox name="Staff"/>
+            <CheckBox name="Studio"/>
+            <CheckBox name="Year"/>
+            <CheckBox name="Episodes"/>
+            <CheckBox name="Popularity"/>
         </div>
 
-        <div className={"relative w-full h-full overflow-y-hidden overflow-x-clip p-1 bg-[#36393e]"}>
-            {/* Title */}
-            <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
-
-            <SearchBar selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
-            {/* Check boxes */}
-            <div className={"flex bg-violet-300 rounded text-sm px-2 p-1"}>
-                <CheckBox name="Genre"/>
-                <CheckBox name="Staff"/>
-                <CheckBox name="Studio"/>
-                <CheckBox name="Year"/>
-                <CheckBox name="Episodes"/>
-                <CheckBox name="Popularity"/>
-            </div>
-
-            {/* Container boxes */}
-            <AnimeBox title="Selected Anime" selectedAnime={selectedAnime}/>
-            <AnimeBox title="Suggested Anime" selectedAnime={selectedAnime}/>
+        {/* Container boxes */}
+        <AnimeBox title="Selected Anime" selectedAnime={selectedAnime}/>
+        <AnimeBox title="Suggested Anime" selectedAnime={selectedAnime}/>
         </div>
 
     </div>);
+
 }
