@@ -8,7 +8,7 @@ import {v4 as uuidv4} from 'uuid'
 
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
 
-const graphSize = 100;
+const graphSize = 20;
 const initialNodes = nodes.slice(0,graphSize);
 let initialEdges: DataSet<any> = new DataSet<any>();
 for (let i = 0; i < 2*graphSize; i++) {
@@ -81,7 +81,7 @@ export default function NextAnime() {
             {/* Example Graph */}
             {animeGraph.display()}
 
-            <SideBar/>
+            <SideBar animeGraph={animeGraph}/>
         </main>
     );
 }
