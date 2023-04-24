@@ -3,6 +3,7 @@ import React, {useLayoutEffect, useRef} from "react";
 import {AnimeGraph} from "./AnimeGraph";
 import {Network} from "vis-network"
 import {DataSet} from "vis-data"
+import {Node, Edge} from './Datafile'
 import {nodes} from "./Datafile"
 import {v4 as uuidv4} from 'uuid'
 
@@ -45,8 +46,8 @@ export default function NextAnime() {
     let animeGraph = new AnimeGraph(
         {
             containerRef: containerRef,
-            nodes: new DataSet(),
-            edges: new DataSet(),
+            nodes: new DataSet<Node>(),
+            edges: new DataSet<Edge>(),
             options: options
         });
 
