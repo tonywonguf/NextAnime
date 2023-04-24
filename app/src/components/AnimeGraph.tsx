@@ -75,7 +75,7 @@ export class AnimeGraph {
 
     }
 
-    getWeight(a: Node, b: Node, checkList) {
+    getWeight(a: Node, b: Node) {
         const interTags = a.tags.filter(tag => b.tags.includes(tag));
 
         const arrayA = a.studios.map(info => info.name)

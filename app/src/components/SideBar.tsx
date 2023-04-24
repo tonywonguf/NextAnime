@@ -65,10 +65,14 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
 }
 
 function CheckButton(name, func: Function) {
+    let [clicked, setClicked] = useState(false);
 
+    const handleClick = () => {
+        setClicked(!clicked);
+    }
     return (
-        <button className={"btn-param"}
-                onClick={func.bind(this)}>
+        <button className={`Button ${clicked? "btn-param-c" : "btn-param-u"}`}
+                onClick={func.bind(this) && handleClick}>
             {name}
         </button>
     );
@@ -113,6 +117,7 @@ export default function SideBar({animeGraph}) {
 
     let [selectedAnime, setSelectedAnime] = useState(null);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
+    let [selectedParameters, setSelectedParameters] = useState([false, false, false, false, false]);
 
 
     if (animeGraph.network)
