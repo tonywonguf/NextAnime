@@ -14,3 +14,8 @@
 .inner-anime-box {
     @apply bg-violet-300 rounded-[0.5vh] h-[23.2vh] p-[0.5vh] m-[0.5vh] w-1/2 font-mono overflow-y-auto text-[1.5vh]
 }
+
+.title {
+    @apply right-0 top-0 w-4/12 p-[0.5vh] text-center m-[0.5vh] absolute text-[2.8vh] text-black font-mono
+           hover:bg-violet-200 bg-violet-400 rounded-[0.5vh] pointer-events-auto select-none
+}
