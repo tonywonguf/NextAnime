@@ -89,7 +89,6 @@ export class AnimeGraph {
         let weights: Edge[] = []
 
         for (let i = 0; i < ids.length; i++) {
-            // if (this.nodes.length == 1)
             for (let j = 0; j < nodes.length; j++) {
                 if (ids[i] == j) continue;
                 weights.push(new Edge({
@@ -100,14 +99,6 @@ export class AnimeGraph {
                     id: uuidv4()
                 }));
             }
-            // else
-            //     for (let j = i+1; j < ids.length; j++)
-            //         weights.push(new Edge({
-            //                         from: ids[i],
-            //                         to: ids[j],
-            //                         weight: this.getWeight(nodes.get(ids[i]), nodes.get(ids[j])),
-            //                         color: randColor(),
-            //                         id: uuidv4()}))
         }
         weights.sort((a, b) => b.weight - a.weight)
         let sortedWeights = weights.splice(0, Math.max(50, ids.length));
