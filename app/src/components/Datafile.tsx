@@ -59,5 +59,8 @@ for(let i = 0; i < animeData.length; i++){
         console.log(nodes.at(-1)["label"]) // print out the BAD BAD images
     }
 }
+
+nodes.sort((l, r) => l.label.localeCompare(r.label))
+
 export const edges = [];
 
