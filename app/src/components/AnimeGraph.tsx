@@ -75,7 +75,7 @@ export class AnimeGraph {
 
     }
 
-    getWeight(a: Node, b: Node) {
+    getWeight(a: Node, b: Node, checkList) {
         const interTags = a.tags.filter(tag => b.tags.includes(tag));
 
         const arrayA = a.studios.map(info => info.name)
@@ -83,6 +83,7 @@ export class AnimeGraph {
         const interStudios = arrayA.filter(studio => arrayB.includes(studio));
 
         const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
+
         return interTags.length*2 + interStudios.length*5 + sameMediaType*7;
     }
 

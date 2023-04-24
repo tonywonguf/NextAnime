@@ -64,10 +64,11 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     )
 }
 
-function CheckButton({name}) {
+function CheckButton(name, func: Function) {
 
     return (
-        <button className={"btn-param"}>
+        <button className={"btn-param"}
+                onClick={func.bind(this)}>
             {name}
         </button>
     );
@@ -132,11 +133,11 @@ export default function SideBar({animeGraph}) {
 
                 {/* Check boxes */}
                 <div className={"flex bg-violet-300 rounded text-sm px-2 p-1 pointer-events-auto"}>
-                    <CheckButton name="Genre"/>
-                    <CheckButton name="Studio"/>
-                    <CheckButton name="Year"/>
-                    <CheckButton name="Episodes"/>
-                    <CheckButton name="MediaType"/>
+                    {CheckButton("Genre", ()=> console.log(this))}
+                    {CheckButton("Studio", ()=> console.log(this))}
+                    {CheckButton("Year", ()=> console.log(this))}
+                    {CheckButton("Episodes", ()=> console.log(this))}
+                    {CheckButton("MediaType", ()=> console.log(this))}
                     {/*<paramButton name="Genre" func={toggleCheck(this.name) }/>*/}
                 </div>
 
