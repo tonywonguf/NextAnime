@@ -8,7 +8,7 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
 
     // reads all the current nodes and creates the search results, depending on searchString
     function getSearchAnime(): Node[] {
-        return nodes.filter(node => {
+        return nodes.get().filter(node => {
             const found = Object.values(node.titles)
             .some((t : String) => t?.toLowerCase().includes(searchString.toLowerCase()));
 
@@ -26,8 +26,9 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
                                 ${node === selectedAnime ? 'bg-green-300 font-bold' : ''}`}
                      onMouseDown={() => {
                          setSelectedAnime(node);
-                         animeGraph.nodes.clear();
-                         animeGraph.nodes.add(node);
+                         // animeGraph.nodes.clear();
+                         if (!animeGraph.nodes.get(node.id))
+                            animeGraph.nodes.add(node);
                      }}>
                     {node.label}
                 </div>
