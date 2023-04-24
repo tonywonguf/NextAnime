@@ -116,11 +116,9 @@ export default function SideBar({animeGraph}) {
         {/* Check boxes */}
         <div className={"flex bg-violet-300 rounded text-sm px-2 p-1 pointer-events-auto"}>
             <CheckBox name="Genre"/>
-            <CheckBox name="Staff"/>
             <CheckBox name="Studio"/>
             <CheckBox name="Year"/>
             <CheckBox name="Episodes"/>
-            <CheckBox name="Popularity"/>
         </div>
 
         {/* Container boxes */}
