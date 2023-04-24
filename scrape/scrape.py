@@ -3,7 +3,7 @@ import time
 import json
 
 # Here we define our query as a multi-line string
-query ='''
+query = '''
 query ($page: Int) {
     Page(page: $page){ # Insert our variables into the query arguments (page) (type: ANIME is hard-coded in the query)
         pageInfo{
@@ -17,7 +17,6 @@ query ($page: Int) {
                 native
             }
             genres
-            popularity
             type
             episodes
             seasonYear
@@ -25,14 +24,6 @@ query ($page: Int) {
             coverImage{
                 medium
                 large
-            }
-            trending
-            staff{
-                nodes{
-                    name{
-                        full
-                    }
-                }
             }
             studios{
                 nodes{
@@ -57,20 +48,19 @@ response = requests.post(url, json={'query': query, 'variables': variables})
 parseResponse = (response.json())
 
 x = 1
-while (parseResponse['data']['Page']['pageInfo']['hasNextPage']):
-    if x == 20:
-        break
+while parseResponse['data']['Page']['pageInfo']['hasNextPage']:
+
     variables = {
         'page': x
     }
     response = requests.post(url, json={'query': query, 'variables': variables})
     parseResponse = (response.json())
 
-    if(not(parseResponse['data'] == None)):
+    if not(parseResponse['data'] is None):
         desiredMedia = parseResponse['data']['Page']['media']
 
-        for k in range(len(desiredMedia)) :
-            if(not(desiredMedia == None)):
+        for k in range(len(desiredMedia)):
+            if not(desiredMedia is None):
                 lis = []
                 for keys in desiredMedia[k].keys():
                     lis.append(desiredMedia[k][keys])
@@ -78,8 +68,6 @@ while (parseResponse['data']['Page']['pageInfo']['hasNextPage']):
     print("Completed", len(data))
     time.sleep(60/90)
     x += 1
-
-print("Successful!\nType any key to exit: ")
-exit = input()
+print(data)
 with open("animedata.json", "w+") as f:
-   json.dump(data, f)
+    json.dump(data, f)

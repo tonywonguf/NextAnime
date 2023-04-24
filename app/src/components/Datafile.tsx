@@ -5,16 +5,13 @@ export class Node {
     label?
     titles?
     tags?
-    popScore?
     mediaType?
     episodes?
-    year?
+    seasonYear?
     chapters?
     image?
     imageMedium?
     imageLarge?
-    trendScore?
-    staff?
     studios?
     isAdult?
 
@@ -23,16 +20,13 @@ export class Node {
         this.label = info.label;
         this.titles = info.titles;
         this.tags = info.tags;
-        this.popScore = info.popScore;
         this.mediaType = info.mediaType;
         this.episodes = info.episodes;
-        this.year = info.year;
+        this.seasonYear = info.seasonYear;
         this.chapters = info.chapters;
         this.image = info.image;
         this.imageMedium = info.imageMedium;
         this.imageLarge = info.imageLarge;
-        this.trendScore = info.trendScore;
-        this.staff = info.staff;
         this.studios = info.studios;
         this.isAdult = info.isAdult;
     }
@@ -48,18 +42,15 @@ for(let i = 0; i < animeData.length; i++){
         label: animeData[i][1]["english"]??animeData[i][1]["romaji"],
         titles: animeData[i][1],
         tags: animeData[i][2],
-        popScore: animeData[i][3],
-        mediaType: animeData[i][4],
-        episodes: animeData[i][5],
-        year: animeData[i][6],
-        chapters: animeData[i][7],
-        image: animeData[i][8]["large"],
-        imageMedium: animeData[i][8]["medium"],
-        imageLarge: animeData[i][8]["large"],
-        trendScore: animeData[i][9],
-        staff: animeData[i][10]["nodes"],
-        studios: animeData[i][11]["nodes"],
-        isAdult: animeData[i][12]
+        mediaType: animeData[i][3],
+        episodes: animeData[i][4],
+        seasonYear: animeData[i][5],
+        chapters: animeData[i][6],
+        image: animeData[i][7]["medium"],
+        imageMedium: animeData[i][7]["medium"],
+        imageLarge: animeData[i][7]["large"],
+        studios: animeData[i][8]["nodes"],
+        isAdult: animeData[i][9]
     }));
     // turns the picture into a cat if it's BAD BAD!
     if(nodes.at(-1).isAdult){
