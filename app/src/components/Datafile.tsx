@@ -39,7 +39,7 @@ for(let i = 0; i < animeData.length; i++){
     nodes.push(
     new Node({
         id: animeData[i][0],
-        label: animeData[i][1]["english"]??animeData[i][1]["romaji"],
+        label: (animeData[i][1]["english"]??animeData[i][1]["romaji"]).trim(),
         titles: animeData[i][1],
         tags: animeData[i][2],
         mediaType: animeData[i][3],

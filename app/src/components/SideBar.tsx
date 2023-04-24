@@ -8,9 +8,6 @@ function SearchBar({selectedAnime, setSelectedAnime}) {
 
     // reads all the current nodes and creates the search results, depending on searchString
     function getSearchAnime(): Node[] {
-        if (searchString.trim() === '') {
-            return [];
-        }
         return nodes.filter(node => {
             const found = Object.values(node.titles)
             .some((t : String) => t?.toLowerCase().includes(searchString.toLowerCase()));
