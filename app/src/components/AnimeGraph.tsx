@@ -109,7 +109,7 @@ export class AnimeGraph {
             //                         color: randColor(),
             //                         id: uuidv4()}))
         }
-        weights.sort((a, b) => a.weight - b.weight)
+        weights.sort((a, b) => b.weight - a.weight)
         let sortedWeights = weights.splice(0, Math.max(50, ids.length));
         sortedWeights = sortedWeights.map((e, i) => {
                 if (i == 0) {
