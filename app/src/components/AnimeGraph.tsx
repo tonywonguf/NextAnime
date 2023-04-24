@@ -91,9 +91,17 @@ export class AnimeGraph {
         const arrayB = b.studios.map(info => info.name)
         const interStudios = arrayA.filter(studio => arrayB.includes(studio));
 
+        const similarYear = Math.abs(a.seasonYear-b.seasonYear) < 3 ? 7: Math.abs(a.seasonYear - b.seasonYear) < 7 ? 3 : 1;
+
+        const similarEpisodes = Math.abs(a.episodes-b.episodes) < 3 ? 7: Math.abs(a.episodes - b.episodes) < 7 ? 3 : 1;
+
         const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
 
-        return interTags.length*2 + interStudios.length*5 + sameMediaType*7;
+        return (this.selectedParameters["Genre"] && (interTags.length+1)*(interTags.length+2)/2)
+            + (this.selectedParameters["Studio"] && (interStudios.length)*(interStudios.length+1)/2)
+            + (this.selectedParameters["Year"] && similarYear)
+            + (this.selectedParameters["Episodes"] && similarEpisodes)
+            + (this.selectedParameters["MediaType"] && sameMediaType);
     }
 
     suggestedAnimeList() {
@@ -129,6 +137,7 @@ export class AnimeGraph {
             this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
         /*console.log(this.nodes.get())
         console.log(this.edges.get())*/
+        console.log(weights);
     }
 
     display() {
