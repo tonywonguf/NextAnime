@@ -93,7 +93,7 @@ function AnimeBox({title, selectedAnime}) {
                         <hr/>
                         Chapters:  {selectedAnime["chapters"]??"None"} <br/>
                         <hr/>
-                        Year:  {selectedAnime["year"]} <br/>
+                        Year:  {selectedAnime["seasonYear"]} <br/>
                         <hr/>
                         Studio: {selectedAnime["studios"].map(info => info["name"]).join(", ")} <br/>
                     </p>}
