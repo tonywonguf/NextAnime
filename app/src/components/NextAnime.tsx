@@ -6,24 +6,6 @@ import {DataSet} from "vis-data"
 import {nodes} from "./Datafile"
 import {v4 as uuidv4} from 'uuid'
 
-const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
-
-const graphSize = 20;
-const initialNodes = nodes.slice(0,graphSize);
-let initialEdges: DataSet<any> = new DataSet<any>();
-for (let i = 0; i < 2*graphSize; i++) {
-    let randomIndexInNode1 = i%graphSize;
-    let randomIndexInNode2 = Math.floor(Math.random()*graphSize);
-    while (randomIndexInNode2 == randomIndexInNode1)
-        randomIndexInNode2 = Math.floor(Math.random()*graphSize);
-    initialEdges.add({
-        "from": nodes[randomIndexInNode1].id,
-        "to": nodes[randomIndexInNode2].id,
-        "color": randColor(),
-        "id": uuidv4()
-    })
-}
-
 const options = {
     layout: {
         hierarchical: false
@@ -60,19 +42,16 @@ const options = {
 
 export default function NextAnime() {
     let containerRef = useRef<HTMLDivElement>(null);
-    // let nodesDataSet = new DataSet(nodes)
-    let nodesDataSet = new DataSet(initialNodes)
-    // let edgesDataSet = new DataSet(initialEdges)
     let animeGraph = new AnimeGraph(
         {
             containerRef: containerRef,
-            nodes: nodesDataSet,
-            edges: initialEdges,
+            nodes: new DataSet(),
+            edges: new DataSet(),
             options: options
         });
 
     useLayoutEffect(() => {
-        animeGraph.network = new Network(containerRef.current, {nodes: nodesDataSet, edges: initialEdges}, options)
+        animeGraph.network = new Network(containerRef.current, {nodes: animeGraph.nodes, edges: animeGraph.edges}, options)
     }, []);
 
     return (

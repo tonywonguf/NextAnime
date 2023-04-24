@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import {Node} from "vis-network"
 import {nodes} from "./Datafile";
 
-function SearchBar({selectedAnime, setSelectedAnime}) {
+function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     let [searchString, setSearchString] = useState("")
     let [isFocused, setIsFocused] = useState(false);
 
@@ -24,7 +24,11 @@ function SearchBar({selectedAnime, setSelectedAnime}) {
                 <div key={node.id}
                      className={`hover:bg-purple-500 order-last p-0.5 pointer-events-auto
                                 ${node === selectedAnime ? 'bg-green-300 font-bold' : ''}`}
-                     onMouseDown={setSelectedAnime.bind(this, node)}>
+                     onMouseDown={() => {
+                         setSelectedAnime(node);
+                         animeGraph.nodes.clear();
+                         animeGraph.nodes.add(node);
+                     }}>
                     {node.label}
                 </div>
             ))
@@ -111,7 +115,7 @@ export default function SideBar({animeGraph}) {
         <div className={""}>
         <p className="text-3xl mb-2 text-white font-roboto"> NextAnime </p>
 
-        <SearchBar selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
+        <SearchBar animeGraph={animeGraph} selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
 
         {/* Check boxes */}
         <div className={"flex bg-violet-300 rounded text-sm px-2 p-1 pointer-events-auto"}>
