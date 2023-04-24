@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Node} from "vis-network"
 import {nodes} from "./Datafile";
 
@@ -64,15 +64,13 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     )
 }
 
-function CheckButton(name, func: Function) {
-    let [clicked, setClicked] = useState(false);
+function CheckButton({name, sP, sSP}) {
+    let newSelectedParameters = {...sP}
+    newSelectedParameters[name] = !newSelectedParameters[name];
 
-    const handleClick = () => {
-        setClicked(!clicked);
-    }
     return (
-        <button className={`Button ${clicked? "btn-param-c" : "btn-param-u"}`}
-                onClick={func.bind(this) && handleClick}>
+        <button className={`btn-param ${sP[name] ? "bg-violet-400" : "bg-violet-300"}`}
+                onClick={sSP.bind(this, newSelectedParameters)}>
             {name}
         </button>
     );
@@ -117,7 +115,16 @@ export default function SideBar({animeGraph}) {
 
     let [selectedAnime, setSelectedAnime] = useState(null);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
-    let [selectedParameters, setSelectedParameters] = useState([false, false, false, false, false]);
+    let [selectedParameters, setSelectedParameters] = useState({
+        Genre: false,
+        Studio: false,
+        Year: false,
+        Episodes: false,
+        MediaType: false});
+
+    useEffect(() => {
+        animeGraph.selectedParameters = selectedParameters;
+    }, [selectedParameters]);
 
 
     if (animeGraph.network)
@@ -138,11 +145,11 @@ export default function SideBar({animeGraph}) {
 
                 {/* Check boxes */}
                 <div className={"flex bg-violet-300 rounded text-sm px-2 p-1 pointer-events-auto"}>
-                    {CheckButton("Genre", ()=> console.log(this))}
-                    {CheckButton("Studio", ()=> console.log(this))}
-                    {CheckButton("Year", ()=> console.log(this))}
-                    {CheckButton("Episodes", ()=> console.log(this))}
-                    {CheckButton("MediaType", ()=> console.log(this))}
+                    <CheckButton name="Genre" sP={selectedParameters} sSP={setSelectedParameters}/>
+                    <CheckButton name="Studio" sP={selectedParameters} sSP={setSelectedParameters}/>
+                    <CheckButton name="Year" sP={selectedParameters} sSP={setSelectedParameters}/>
+                    <CheckButton name="Episodes" sP={selectedParameters} sSP={setSelectedParameters}/>
+                    <CheckButton name="MediaType" sP={selectedParameters} sSP={setSelectedParameters}/>
                 </div>
 
                 {/* Container boxes */}

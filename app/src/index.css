@@ -6,10 +6,7 @@
     @apply bg-[#23272a] text-[#80848e] rounded-[1vh] text-[2vh] justify-center p-[1vh] m-[1vh] hover:brightness-150 block
 }
 
-.btn-param-u {
-    @apply bg-violet-400 text-[#222222] rounded-[1vh] m-1 text-[2vh] justify-center p-[1vh] m-[1vh] hover:brightness-150 block flex-grow flex-nowrap whitespace-nowrap m-0 mt-1 mb-1 text-sm overflow-hidden
-}
-
-.btn-param-c {
-    @apply bg-violet-300 text-[#222222] rounded-[1vh] m-1 text-[2vh] justify-center p-[1vh] m-[1vh] hover:brightness-150 block flex-grow flex-nowrap whitespace-nowrap m-0 mt-1 mb-1 text-sm overflow-hidden
+.btn-param {
+    @apply text-[#222222] rounded-[1vh] m-1 text-[2vh] justify-center p-[1vh] m-[1vh] hover:bg-violet-200
+           block flex-grow flex-nowrap whitespace-nowrap text-sm overflow-hidden font-mono font-bold text-[1vw]
 }

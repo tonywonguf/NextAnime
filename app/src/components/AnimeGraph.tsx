@@ -30,6 +30,7 @@ export class AnimeGraph {
     edges: DataSet<Edge>
     fitOptions: FitOptions
     options: object
+    selectedParameters: object
 
     constructor(info: AnimeGraphInfo) {
         this.containerRef = info.containerRef;
@@ -42,10 +43,18 @@ export class AnimeGraph {
                 easingFunction: "linear"
             }
         }
+        this.selectedParameters = {
+            Genre: false,
+            Studio: false,
+            Year: false,
+            Episodes: false,
+            MediaType: false
+        };
     }
 
     recolor() {
         this.edges.update(this.edges.map(e => ({...e, color: randColor()})));
+        console.log(this.selectedParameters);
     }
 
     refit() {
