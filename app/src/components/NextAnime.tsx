@@ -33,7 +33,7 @@ const options = {
         solver: 'forceAtlas2Based'
     },
     interaction: {
-        selectable: false,
+        selectable: true,
         selectConnectedEdges: false
     },
     height: '100%'

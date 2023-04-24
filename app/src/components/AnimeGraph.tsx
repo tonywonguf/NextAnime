@@ -77,10 +77,13 @@ export class AnimeGraph {
 
     getWeight(a: Node, b: Node) {
         const interTags = a.tags.filter(tag => b.tags.includes(tag));
+
         const arrayA = a.studios.map(info => info.name)
         const arrayB = b.studios.map(info => info.name)
         const interStudios = arrayA.filter(studio => arrayB.includes(studio));
-        return interTags.length*2 + interStudios.length*5;
+
+        const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
+        return interTags.length*2 + interStudios.length*5 + sameMediaType*7;
     }
 
     suggestedAnimeList() {

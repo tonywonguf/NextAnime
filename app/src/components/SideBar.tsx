@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useLayoutEffect, useState} from "react"
 import {Node} from "vis-network"
 import {nodes} from "./Datafile";
 
@@ -96,7 +96,7 @@ function AnimeBox({title, selectedAnime}) {
                             <hr/>
                             Year: {selectedAnime["seasonYear"]} <br/>
                             <hr/>
-                            Studio: {selectedAnime["studios"].map(info => info["name"]).join(", ")} <br/>
+                            Studio: {selectedAnime["studios"].map(info => info["name"]).join(", ")??""} <br/>
                         </p>}
                 </div>
                 <div className={"bg-violet-300 rounded flex items-center justify-center m-1.5 p-1 h-80 w-1/2"}>
@@ -112,6 +112,12 @@ function AnimeBox({title, selectedAnime}) {
 export default function SideBar({animeGraph}) {
     let [selectedAnime, setSelectedAnime] = useState(null);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
+    if (animeGraph.network)
+        animeGraph.network.on("click", (e) => {
+            const id = e.nodes[0]
+            if (id == undefined) return;
+            setSelectedSuggestedAnime(animeGraph.nodes.get(id))
+        });
 
     return (
         <div
@@ -128,11 +134,12 @@ export default function SideBar({animeGraph}) {
                     <CheckBox name="Studio"/>
                     <CheckBox name="Year"/>
                     <CheckBox name="Episodes"/>
+                    <CheckBox name="MediaType"/>
                 </div>
 
                 {/* Container boxes */}
                 <AnimeBox title="Selected Anime" selectedAnime={selectedAnime}/>
-                <AnimeBox title="Suggested Anime" selectedAnime={selectedAnime}/>
+                <AnimeBox title="Suggested Anime" selectedAnime={selectedSuggestedAnime}/>
             </div>
 
         </div>);
