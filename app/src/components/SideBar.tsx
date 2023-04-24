@@ -13,8 +13,6 @@ function SearchBar({selectedAnime, setSelectedAnime}) {
             .some((t : String) => t?.toLowerCase().includes(searchString.toLowerCase()));
 
             return (node.label && found);
-        }).sort((l, r) => {
-            return l.label.localeCompare(r.label);
         }).slice(0,50);
     }
 
