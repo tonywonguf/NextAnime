@@ -113,6 +113,11 @@ function AnimeBox({title, selectedAnime}) {
     )
 }
 
+function collapseSidebar() {
+    const sidebar = document.getElementById("side-bar")
+    sidebar.classList.toggle("invisible");
+}
+
 export default function SideBar({animeGraph}) {
 
     let [selectedAnime, setSelectedAnime] = useState(null);
@@ -138,9 +143,12 @@ export default function SideBar({animeGraph}) {
         });
 
     return ( <>
-        <p className="right-[9vw] top-0 absolute text-[2.8vw] text-white font-roboto"> NextAnime </p>
-        <div className={"absolute top-[8.4vh] right-0 w-4/12 h-[90vh] flex-grow overflow-y-hidden overflow-x-clip p-[0.5vh] pointer-events-none"}>
-            {/* Title */}
+        {/* Title */}
+        <p className="title"
+           onClick={collapseSidebar.bind(this)}> NextAnime </p>
+
+        <div id={"side-bar"}
+            className={"absolute top-[6.2vh] right-0 w-4/12 h-[90vh] flex-grow overflow-y-hidden overflow-x-clip m-[0.5vh] pointer-events-none"}>
 
             <SearchBar animeGraph={animeGraph} selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
 
