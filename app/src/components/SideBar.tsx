@@ -64,14 +64,14 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     )
 }
 
-function CheckBox({name}) {
+function CheckButton({name}) {
 
     return (
-        <span className={"flex-grow flex-nowrap whitespace-nowrap m-0 mt-1 mb-1 text-sm overflow-hidden"}>
-            <input id={name} type="checkbox" className="z-10"></input>
-            <label htmlFor={name} id={name} className="pl-1">{name}</label>
-        </span>
-    )
+        <button className={"btn-param"}>
+            {name}
+        </button>
+    );
+
 }
 
 function AnimeBox({title, selectedAnime}) {
