@@ -15,11 +15,10 @@ function SearchBar({selectedAnime, setSelectedAnime}) {
             return (node.label && found);
         }).sort((l, r) => {
             return l.label.localeCompare(r.label);
-        }).slice(0,20);
+        }).slice(0,50);
     }
 
     const searchedAnime = getSearchAnime();
-
     // creates Divs for putting in search dropdown
     function searchAnimeDivs() {
         return (
