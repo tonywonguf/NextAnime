@@ -72,7 +72,7 @@ export class AnimeGraph {
                 {visButton("Poop!", () => this.chooseRandomNodeAndColorAdjacents())}
             </div>
 
-            <div id='graph' ref={this.containerRef} className={"h-full relative flex-shrink-0 flex-grow w-8/12"}/>
+            <div id='graph' ref={this.containerRef} className={"h-full relative flex-shrink-0 flex-grow w-screen"}/>
 
             </>);
     }
