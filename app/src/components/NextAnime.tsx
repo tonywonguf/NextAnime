@@ -3,9 +3,7 @@ import React, {useLayoutEffect, useRef} from "react";
 import {AnimeGraph} from "./AnimeGraph";
 import {Network} from "vis-network"
 import {DataSet} from "vis-data"
-import {Node, Edge} from './Datafile'
-import {nodes} from "./Datafile"
-import {v4 as uuidv4} from 'uuid'
+import {Edge, Node} from './Datafile'
 
 const options = {
     layout: {
@@ -52,7 +50,10 @@ export default function NextAnime() {
         });
 
     useLayoutEffect(() => {
-        animeGraph.network = new Network(containerRef.current, {nodes: animeGraph.nodes, edges: animeGraph.edges}, options)
+        animeGraph.network = new Network(containerRef.current, {
+            nodes: animeGraph.nodes,
+            edges: animeGraph.edges
+        }, options)
     }, []);
 
     return (
