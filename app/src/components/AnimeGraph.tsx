@@ -76,16 +76,80 @@ export class AnimeGraph {
     }
 
     createMSTusingPrims() {
-        if (this.nodes.length <= 1) return;
+        if (this.nodes.length != 1 || this.edges.length > 0) return;
+        let ids = this.nodes.getIds();
+        let weights: Edge[] = []
 
+
+
+
+
+        /*for (let i = 0; i < ids.length; i++) {
+            for (let j = 0; j < nodes.length; j++) {
+                if (ids[i] == j) continue;
+                weights.push(new Edge({
+                    from: ids[i],
+                    to: j,
+                    weight: this.getWeight(this.nodes.get(ids[i]), nodes.get(j)),
+                    color: randColor(),
+                    id: uuidv4()
+                }));
+            }
+        }
+        */
     }
 
     createMSTusingKruskal() {
         if (this.nodes.length <= 1) return;
+        let ids = this.nodes.getIds();
+        let weights: Edge[] = [];
+        //init weights
+        for (let i = 0; i < ids.length; i++) {
+            for (let j = 0; j < nodes.length; j++) {
+                if (ids[i] == j) continue;
+                weights.push(new Edge({
+                    from: ids[i],
+                    to: j,
+                    weight: this.getWeight(this.nodes.get(ids[i]), nodes.get(j)),
+                    color: randColor(),
+                    id: uuidv4()
+                }));
+            }
+        }
+        weights.sort((a, b) => b.weight - a.weight)
 
     }
+    levenshteinDistance(string1, string2){
+        let distances: number[][] = new Array(string1.length);
+        for (let i = 0; i < string1.length; i++) {
+            distances[i] = new Array(string2.length).fill(0);
+        }
 
+        for(let i = 1; i < string1.length; i++) {
+            distances[i][0] = i;
+        }
+
+        for(let j = 1; j < string2.length; j++) {
+            distances[0][j] = j;
+        }
+
+        for(let j = 1; j < string2.length; j++) {
+            for(let i = 1; i < string1.length; i++) {
+                let substCost;
+                if(string1[i]===string2[j]){
+                    substCost=0;
+                }
+                else{
+                    substCost=1;
+                }
+                distances[i][j] = Math.min(distances[i-1][j]+1, distances[i][j-1]+1, distances[i-1][j-1]+substCost)
+            }
+        }
+        return distances[string1.length-1][string2.length-1];
+    }
     getWeight(a: Node, b: Node) {
+        const similarTitle = this.levenshteinDistance(a.label, b.label);
+
         const interTags = a.tags.filter(tag => b.tags.includes(tag));
 
         const arrayA = a.studios.map(info => info.name)
@@ -100,7 +164,8 @@ export class AnimeGraph {
 
         const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
 
-        return (this.selectedParameters["Genre"] && (interTags.length+1)*(interTags.length+2)/2)
+        return (this.selectedParameters["Title"] && 20/(similarTitle*similarTitle)
+            + (this.selectedParameters["Genre"] && (interTags.length+1)*(interTags.length+2)/2))
             + (this.selectedParameters["Studio"] && (interStudios.length)*(interStudios.length+1)/2)
             + (this.selectedParameters["Year"] && similarYear)
             + (this.selectedParameters["Episodes"] && similarEpisodes)

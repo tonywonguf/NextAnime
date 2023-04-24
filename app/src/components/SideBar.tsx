@@ -118,6 +118,7 @@ export default function SideBar({animeGraph}) {
     let [selectedAnime, setSelectedAnime] = useState(null);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
     let [selectedParameters, setSelectedParameters] = useState({
+        Title: false,
         Genre: false,
         Studio: false,
         Year: false,
@@ -146,6 +147,7 @@ export default function SideBar({animeGraph}) {
 
             {/* Check boxes */}
             <div className={"flex bg-violet-300 h-[5.5vh] rounded-[0.5vh] text-[1vh] p-[0.5vh] pointer-events-auto"}>
+                <CheckButton name="Title" sP={selectedParameters} sSP={setSelectedParameters}/>
                 <CheckButton name="Genre" sP={selectedParameters} sSP={setSelectedParameters}/>
                 <CheckButton name="Studio" sP={selectedParameters} sSP={setSelectedParameters}/>
                 <CheckButton name="Year" sP={selectedParameters} sSP={setSelectedParameters}/>
