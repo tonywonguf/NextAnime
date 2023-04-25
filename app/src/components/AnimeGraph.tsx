@@ -37,6 +37,7 @@ export class AnimeGraph {
                 easingFunction: "linear"
             }
         }
+        this.graphSize = 25;
     }
 
     refit() {
@@ -115,6 +116,7 @@ export class AnimeGraph {
         const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
 
         //Prim's Algorithm
+        const timeStart = performance.now();
         let processedNode: Set<number> = new Set<number>();
         let mstEdges: Edge[] = [];
         processedNode.add(suggNode.id);
@@ -127,6 +129,9 @@ export class AnimeGraph {
             }
 
         }
+        const timeEnd = performance.now();
+        console.log(((timeEnd-timeStart)/1000).toFixed(3));
+
         this.nodes.add(topNodes.slice(1));
         this.edges.add(mstEdges);
     }
@@ -147,6 +152,7 @@ export class AnimeGraph {
         const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
 
         // Kruskal's Algorithm
+        const timeStart = performance.now();
         let addedNode: Set<number> = new Set<number>();
         let mstEdges: Edge[] = [];
         let components: Set<number>[] = [];
@@ -165,7 +171,8 @@ export class AnimeGraph {
             addedNode.add(currEdge.from);
             addedNode.add(currEdge.to);
         }
-        console.log(mstEdges);
+        const timeEnd = performance.now();
+        console.log(((timeEnd-timeStart)/1000).toFixed(3));
 
         this.nodes.add(topNodes.slice(1));
         this.edges.add(mstEdges);
@@ -210,9 +217,9 @@ export class AnimeGraph {
             if (i == 0) {
                 const updatedNode = {...this.nodes.get(e.from), size: 50};
                 this.nodes.update(updatedNode)
-                return {...e, color: 'rgb(255,0,0)'};
+                return {...e, color: 'rgb(127,0,255)'};
             }
-            return new Edge({...e, color: `rgb(${255},${i * (255/this.graphSize)},${i * (255/this.graphSize)})`,
+            return new Edge({...e, color: `rgb(${127+i*(127/this.graphSize)}, ${i*(255/this.graphSize)}, ${255})`,
                             from: sortedWeights[i - 1].to})
         });
 
