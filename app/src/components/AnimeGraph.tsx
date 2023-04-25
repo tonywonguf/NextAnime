@@ -127,8 +127,59 @@ export class AnimeGraph {
     createMSTusingKruskal() {
         if (this.nodes.length <= 1) return;
 
-
+        let ids = this.nodes.getIds();
+        let weights: Edge[] = [];
+        //init weights
+        for (let i = 0; i < ids.length; i++) {
+            for (let j = 0; j < nodes.length; j++) {
+                if (ids[i] == j) continue;
+                weights.push(new Edge({
+                    from: ids[i],
+                    to: j,
+                    weight: this.getWeight(this.nodes.get(ids[i]), nodes.get(j)),
+                    color: randColor(),
+                    id: uuidv4()
+                }));
+            }
+        }
+        weights.sort((a, b) => b.weight - a.weight)
     }
+
+    jaroWinklerDistance(s1: string, s2: string, p: number = 0.3): number {
+        // Calculate Jaro distance
+        const len1 = s1.length;
+        const len2 = s2.length;
+        const windowSize = Math.floor(Math.max(len1, len2) / 2) - 1;
+
+        const matches: boolean[] = new Array(len2).fill(false);
+        let matchesCount = 0;
+
+        for (let i = 0; i < len1; i++) {
+            const start = Math.max(0, i - windowSize);
+            const end = Math.min(len2 - 1, i + windowSize);
+
+            for (let j = start; j <= end; j++) {
+                if (!matches[j] && s1[i] === s2[j]) {
+                    matches[j] = true;
+                    matchesCount++;
+                    break;
+                }
+            }
+        }
+
+        const jaro = matchesCount === 0 ? 0 : (
+            (matchesCount / len1 + matchesCount / len2 + (matchesCount - (windowSize + 1) * (matchesCount / len2 - matchesCount / len1)) / matchesCount) / 3
+        );
+
+        // Calculate Jaro-Winkler distance
+        let prefixLength = 0;
+        while (prefixLength < 4 && prefixLength < len1 && prefixLength < len2 && s1[prefixLength] === s2[prefixLength]) {
+            prefixLength++;
+        }
+
+        return jaro + prefixLength * p * (1 - jaro);
+    }
+
     levenshteinDistance(string1, string2){
         let distances: number[][] = new Array(string1.length);
         for (let i = 0; i < string1.length; i++) {
@@ -160,11 +211,9 @@ export class AnimeGraph {
 
     suggestedAnimeList() {
         if (this.nodes.length != 1 || this.edges.length > 0) return;
-        //let nodes = this.nodes;
+
         let ids = this.nodes.getIds();
         let weights: Edge[] = []
-
-        //this.initializeWeights(nodes, ids, weights);
 
         for (let i = 0; i < ids.length; i++) {
             for (let j = 0; j < nodes.length; j++) {
@@ -187,13 +236,12 @@ export class AnimeGraph {
                     return {...e, color:'rgb(255,255,255)'};
                 }
                 return new Edge({...e,color:`rgb(${255-i*5},${255-i*5},${255-i*5})` , from: sortedWeights[i - 1].to})
-            }
-        );
+            });
+
         this.edges.add(sortedWeights);
-        if (this.nodes.length == 1)
-            this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
-        /*console.log(this.nodes.get())
-        console.log(this.edges.get())*/
+
+        this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
+
         console.log(weights);
     }
 
