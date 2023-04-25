@@ -36,13 +36,6 @@ export class AnimeGraph {
                 easingFunction: "linear"
             }
         }
-        this.selectedParameters = {
-            Title: true,
-            Genre: false,
-            Studio: false,
-            Year: false,
-            Episodes: false
-        };
     }
 
     refit() {
@@ -206,10 +199,11 @@ export class AnimeGraph {
 
         this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
 
-        let printout = sortedWeights.map((e,i) => {
-        return {
-            name: ((nodes.get(e.to)) as Node).label,
-            weight: e.weight}
+        let printout = sortedWeights.map((e, i) => {
+            return {
+                name: ((nodes.get(e.to)) as Node).label,
+                weight: e.weight
+            }
         });
 
         console.log(printout)
