@@ -132,15 +132,15 @@ export function getWeight(a: Node, b: Node, selectedParameters: {}) {
 
     const arrayA = a.studios.map(info => info.name)
     const arrayB = b.studios.map(info => info.name)
-    const interStudios = arrayA?.filter(studio => arrayB.includes(studio)).length/arrayA.length;
+    const interStudios = arrayA.filter(studio => arrayB.includes(studio)).length/arrayA.length;
 
-    const similarYear = (a.seasonYear) ? 1-(Math.abs(a.seasonYear-b.seasonYear)/200) : 0;
+    const similarYear = (a.seasonYear && b.seasonYear) ? 1-(Math.min(Math.abs(a.seasonYear-b.seasonYear),20)/20) : 0;
 
-    const similarEpisodes = (a.episodes) ? 1-(Math.abs(a.episodes-b.episodes)/a.episodes) : 0;
+    const similarEpisodes = (a.episodes && b.episodes) ? 1-(Math.abs(a.episodes-b.episodes)/a.episodes) : 0;
 
-    return (selectedParameters["Title"] && similarTitle)
-        + (selectedParameters["Genre"] && interTags)
-        + (selectedParameters["Studio"] && interStudios)
+    return (selectedParameters["Title"] && 4*similarTitle)
+        + (selectedParameters["Genre"] && 2*interTags)
+        + (selectedParameters["Studio"] && 3*interStudios)
         + (selectedParameters["Year"] && similarYear)
         + (selectedParameters["Episodes"] && similarEpisodes);
 }
