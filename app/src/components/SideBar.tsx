@@ -9,10 +9,8 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     // reads all the current nodes and creates the search results, depending on searchString
     function getSearchAnime(): Node[] {
         return nodes.get().filter(node => {
-            const found = Object.values(node.titles)
-                .some((t: String) => t?.toLowerCase().includes(searchString.toLowerCase()));
-
-            return (node.label && found);
+            return Object.values(node.titles)
+                .some((t: string) => t?.toLowerCase().includes(searchString?.toLowerCase()));
         }).slice(0, 50);
     }
 
@@ -38,7 +36,7 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     }
 
     function keyboardEvents(keyPressed: String) {
-        if (keyPressed == 'Enter') {
+        if (keyPressed == 'Enter' && searchedAnime.length != 0) {
             const node = searchedAnime[0]
             setSelectedAnime(node);
             if (!animeGraph.nodes.get(node.id))
@@ -90,19 +88,19 @@ function AnimeBox({title, selectedAnime}) {
                 <div className={"inner-anime-box"}>
                     {selectedAnime &&
                         <p>
-                            Title: {selectedAnime["label"]} <br/>
+                            Title: {selectedAnime.titles.english} <br/>
                             <hr className={"border-[0.1vh]"}/>
-                            Genres: {selectedAnime["tags"].join(", ") ?? ""} <br/>
+                            Genres: {selectedAnime.tags.join(", ") ?? ""} <br/>
                             <hr className={"border-[0.1vh]"}/>
-                            MediaType: {selectedAnime["mediaType"]} <br/>
+                            MediaType: {selectedAnime.mediaType} <br/>
                             <hr className={"border-[0.1vh]"}/>
-                            Episodes: {selectedAnime["episodes"] ?? "None"} <br/>
+                            Episodes: {selectedAnime.episodes ?? "None"} <br/>
                             <hr className={"border-[0.1vh]"}/>
-                            Chapters: {selectedAnime["chapters"] ?? "None"} <br/>
+                            Chapters: {selectedAnime.chapters ?? "None"} <br/>
                             <hr className={"border-[0.1vh]"}/>
-                            Year: {selectedAnime["seasonYear"]} <br/>
+                            Year: {selectedAnime.seasonYear} <br/>
                             <hr className={"border-[0.1vh]"}/>
-                            Studio: {selectedAnime["studios"].map(info => info["name"]).join(", ")??""} <br/>
+                            Studio: {selectedAnime.studios.map(info => info.name).join(", ")??""} <br/>
                         </p>}
                 </div>
                 <div className={"inner-anime-box justify-center flex"}>
@@ -127,7 +125,7 @@ export default function SideBar({animeGraph}) {
     let [selectedAnime, setSelectedAnime] = useState(null);
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
     let [selectedParameters, setSelectedParameters] = useState({
-        Title: false,
+        Title: true,
         Genre: false,
         Studio: false,
         Year: false,
