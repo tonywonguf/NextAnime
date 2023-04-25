@@ -1,6 +1,6 @@
 import animeData from "../data/animedata.json";
 import {DataSet} from 'vis-data'
-import {removeDiacritics} from "./ToolBox";
+import {removeDiacritics, catImages} from "./ToolBox";
 
 export class Node {
     id?
@@ -69,10 +69,12 @@ for (let i = 0; i < animeData.length; i++) {
 
     // turns the picture into a cat if it's BAD BAD!
     if (nodes.get(i).isAdult) {
-        nodes.get(i).image = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
-        nodes.get(i).imageMedium = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
-        nodes.get(i).imageLarge = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
+        const defaultImage = catImages[Math.floor(catImages.length*Math.random())];
+        nodes.get(i).image = defaultImage;
+        nodes.get(i).imageMedium = defaultImage;
+        nodes.get(i).imageLarge = defaultImage;
     }
+
     nodes.get(i).titles.english = removeDiacritics(nodes.get(i).titles.english);
     nodes.get(i).titles.romaji = removeDiacritics(nodes.get(i).titles.romaji);
 }
