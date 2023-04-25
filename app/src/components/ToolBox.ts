@@ -126,19 +126,19 @@ export function longestCommonSubstringLength(s1: string, s2: string): number {
 }
 
 export function getWeight(a: Node, b: Node, selectedParameters: {}) {
-    const similarTitle = longestCommonSubstringLength(a.label,b.label)/a.label.length
+    const similarTitle = longestCommonSubstringLength(a.label,b.label)/a.label.length;
 
     const interTags = a.tags.filter(tag => b.tags.includes(tag)).length/a.tags.length;
 
     const arrayA = a.studios.map(info => info.name)
     const arrayB = b.studios.map(info => info.name)
-    const interStudios = arrayA.filter(studio => arrayB.includes(studio)).length/arrayA.length;
+    const interStudios = arrayA?.filter(studio => arrayB.includes(studio)).length/arrayA.length;
 
-    const similarYear = (a.seasonYear) ? 1-(Math.abs(a.seasonYear-b.seasonYear)/200) : 0;
+    const similarYear = (a.seasonYear && b.seasonYear) ? 1-(Math.abs(a.seasonYear-b.seasonYear)/200) : 0;
 
-    const similarEpisodes = (a.episodes) ? 1-(Math.abs(a.episodes-b.episodes)/a.episodes) : 0;
+    const similarEpisodes = (a.episodes && b.episodes) ? 1-(Math.abs(a.episodes-b.episodes)/a.episodes) : 0;
 
-    const similarChapters = (a.chapters) ? 1-(Math.abs(a.chapters-b.chapters)/a.chapters) : 0;
+    const similarChapters = (a.chapters && b.chapters) ? 1-(Math.abs(a.chapters-b.chapters)/a.chapters) : 0;
 
     const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
 
