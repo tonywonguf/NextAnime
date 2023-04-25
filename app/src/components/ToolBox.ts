@@ -134,9 +134,9 @@ export function getWeight(a: Node, b: Node, selectedParameters: {}) {
     const arrayB = b.studios.map(info => info.name)
     const interStudios = arrayA?.filter(studio => arrayB.includes(studio)).length/arrayA.length;
 
-    const similarYear = (a.seasonYear && b.seasonYear) ? 1-(Math.abs(a.seasonYear-b.seasonYear)/200) : 0;
+    const similarYear = (a.seasonYear) ? 1-(Math.abs(a.seasonYear-b.seasonYear)/200) : 0;
 
-    const similarEpisodes = (a.episodes && b.episodes) ? 1-(Math.abs(a.episodes-b.episodes)/a.episodes) : 0;
+    const similarEpisodes = (a.episodes) ? 1-(Math.abs(a.episodes-b.episodes)/a.episodes) : 0;
 
     return (selectedParameters["Title"] && similarTitle)
         + (selectedParameters["Genre"] && interTags)
