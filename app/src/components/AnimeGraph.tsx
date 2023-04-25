@@ -86,14 +86,91 @@ export class AnimeGraph {
     }
 
     createMSTusingPrims() {
-        if (this.nodes.length != 1 || this.edges.length > 0) return;
-        let ids = this.nodes.getIds();
-        let weights: Edge[] = []
-
     }
 
     createMSTusingKruskal() {
+        if (this.nodes.length != 1) {
+            if (this.nodes.length > 1)
+                alert("Select only 1 anime!");
+            else
+                alert("You must select an anime before running Kruskal's!")
+            return;
+        }
+        this.edges.clear();
 
+        const suggID = this.nodes.getIds()[0],
+            suggNode: Node = nodes.get(suggID);
+
+        let edges: Edge[] = [];
+        for (let j = 0; j < nodes.length; ++j) {
+            if (j != suggID)
+                edges.push(new Edge({
+                    from: suggID,
+                    to: j,
+                    weight: getWeight(suggNode, nodes.get(j), this.selectedParameters),
+                    color: randColor(),
+                    id: uuidv4()
+                }));
+        }
+        edges = edges.sort((a, b) => b.weight - a.weight).splice(0, 49);
+        console.log(edges);
+
+        // Get the top 50 nodes
+        // @ts-ignore
+        const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
+        console.log(topNodes);
+
+        let topEdges: Edge[] = [];
+        topNodes.forEach(n1 =>
+            topNodes.forEach(n2 => {
+                    if (n1 != n2) {
+                        const n1_id = n1.id,
+                            n2_id = n2.id;
+                        topEdges.push(new Edge({
+                            from: n1_id,
+                            to: n2_id,
+                            weight: getWeight(n1, n2, this.selectedParameters),
+                            color: randColor(),
+                            id: uuidv4()
+                        }));
+                    }
+                }
+            )
+        );
+        topEdges = topEdges.sort((a, b) => b.weight - a.weight);
+        console.log(topEdges);
+
+        // Kruskal's Algorithm
+        let addedNode: Set<number> = new Set<number>();
+        let mstEdges: Edge[] = [];
+        let components: Set<number>[] = [];
+        while (addedNode.size < topNodes.length) {
+            const currEdge: Edge = topEdges[0];
+            topEdges.shift();
+
+            let c1 = this.kruskalFind(components, currEdge.from),
+                c2 = this.kruskalFind(components, currEdge.to);
+            if (c1 != c2) {
+                c2.forEach(n => c1.add(n));
+                components = components.filter(c => c != c2);
+                mstEdges.push(currEdge);
+            }
+
+            addedNode.add(currEdge.from);
+            addedNode.add(currEdge.to);
+        }
+        console.log(mstEdges);
+
+        this.nodes.add(topNodes.slice(1));
+        this.edges.add(mstEdges);
+    }
+
+    kruskalFind(components: Set<number>[], node: number) {
+        for (const c of components)
+            if (c.has(node))
+                return c;
+        components.push(new Set([node]));
+        return components.at(-1);
     }
 
     suggestedAnimeList() {
@@ -114,16 +191,16 @@ export class AnimeGraph {
         }
 
         let sortedWeights = weights.sort((a, b) => b.weight - a.weight)
-                            .splice(0, 50);
+            .splice(0, 50);
 
         sortedWeights = sortedWeights.map((e, i) => {
-                if (i == 0) {
-                    const updatedNode = {...this.nodes.get(e.from), size: 100};
-                    this.nodes.update(updatedNode)
-                    return {...e, color:'rgb(255,0,0)'};
-                }
-                return new Edge({...e,color:`rgb(${255},${i*5.1},${i*5.1})` , from: sortedWeights[i - 1].to})
-            });
+            if (i == 0) {
+                const updatedNode = {...this.nodes.get(e.from), size: 100};
+                this.nodes.update(updatedNode)
+                return {...e, color: 'rgb(255,0,0)'};
+            }
+            return new Edge({...e, color: `rgb(${255},${i * 5.1},${i * 5.1})`, from: sortedWeights[i - 1].to})
+        });
 
         this.edges.add(sortedWeights);
 
