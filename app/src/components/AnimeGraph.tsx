@@ -95,24 +95,7 @@ export class AnimeGraph {
     }
 
     createMSTusingKruskal() {
-        if (this.nodes.length <= 1) return;
 
-        let ids = this.nodes.getIds();
-        let weights: Edge[] = [];
-        //init weights
-        for (let i = 0; i < ids.length; i++) {
-            for (let j = 0; j < nodes.length; j++) {
-                if (ids[i] == j) continue;
-                weights.push(new Edge({
-                    from: ids[i],
-                    to: j,
-                    weight: getWeight(this.nodes.get(ids[i]), nodes.get(j), this.selectedParameters),
-                    color: randColor(),
-                    id: uuidv4()
-                }));
-            }
-        }
-        weights.sort((a, b) => b.weight - a.weight)
     }
 
     suggestedAnimeList() {
@@ -121,22 +104,19 @@ export class AnimeGraph {
         let ids = this.nodes.getIds();
         let weights: Edge[] = []
 
-        for (let i = 0; i < ids.length; i++) {
-            for (let j = 0; j < nodes.length; j++) {
-                if (ids[i] == j) continue;
-                weights.push(new Edge({
-                    from: ids[i],
-                    to: j,
-                    weight: getWeight(this.nodes.get(ids[i]), nodes.get(j), this.selectedParameters),
-                    color: randColor(),
-                    id: uuidv4()
-                }));
-            }
+        for (let j = 0; j < nodes.length; j++) {
+            if (ids[0] == j) continue;
+            weights.push(new Edge({
+                from: ids[0],
+                to: j,
+                weight: getWeight(this.nodes.get(ids[0]), nodes.get(j), this.selectedParameters),
+                color: randColor(),
+                id: uuidv4()
+            }));
         }
 
-        weights.sort((a, b) => b.weight - a.weight)
-
-        let sortedWeights = weights.splice(0, Math.max(50, ids.length));
+        let sortedWeights = weights.sort((a, b) => b.weight - a.weight)
+                            .splice(0, 50);
 
         sortedWeights = sortedWeights.map((e, i) => {
                 if (i == 0) {
@@ -151,7 +131,7 @@ export class AnimeGraph {
 
         this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
 
-        console.log(weights);
+        console.log(sortedWeights);
     }
 
     clear() {

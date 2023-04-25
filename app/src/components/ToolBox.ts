@@ -1,5 +1,6 @@
 import {Node} from "./Datafile";
 
+// https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
 export function removeDiacritics (str) {
     if (!str) return str;
 
@@ -125,25 +126,26 @@ export function longestCommonSubstringLength(s1: string, s2: string): number {
 }
 
 export function getWeight(a: Node, b: Node, selectedParameters: {}) {
-    const similarTitle = longestCommonSubstringLength(a.label,b.label)
+    const similarTitle = longestCommonSubstringLength(a.label,b.label)/a.label.length
 
-    const interTags = a.tags.filter(tag => b.tags.includes(tag));
+    const interTags = a.tags.filter(tag => b.tags.includes(tag)).length/a.tags.length;
 
     const arrayA = a.studios.map(info => info.name)
     const arrayB = b.studios.map(info => info.name)
-    const interStudios = arrayA.filter(studio => arrayB.includes(studio));
+    const interStudios = arrayA.filter(studio => arrayB.includes(studio)).length/arrayA.length;
 
-    const similarYear = Math.abs(a.seasonYear-b.seasonYear) < 3 ? 7: Math.abs(a.seasonYear - b.seasonYear) < 7 ? 3 : 1;
+    const similarYear = 1-(Math.abs(a.seasonYear-b.seasonYear)/a.seasonYear);
 
-    const similarEpisodes = Math.abs(a.episodes-b.episodes) < 12 ? 7: Math.abs(a.episodes - b.episodes) < 50 ? 3 : 1;
+    const similarEpisodes = 1-(Math.abs(a.episodes-b.episodes)/a.episodes);
 
-    const similarChapters = Math.abs(a.chapters-b.chapters) < 25 ? 7: Math.abs(a.chapters - b.chapters) < 50 ? 3 : 1;
+    const similarChapters = 1-(Math.abs(a.chapters-b.chapters)/a.chapters);
 
     const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
 
+
     return (selectedParameters["Title"] && similarTitle)
-        + (selectedParameters["Genre"] && (interTags.length+1)*(interTags.length+2)/2)
-        + (selectedParameters["Studio"] && (interStudios.length)*(interStudios.length+1)/2)
+        + (selectedParameters["Genre"] && interTags)
+        + (selectedParameters["Studio"] && interStudios)
         + (selectedParameters["Year"] && similarYear)
         + (selectedParameters["Episodes"] && similarEpisodes)
         + (selectedParameters["Chapters"] && similarChapters)
