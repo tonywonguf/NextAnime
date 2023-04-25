@@ -60,37 +60,7 @@ export class AnimeGraph {
         this.edges.update(updatedEdges);
     }
 
-    initializeWeights(nodes, ids, weights) {
-        //if (nodes.length != 1 || this.edges.length > 0) return;
-
-        for (let i = 0; i < ids.length; i++) {
-            for (let j = 0; j < nodes.length; j++) {
-                if (ids[i] == j) continue;
-                weights.push(new Edge({
-                    from: ids[i],
-                    to: j,
-                    weight: getWeight(nodes.get(ids[i]), nodes.get(j), this.selectedParameters),
-                    color: randColor(),
-                    id: uuidv4()
-                }));
-            }
-        }
-        weights.sort((a, b) => b.weight - a.weight)
-    }
-
-    createMSTusingPrims() {
-        if (this.nodes.length != 1) {
-            if (this.nodes.length > 1)
-                alert("Select only 1 anime!");
-            else
-                alert("You must select an anime before running Kruskal's!")
-            return;
-        }
-        this.edges.clear();
-
-        const suggID = this.nodes.getIds()[0],
-            suggNode: Node = nodes.get(suggID);
-
+    initializeWeights(suggID, suggNode) : [Node[], Edge[]] {
         let edges: Edge[] = [];
         for (let j = 0; j < nodes.length; ++j) {
             if (j != suggID)
@@ -106,7 +76,6 @@ export class AnimeGraph {
         // Get the top 50 nodes
         // @ts-ignore
         const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
-        console.log(topNodes);
 
         let topEdges: Edge[] = [];
         topNodes.forEach(n1 =>
@@ -126,7 +95,23 @@ export class AnimeGraph {
             )
         );
         topEdges = topEdges.sort((a, b) => b.weight - a.weight);
-        console.log(topEdges);
+        return [topNodes, topEdges];
+    }
+
+    createMSTusingPrims() {
+        if (this.nodes.length != 1) {
+            if (this.nodes.length > 1)
+                alert("Select only 1 anime!");
+            else
+                alert("You must select an anime before running Prim's!")
+            return;
+        }
+        this.edges.clear();
+
+        const suggID = this.nodes.getIds()[0],
+            suggNode: Node = nodes.get(suggID);
+
+        const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
 
         //Prim's Algorithm
         let processedNode: Set<number> = new Set<number>();
@@ -145,8 +130,6 @@ export class AnimeGraph {
         this.edges.add(mstEdges);
     }
 
-
-
     createMSTusingKruskal() {
         if (this.nodes.length != 1) {
             if (this.nodes.length > 1)
@@ -160,44 +143,7 @@ export class AnimeGraph {
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
-        let edges: Edge[] = [];
-        for (let j = 0; j < nodes.length; ++j) {
-            if (j != suggID)
-                edges.push(new Edge({
-                    from: suggID,
-                    to: j,
-                    weight: getWeight(suggNode, nodes.get(j), this.selectedParameters),
-                    color: randColor(),
-                    id: uuidv4()
-                }));
-        }
-        edges = edges.sort((a, b) => b.weight - a.weight).splice(0, 49);
-        console.log(edges);
-
-        // Get the top 50 nodes
-        // @ts-ignore
-        const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
-        console.log(topNodes);
-
-        let topEdges: Edge[] = [];
-        topNodes.forEach(n1 =>
-            topNodes.forEach(n2 => {
-                    if (n1 != n2) {
-                        const n1_id = n1.id,
-                            n2_id = n2.id;
-                        topEdges.push(new Edge({
-                            from: n1_id,
-                            to: n2_id,
-                            weight: getWeight(n1, n2, this.selectedParameters),
-                            color: randColor(),
-                            id: uuidv4()
-                        }));
-                    }
-                }
-            )
-        );
-        topEdges = topEdges.sort((a, b) => b.weight - a.weight);
-        console.log(topEdges);
+        const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
 
         // Kruskal's Algorithm
         let addedNode: Set<number> = new Set<number>();
@@ -233,7 +179,14 @@ export class AnimeGraph {
     }
 
     suggestedAnimeList() {
-        if (this.nodes.length != 1 || this.edges.length > 0) return;
+        if (this.nodes.length != 1) {
+            if (this.nodes.length > 1)
+                alert("Select only 1 anime!");
+            else
+                alert("You must select an anime!")
+            return;
+        }
+        this.edges.clear();
 
         let ids = this.nodes.getIds();
         let weights: Edge[] = []
@@ -254,7 +207,7 @@ export class AnimeGraph {
 
         sortedWeights = sortedWeights.map((e, i) => {
             if (i == 0) {
-                const updatedNode = {...this.nodes.get(e.from), size: 100};
+                const updatedNode = {...this.nodes.get(e.from), size: 50};
                 this.nodes.update(updatedNode)
                 return {...e, color: 'rgb(255,0,0)'};
             }
@@ -275,7 +228,6 @@ export class AnimeGraph {
         console.log(printout)
 
     }
-
 
     clear() {
         this.nodes.clear();

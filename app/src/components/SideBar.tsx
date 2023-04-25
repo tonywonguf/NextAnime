@@ -79,12 +79,10 @@ function CheckButton({name, sP, sSP}) {
 
 }
 
-function AnimeBox({title, selectedAnime}) {
+function AnimeBox({selectedAnime}) {
     return (
         <div
             className={"flex flex-col bg-violet-200 rounded-[1vh] mt-[1vh] p-[0.5vh] w-full pointer-events-auto h-[30vh]"}>
-            <label className={"p-[0.5vh] text-[2vh]"}>{title}</label>
-            <hr className={"border-[0.1vh]"}/>
             <div className={"flex flex-grow"}>
                 <div className={"inner-anime-box"}>
                     {selectedAnime &&
@@ -115,6 +113,26 @@ function AnimeBox({title, selectedAnime}) {
 function collapseSidebar() {
     const sidebar = document.getElementById("side-bar")
     sidebar.classList.toggle("invisible");
+}
+
+function SimilarityBox({selectedAnime, selectedSuggestedAnime}) {
+    const a = selectedAnime;
+    const b = selectedSuggestedAnime;
+
+    const interTags = (a && b) ? a.tags.filter(tag => b.tags.includes(tag)) : [];
+
+    const arrayA = a ? a.studios.map(info => info.name) : []
+    const arrayB = b ? b.studios.map(info => info.name) : []
+    const interStudios = arrayA.filter(studio => arrayB.includes(studio));
+
+    return (
+        <div className={"flex bg-violet-300 h-[10vh] rounded-[0.5vh] text-[1.5vh] p-[0.5vh] pointer-events-auto mt-[1vh] font-mono overflow-y-auto"}>
+            <p>
+                {interTags.length > 0 && (<p> Genres: {interTags.join(", ")}</p>)}
+                {interStudios.length > 0 && (<p> Studios: {interStudios.join(", ")}</p>)}
+            </p>
+        </div>
+    )
 }
 
 export default function SideBar({animeGraph}) {
@@ -161,9 +179,10 @@ export default function SideBar({animeGraph}) {
             </div>
 
             {/* Container boxes */}
-            <AnimeBox title="Selected Anime" selectedAnime={selectedAnime}/>
-            <AnimeBox title="Suggested Anime" selectedAnime={selectedSuggestedAnime}/>
+            <AnimeBox selectedAnime={selectedAnime}/>
+            <AnimeBox selectedAnime={selectedSuggestedAnime}/>
 
+            <SimilarityBox selectedAnime={selectedAnime} selectedSuggestedAnime={selectedSuggestedAnime}/>
         </div>
     </>);
 }

@@ -12,7 +12,7 @@
 }
 
 .inner-anime-box {
-    @apply bg-violet-300 rounded-[0.5vh] h-[23.2vh] p-[0.5vh] m-[0.5vh] w-1/2 font-mono overflow-y-auto text-[1.5vh]
+    @apply bg-violet-300 rounded-[0.5vh] h-[28vh] p-[0.5vh] m-[0.5vh] w-1/2 font-mono overflow-y-auto text-[1.5vh]
 }
 
 .title {
