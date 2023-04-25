@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {Node} from "vis-network"
 import {nodes} from "./Datafile";
+import {longestCommonSubstring} from "./ToolBox";
 
 function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     let [searchString, setSearchString] = useState("")
@@ -122,19 +123,34 @@ function collapseSidebar() {
 function SimilarityBox({selectedAnime, selectedSuggestedAnime}) {
     const a = selectedAnime;
     const b = selectedSuggestedAnime;
+    if (!a || !b) return <div className={'similarity-box'}/>;
 
-    const interTags = (a && b) ? a.tags.filter(tag => b.tags.includes(tag)) : [];
+    const similarTitle = longestCommonSubstring(a.label,b.label);
 
-    const arrayA = a ? a.studios.map(info => info.name) : []
-    const arrayB = b ? b.studios.map(info => info.name) : []
+    const interTags = a.tags.filter(tag => b.tags.includes(tag));
+
+    const arrayA = a.studios.map(info => info.name)
+    const arrayB = b.studios.map(info => info.name)
     const interStudios = arrayA.filter(studio => arrayB.includes(studio));
 
     return (
-        <div className={"flex bg-violet-300 h-[10vh] rounded-[0.5vh] text-[1.5vh] p-[0.5vh] pointer-events-auto mt-[1vh] font-mono overflow-y-auto"}>
-            <p>
-                {interTags.length > 0 && (<p> Genres: {interTags.join(", ")}</p>)}
-                {interStudios.length > 0 && (<p> Studios: {interStudios.join(", ")}</p>)}
-            </p>
+        <div className={"similarity-box"}>
+            <div className={"flex"}>
+                <p className={"flex-grow"}>LCS between Titles: {similarTitle.length == 0 ? 'NONE' : "\""+similarTitle+"\""}</p>
+                <p>5%</p>
+            </div>
+            <hr className={"border-[0.1vh]"}/>
+
+            <div className={"flex"}>
+                <p className={"flex-grow"}>Genres: {interTags.join(", ")}</p>
+                <p>5%</p>
+            </div>
+            <hr className={"border-[0.1vh]"}/>
+
+            <div className={"flex"}>
+                <p className={"flex-grow"}>Studio: {interStudios.join(", ")}</p>
+                <p>5%</p>
+            </div>
         </div>
     )
 }
@@ -169,7 +185,7 @@ export default function SideBar({animeGraph}) {
            onClick={collapseSidebar.bind(this)}> NextAnime </p>
 
         <div id={"side-bar"}
-             className={"absolute top-[6.2vh] right-0 w-4/12 h-[90vh] flex-grow overflow-y-hidden overflow-x-clip m-[0.5vh] pointer-events-none"}>
+             className={"absolute top-[6.2vh] right-0 w-4/12 h-[92vh] flex-grow overflow-y-hidden overflow-x-clip m-[0.5vh] pointer-events-none"}>
 
             <SearchBar animeGraph={animeGraph} selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
 

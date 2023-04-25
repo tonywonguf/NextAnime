@@ -202,11 +202,11 @@ export function removeDiacritics (str) {
 
 }
 
-export function longestCommonSubstringLength(s1: string, s2: string): number {
+export function longestCommonSubstring(s1: string, s2: string): string {
     s1 = s1.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
     s2 = s2.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
 
-    let longest = 0;
+    let longest = '';
     const memo: number[][] = [];
 
     for (let i = 0; i <= s1.length; i++) {
@@ -215,13 +215,12 @@ export function longestCommonSubstringLength(s1: string, s2: string): number {
             if (i === 0 || j === 0) {
                 memo[i][j] = 0;
             } else if (s1[i - 1] === s2[j - 1]) {
-                memo[i][j] = memo[i - 1][j - 1] + 1;
-                if (memo[i][j] > longest) {
-                    longest = memo[i][j];
-                }
-            } else {
+                memo[i][j] = memo[i-1][j-1] + 1;
+                const substring = s1.substring(i - memo[i][j], i);
+                if (substring.length > longest.length)
+                    longest = substring;
+            } else
                 memo[i][j] = 0;
-            }
         }
     }
 
@@ -229,7 +228,7 @@ export function longestCommonSubstringLength(s1: string, s2: string): number {
 }
 
 export function getWeight(a: Node, b: Node, selectedParameters: {}) {
-    const similarTitle = longestCommonSubstringLength(a.label,b.label)/a.label.length;
+    const similarTitle = longestCommonSubstring(a.label,b.label).length/a.label.length;
 
     const interTags = a.tags.filter(tag => b.tags.includes(tag)).length/a.tags.length;
 

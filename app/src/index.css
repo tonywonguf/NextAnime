@@ -19,3 +19,7 @@
     @apply right-0 top-0 w-4/12 p-[0.5vh] text-center m-[0.5vh] absolute text-[2.8vh] text-black font-mono
            hover:bg-violet-200 bg-violet-400 rounded-[0.5vh] pointer-events-auto select-none
 }
+
+.similarity-box {
+    @apply flex bg-violet-300 flex-col h-[17.5vh] rounded-[0.5vh] text-[1.5vh] p-[0.5vh] pointer-events-auto mt-[1vh] font-mono overflow-y-auto
+}

@@ -9,7 +9,7 @@ export default function VisButton({name, func}) {
 }
 
 export function GraphSizeButton({animeGraph}) {
-    let [graphSize, setGraphSize] = useState(25);
+    let [graphSize, setGraphSize] = useState(animeGraph.graphSize);
     useEffect(() => {
         animeGraph.graphSize = graphSize;
     }, [graphSize])
@@ -18,9 +18,9 @@ export function GraphSizeButton({animeGraph}) {
     const handleClick = (e) => {
         e.preventDefault();
         if (e.type === 'click')
-            setGraphSize(graphSize == 800 ? 25 : 2*graphSize)
+            setGraphSize(graphSize == 400 ? 25 : 2*graphSize)
         else if (e.type === 'contextmenu')
-            setGraphSize(graphSize == 25 ? 800 : graphSize/2)
+            setGraphSize(graphSize == 25 ? 400 : graphSize/2)
     };
 
     return (<button
