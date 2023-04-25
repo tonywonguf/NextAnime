@@ -86,7 +86,73 @@ export class AnimeGraph {
     }
 
     createMSTusingPrims() {
+        if (this.nodes.length != 1) {
+            if (this.nodes.length > 1)
+                alert("Select only 1 anime!");
+            else
+                alert("You must select an anime before running Kruskal's!")
+            return;
+        }
+        this.edges.clear();
+
+        const suggID = this.nodes.getIds()[0],
+            suggNode: Node = nodes.get(suggID);
+
+        let edges: Edge[] = [];
+        for (let j = 0; j < nodes.length; ++j) {
+            if (j != suggID)
+                edges.push(new Edge({
+                    from: suggID,
+                    to: j,
+                    weight: getWeight(suggNode, nodes.get(j), this.selectedParameters),
+                    color: randColor(),
+                    id: uuidv4()
+                }));
+        }
+        edges = edges.sort((a, b) => b.weight - a.weight).splice(0, 49);
+        // Get the top 50 nodes
+        // @ts-ignore
+        const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
+        console.log(topNodes);
+
+        let topEdges: Edge[] = [];
+        topNodes.forEach(n1 =>
+            topNodes.forEach(n2 => {
+                    if (n1 != n2) {
+                        const n1_id = n1.id,
+                            n2_id = n2.id;
+                        topEdges.push(new Edge({
+                            from: n1_id,
+                            to: n2_id,
+                            weight: getWeight(n1, n2, this.selectedParameters),
+                            color: randColor(),
+                            id: uuidv4()
+                        }));
+                    }
+                }
+            )
+        );
+        topEdges = topEdges.sort((a, b) => b.weight - a.weight);
+        console.log(topEdges);
+
+        //Prim's Algorithm
+        let processedNode: Set<number> = new Set<number>();
+        let mstEdges: Edge[] = [];
+        processedNode.add(suggNode.id);
+        while (processedNode.size < topNodes.length) {
+            const e: Edge = topEdges[0];
+            topEdges.shift();
+            if(processedNode.has(e.from) && !processedNode.has(e.to)){
+                mstEdges.push(e);
+                processedNode.add(e.to);
+            }
+
+        }
+        this.nodes.add(topNodes.slice(1));
+        this.edges.add(mstEdges);
     }
+
+
 
     createMSTusingKruskal() {
         if (this.nodes.length != 1) {
