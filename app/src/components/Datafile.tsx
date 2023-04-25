@@ -50,6 +50,8 @@ export const nodes: DataSet<Node> = new DataSet<Node>();
 
 // @ts-ignore
 for (let i = 0; i < animeData.length; i++) {
+    if (animeData[i][3] != 'ANIME') continue;
+
     nodes.add(
         new Node({
             id: i,

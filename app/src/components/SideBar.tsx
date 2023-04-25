@@ -87,7 +87,7 @@ function AnimeBox({title, selectedAnime}) {
                 <div className={"inner-anime-box"}>
                     {selectedAnime &&
                         <p>
-                            Title: {selectedAnime.titles.english} <br/>
+                            Title: {selectedAnime.label} <br/>
                             <hr className={"border-[0.1vh]"}/>
                             Genres: {selectedAnime.tags.join(", ") ?? ""} <br/>
                             <hr className={"border-[0.1vh]"}/>
