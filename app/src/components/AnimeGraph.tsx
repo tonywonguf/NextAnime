@@ -4,6 +4,7 @@ import {Edge, Node, nodes} from './Datafile'
 import {v4 as uuidv4} from 'uuid';
 import React from 'react';
 import {getWeight} from "./ToolBox";
+import VisButton from "./VisButton";
 
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
 
@@ -13,15 +14,6 @@ export type AnimeGraphInfo = {
     edges: DataSet<Edge>
     fitOptions?: FitOptions
     options: object
-}
-
-function visButton(name, func: Function) {
-    return (
-        <button className={"btn"}
-                onClick={func.bind(this)}>
-            {name}
-        </button>
-    );
 }
 
 export class AnimeGraph {
@@ -55,13 +47,13 @@ export class AnimeGraph {
         };
     }
 
+    refit() {
+        this.network.fit(this.fitOptions);
+    }
+
     recolor() {
         this.edges.update(this.edges.map(e => ({...e, color: randColor()})));
         console.log(this.selectedParameters);
-    }
-
-    refit() {
-        this.network.fit(this.fitOptions);
     }
 
     chooseRandomNodeAndColorAdjacents() {
@@ -150,9 +142,9 @@ export class AnimeGraph {
                 if (i == 0) {
                     const updatedNode = {...this.nodes.get(e.from), size: 100};
                     this.nodes.update(updatedNode)
-                    return {...e, color:'rgb(255,255,255)'};
+                    return {...e, color:'rgb(255,0,0)'};
                 }
-                return new Edge({...e,color:`rgb(${255-i*5},${255-i*5},${255-i*5})` , from: sortedWeights[i - 1].to})
+                return new Edge({...e,color:`rgb(${255},${i*5.1},${i*5.1})` , from: sortedWeights[i - 1].to})
             });
 
         this.edges.add(sortedWeights);
@@ -162,20 +154,22 @@ export class AnimeGraph {
         console.log(weights);
     }
 
+    clear() {
+        this.nodes.clear();
+        this.edges.clear();
+    }
+
     display() {
         return (<>
             <div className={"absolute z-10 w-0 h-0"}>
                 {/* Visualization Buttons*/}
-                {visButton("Refit!", () => this.refit())}
-                {visButton("Recolor!", () => this.recolor())}
-                {visButton("Poop!", () => this.chooseRandomNodeAndColorAdjacents())}
-                {visButton("primsMST!", () => this.createMSTusingPrims())}
-                {visButton("kruskalMST!", () => this.createMSTusingKruskal())}
-                {visButton("suggestedAnimeList!", () => this.suggestedAnimeList())}
-                {visButton("clear!", () => {
-                    this.nodes.clear();
-                    this.edges.clear()
-                })}
+                <VisButton name="Refit!" func={() => this.refit()}/>
+                <VisButton name="Recolor!" func={() => this.recolor()}/>
+                <VisButton name="Poop!" func={() => this.chooseRandomNodeAndColorAdjacents()}/>
+                <VisButton name="primsMST!" func={() => this.createMSTusingPrims()}/>
+                <VisButton name="kruskalMST!" func={() => this.createMSTusingKruskal()}/>
+                <VisButton name="suggestedAnimeList!" func={() => this.suggestedAnimeList()}/>
+                <VisButton name="clear!" func={() => this.clear()}/>
             </div>
 
             <div id='graph' ref={this.containerRef} className={"h-full relative flex-shrink-0 flex-grow w-8/12"}/>
