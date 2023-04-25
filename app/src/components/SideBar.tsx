@@ -91,11 +91,7 @@ function AnimeBox({title, selectedAnime}) {
                             <hr className={"border-[0.1vh]"}/>
                             Genres: {selectedAnime.tags.join(", ") ?? ""} <br/>
                             <hr className={"border-[0.1vh]"}/>
-                            MediaType: {selectedAnime.mediaType} <br/>
-                            <hr className={"border-[0.1vh]"}/>
                             Episodes: {selectedAnime.episodes ?? "None"} <br/>
-                            <hr className={"border-[0.1vh]"}/>
-                            Chapters: {selectedAnime.chapters ?? "None"} <br/>
                             <hr className={"border-[0.1vh]"}/>
                             Year: {selectedAnime.seasonYear} <br/>
                             <hr className={"border-[0.1vh]"}/>
