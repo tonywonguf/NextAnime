@@ -9,7 +9,7 @@ query ($page: Int) {
         pageInfo{
             hasNextPage
         }
-        media{
+        media(type: ANIME){
             id
             title{
                 english
@@ -17,10 +17,8 @@ query ($page: Int) {
                 native
             }
             genres
-            type
             episodes
             seasonYear
-            chapters
             coverImage{
                 medium
                 large

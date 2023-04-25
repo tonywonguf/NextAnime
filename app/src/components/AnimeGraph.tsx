@@ -41,9 +41,7 @@ export class AnimeGraph {
             Genre: false,
             Studio: false,
             Year: false,
-            Episodes: false,
-            Chapters: false,
-            MediaType: false
+            Episodes: false
         };
     }
 
