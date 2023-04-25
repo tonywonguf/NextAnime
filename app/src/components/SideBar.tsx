@@ -161,8 +161,6 @@ export default function SideBar({animeGraph}) {
                 <CheckButton name="Studio" sP={selectedParameters} sSP={setSelectedParameters}/>
                 <CheckButton name="Year" sP={selectedParameters} sSP={setSelectedParameters}/>
                 <CheckButton name="Episodes" sP={selectedParameters} sSP={setSelectedParameters}/>
-                <CheckButton name="Chapters" sP={selectedParameters} sSP={setSelectedParameters}/>
-                <CheckButton name="MediaType" sP={selectedParameters} sSP={setSelectedParameters}/>
             </div>
 
             {/* Container boxes */}

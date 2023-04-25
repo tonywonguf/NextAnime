@@ -138,16 +138,9 @@ export function getWeight(a: Node, b: Node, selectedParameters: {}) {
 
     const similarEpisodes = 1-(Math.abs(a.episodes-b.episodes)/a.episodes);
 
-    const similarChapters = 1-(Math.abs(a.chapters-b.chapters)/a.chapters);
-
-    const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
-
-
     return (selectedParameters["Title"] && similarTitle)
         + (selectedParameters["Genre"] && interTags)
         + (selectedParameters["Studio"] && interStudios)
         + (selectedParameters["Year"] && similarYear)
-        + (selectedParameters["Episodes"] && similarEpisodes)
-        + (selectedParameters["Chapters"] && similarChapters)
-        + (selectedParameters["MediaType"] && sameMediaType);
+        + (selectedParameters["Episodes"] && similarEpisodes);
 }

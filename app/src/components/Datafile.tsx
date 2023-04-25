@@ -7,10 +7,8 @@ export class Node {
     label?
     titles?
     tags?
-    mediaType?
     episodes?
     seasonYear?
-    chapters?
     image?
     imageMedium?
     imageLarge?
@@ -22,10 +20,8 @@ export class Node {
         this.label = info.label;
         this.titles = info.titles;
         this.tags = info.tags;
-        this.mediaType = info.mediaType;
         this.episodes = info.episodes;
         this.seasonYear = info.seasonYear;
-        this.chapters = info.chapters;
         this.image = info.image;
         this.imageMedium = info.imageMedium;
         this.imageLarge = info.imageLarge;
@@ -60,15 +56,13 @@ for (let i = 0; i < animeData.length; i++) {
             label: (animeData[i][1]["english"] ?? animeData[i][1]["romaji"]).trim(),
             titles: animeData[i][1],
             tags: animeData[i][2],
-            mediaType: animeData[i][3],
-            episodes: animeData[i][4],
-            seasonYear: animeData[i][5],
-            chapters: animeData[i][6],
-            image: animeData[i][7]["large"],
-            imageMedium: animeData[i][7]["medium"],
-            imageLarge: animeData[i][7]["large"],
-            studios: animeData[i][8]["nodes"],
-            isAdult: animeData[i][9]
+            episodes: animeData[i][3],
+            seasonYear: animeData[i][4],
+            image: animeData[i][5]["large"],
+            imageMedium: animeData[i][5]["medium"],
+            imageLarge: animeData[i][5]["large"],
+            studios: animeData[i][6]["nodes"],
+            isAdult: animeData[i][7]
         })
     );
 
