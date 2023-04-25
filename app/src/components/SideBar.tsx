@@ -38,8 +38,12 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     }
 
     function keyboardEvents(keyPressed: String) {
-        if (keyPressed == 'Enter')
-            setSelectedAnime(searchedAnime[0]);
+        if (keyPressed == 'Enter') {
+            const node = searchedAnime[0]
+            setSelectedAnime(node);
+            if (!animeGraph.nodes.get(node.id))
+                animeGraph.nodes.add(node);
+        }
         if (keyPressed == 'Escape')
             document.getElementById("search-bar").blur()
     }
