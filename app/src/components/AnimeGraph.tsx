@@ -64,16 +64,17 @@ export class AnimeGraph {
 
     chooseRandomNodeAndColorAdjacents() {
         const randomNodeId = this.nodes.getIds()[Math.floor(Math.random() * this.nodes.length)];
-        //console.log(this.nodes.get(randomNodeId).label);
+
         // Color the adjacent edges and nodes
         const adjacentEdges = this.network.getConnectedEdges(randomNodeId);
+
         const color = "#ffffff"
         const updatedEdges = adjacentEdges.map((edgeId) => ({...this.edges.get(edgeId), color: color}));
 
         // Update the data sets and the network
         this.edges.update(updatedEdges);
-        // this.network.redraw();
     }
+
     getWeight(a: Node, b: Node) {
         const similarTitle = 5/this.levenshteinDistance(a.label, b.label) + (b.label.indexOf(a.label)!==-1 ? 41 : 0) + (a.label.indexOf(b.label)!==-1 ? 41 : 0);
 
@@ -91,15 +92,15 @@ export class AnimeGraph {
 
         const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
 
-        return (
-            this.selectedParameters["Title"] && similarTitle
-            + (this.selectedParameters["Genre"] && (interTags.length+1)*(interTags.length+2)/2))
+        return (this.selectedParameters["Title"] && similarTitle)
+            + (this.selectedParameters["Genre"] && (interTags.length+1)*(interTags.length+2)/2)
             + (this.selectedParameters["Studio"] && (interStudios.length)*(interStudios.length+1)/2)
             + (this.selectedParameters["Year"] && similarYear)
             + (this.selectedParameters["Episodes"] && similarEpisodes)
             + (this.selectedParameters["Chapters"] && similarChapters)
             + (this.selectedParameters["MediaType"] && sameMediaType);
     }
+
     initializeWeights(nodes, ids, weights) {
         //if (nodes.length != 1 || this.edges.length > 0) return;
 
@@ -117,6 +118,7 @@ export class AnimeGraph {
         }
         weights.sort((a, b) => b.weight - a.weight)
     }
+
     createMSTusingPrims() {
         if (this.nodes.length != 1 || this.edges.length > 0) return;
         let ids = this.nodes.getIds();
@@ -227,8 +229,11 @@ export class AnimeGraph {
                 }));
             }
         }
+
         weights.sort((a, b) => b.weight - a.weight)
+
         let sortedWeights = weights.splice(0, Math.max(50, ids.length));
+
         sortedWeights = sortedWeights.map((e, i) => {
                 if (i == 0) {
                     const updatedNode = {...this.nodes.get(e.from), size: 100};
