@@ -129,8 +129,16 @@ export class AnimeGraph {
 
         this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
 
-        console.log(sortedWeights);
+        let printout = sortedWeights.map((e,i) => {
+        return {
+            name: ((nodes.get(e.to)) as Node).label,
+            weight: e.weight}
+        });
+
+        console.log(printout)
+
     }
+
 
     clear() {
         this.nodes.clear();
