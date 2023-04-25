@@ -25,7 +25,6 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
                                 ${node === selectedAnime ? 'bg-green-300 font-bold' : ''}`}
                      onMouseDown={() => {
                          setSelectedAnime(node);
-                         // animeGraph.nodes.clear();
                          if (!animeGraph.nodes.get(node.id))
                              animeGraph.nodes.add(node);
                      }}>
