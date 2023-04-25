@@ -1,5 +1,6 @@
 import animeData from "../data/animedata.json";
 import {DataSet} from 'vis-data'
+import {removeDiacritics} from "./ToolBox";
 
 export class Node {
     id?
@@ -50,9 +51,9 @@ export class Edge {
 }
 
 export const nodes: DataSet<Node> = new DataSet<Node>();
+
 // @ts-ignore
 for (let i = 0; i < animeData.length; i++) {
-
     nodes.add(
         new Node({
             id: i,
@@ -68,12 +69,17 @@ for (let i = 0; i < animeData.length; i++) {
             imageLarge: animeData[i][7]["large"],
             studios: animeData[i][8]["nodes"],
             isAdult: animeData[i][9]
-        }));
+        })
+    );
+
     // turns the picture into a cat if it's BAD BAD!
     if (nodes.get(i).isAdult) {
-        nodes.get(i)["image"] = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
-        nodes.get(i)["imageLarge"] = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
+        nodes.get(i).image = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
+        nodes.get(i).imageMedium = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
+        nodes.get(i).imageLarge = 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg';
     }
+    nodes.get(i).titles.english = removeDiacritics(nodes.get(i).titles.english);
+    nodes.get(i).titles.romaji = removeDiacritics(nodes.get(i).titles.romaji);
 }
 
 export const edges: DataSet<Edge> = new DataSet<Edge>();
