@@ -58,7 +58,8 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
                    onBlur={setIsFocused.bind(this, false)}
                    onKeyDown={e => keyboardEvents(e.key)}/>
 
-            <div className={"absolute -z-5 bg-white rounded-b absolute w-full mt-[4.15vh] max-h-[30vh] shadow-lg overflow-y-auto pointer-events-auto"}>
+            <div
+                className={"absolute -z-5 bg-white rounded-b absolute w-full mt-[4.15vh] max-h-[30vh] shadow-lg overflow-y-auto pointer-events-auto"}>
                 {isFocused && searchAnimeDivs()}
             </div>
         </div>
@@ -80,7 +81,8 @@ function CheckButton({name, sP, sSP}) {
 
 function AnimeBox({title, selectedAnime}) {
     return (
-        <div className={"flex flex-col bg-violet-200 rounded-[1vh] mt-[1vh] p-[0.5vh] w-full pointer-events-auto h-[30vh]"}>
+        <div
+            className={"flex flex-col bg-violet-200 rounded-[1vh] mt-[1vh] p-[0.5vh] w-full pointer-events-auto h-[30vh]"}>
             <label className={"p-[0.5vh] text-[2vh]"}>{title}</label>
             <hr className={"border-[0.1vh]"}/>
             <div className={"flex flex-grow"}>
@@ -95,7 +97,7 @@ function AnimeBox({title, selectedAnime}) {
                             <hr className={"border-[0.1vh]"}/>
                             Year: {selectedAnime.seasonYear} <br/>
                             <hr className={"border-[0.1vh]"}/>
-                            Studio: {selectedAnime.studios.map(info => info.name).sort().join(", ")??""} <br/>
+                            Studio: {selectedAnime.studios.map(info => info.name).sort().join(", ") ?? ""} <br/>
                         </p>}
                 </div>
                 <div className={"inner-anime-box justify-center flex"}>
@@ -121,12 +123,11 @@ export default function SideBar({animeGraph}) {
     let [selectedSuggestedAnime, setSelectedSuggestedAnime] = useState(null);
     let [selectedParameters, setSelectedParameters] = useState({
         Title: true,
-        Genre: false,
-        Studio: false,
-        Year: false,
-        Episodes: false,
-        Chapters: false,
-        MediaType: false});
+        Genre: true,
+        Studio: true,
+        Year: true,
+        Episodes: true
+    });
 
     useEffect(() => {
         animeGraph.selectedParameters = selectedParameters;
@@ -140,13 +141,13 @@ export default function SideBar({animeGraph}) {
             setSelectedSuggestedAnime(animeGraph.nodes.get(id))
         });
 
-    return ( <>
+    return (<>
         {/* Title */}
         <p className="title"
            onClick={collapseSidebar.bind(this)}> NextAnime </p>
 
         <div id={"side-bar"}
-            className={"absolute top-[6.2vh] right-0 w-4/12 h-[90vh] flex-grow overflow-y-hidden overflow-x-clip m-[0.5vh] pointer-events-none"}>
+             className={"absolute top-[6.2vh] right-0 w-4/12 h-[90vh] flex-grow overflow-y-hidden overflow-x-clip m-[0.5vh] pointer-events-none"}>
 
             <SearchBar animeGraph={animeGraph} selectedAnime={selectedAnime} setSelectedAnime={setSelectedAnime}/>
 
