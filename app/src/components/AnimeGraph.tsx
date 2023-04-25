@@ -3,6 +3,7 @@ import {DataSet} from "vis-data";
 import {Edge, Node, nodes} from './Datafile'
 import {v4 as uuidv4} from 'uuid';
 import React from 'react';
+import {getWeight} from "./ToolBox";
 
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
 
@@ -44,6 +45,7 @@ export class AnimeGraph {
             }
         }
         this.selectedParameters = {
+            Title: true,
             Genre: false,
             Studio: false,
             Year: false,
@@ -75,32 +77,6 @@ export class AnimeGraph {
         this.edges.update(updatedEdges);
     }
 
-    getWeight(a: Node, b: Node) {
-        const similarTitle = 5/this.levenshteinDistance(a.label, b.label) + (b.label.indexOf(a.label)!==-1 ? 41 : 0) + (a.label.indexOf(b.label)!==-1 ? 41 : 0);
-
-        const interTags = a.tags.filter(tag => b.tags.includes(tag));
-
-        const arrayA = a.studios.map(info => info.name)
-        const arrayB = b.studios.map(info => info.name)
-        const interStudios = arrayA.filter(studio => arrayB.includes(studio));
-
-        const similarYear = Math.abs(a.seasonYear-b.seasonYear) < 3 ? 7: Math.abs(a.seasonYear - b.seasonYear) < 7 ? 3 : 1;
-
-        const similarEpisodes = Math.abs(a.episodes-b.episodes) < 12 ? 7: Math.abs(a.episodes - b.episodes) < 50 ? 3 : 1;
-
-        const similarChapters = Math.abs(a.chapters-b.chapters) < 25 ? 7: Math.abs(a.chapters - b.chapters) < 50 ? 3 : 1;
-
-        const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
-
-        return (this.selectedParameters["Title"] && similarTitle)
-            + (this.selectedParameters["Genre"] && (interTags.length+1)*(interTags.length+2)/2)
-            + (this.selectedParameters["Studio"] && (interStudios.length)*(interStudios.length+1)/2)
-            + (this.selectedParameters["Year"] && similarYear)
-            + (this.selectedParameters["Episodes"] && similarEpisodes)
-            + (this.selectedParameters["Chapters"] && similarChapters)
-            + (this.selectedParameters["MediaType"] && sameMediaType);
-    }
-
     initializeWeights(nodes, ids, weights) {
         //if (nodes.length != 1 || this.edges.length > 0) return;
 
@@ -110,7 +86,7 @@ export class AnimeGraph {
                 weights.push(new Edge({
                     from: ids[i],
                     to: j,
-                    weight: this.getWeight(nodes.get(ids[i]), nodes.get(j)),
+                    weight: getWeight(nodes.get(ids[i]), nodes.get(j), this.selectedParameters),
                     color: randColor(),
                     id: uuidv4()
                 }));
@@ -138,77 +114,13 @@ export class AnimeGraph {
                 weights.push(new Edge({
                     from: ids[i],
                     to: j,
-                    weight: this.getWeight(this.nodes.get(ids[i]), nodes.get(j)),
+                    weight: getWeight(this.nodes.get(ids[i]), nodes.get(j), this.selectedParameters),
                     color: randColor(),
                     id: uuidv4()
                 }));
             }
         }
         weights.sort((a, b) => b.weight - a.weight)
-    }
-
-    jaroWinklerDistance(s1: string, s2: string, p: number = 0.3): number {
-        // Calculate Jaro distance
-        const len1 = s1.length;
-        const len2 = s2.length;
-        const windowSize = Math.floor(Math.max(len1, len2) / 2) - 1;
-
-        const matches: boolean[] = new Array(len2).fill(false);
-        let matchesCount = 0;
-
-        for (let i = 0; i < len1; i++) {
-            const start = Math.max(0, i - windowSize);
-            const end = Math.min(len2 - 1, i + windowSize);
-
-            for (let j = start; j <= end; j++) {
-                if (!matches[j] && s1[i] === s2[j]) {
-                    matches[j] = true;
-                    matchesCount++;
-                    break;
-                }
-            }
-        }
-
-        const jaro = matchesCount === 0 ? 0 : (
-            (matchesCount / len1 + matchesCount / len2 + (matchesCount - (windowSize + 1) * (matchesCount / len2 - matchesCount / len1)) / matchesCount) / 3
-        );
-
-        // Calculate Jaro-Winkler distance
-        let prefixLength = 0;
-        while (prefixLength < 4 && prefixLength < len1 && prefixLength < len2 && s1[prefixLength] === s2[prefixLength]) {
-            prefixLength++;
-        }
-
-        return jaro + prefixLength * p * (1 - jaro);
-    }
-
-    levenshteinDistance(string1, string2){
-        let distances: number[][] = new Array(string1.length);
-        for (let i = 0; i < string1.length; i++) {
-            distances[i] = new Array(string2.length).fill(0);
-        }
-
-        for(let i = 1; i < string1.length; i++) {
-            distances[i][0] = i;
-        }
-
-        for(let j = 1; j < string2.length; j++) {
-            distances[0][j] = j;
-        }
-
-        for(let j = 1; j < string2.length; j++) {
-            for(let i = 1; i < string1.length; i++) {
-                let substCost;
-                if(string1[i]===string2[j]){
-                    substCost=0;
-                }
-                else{
-                    substCost=1;
-                }
-                distances[i][j] = Math.min(distances[i-1][j]+1, distances[i][j-1]+1, distances[i-1][j-1]+substCost)
-            }
-        }
-        return distances[string1.length-1][string2.length-1];
     }
 
     suggestedAnimeList() {
@@ -223,7 +135,7 @@ export class AnimeGraph {
                 weights.push(new Edge({
                     from: ids[i],
                     to: j,
-                    weight: this.getWeight(this.nodes.get(ids[i]), nodes.get(j)),
+                    weight: getWeight(this.nodes.get(ids[i]), nodes.get(j), this.selectedParameters),
                     color: randColor(),
                     id: uuidv4()
                 }));
