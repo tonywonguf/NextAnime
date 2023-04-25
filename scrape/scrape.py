@@ -66,6 +66,6 @@ while parseResponse['data']['Page']['pageInfo']['hasNextPage']:
     print("Completed", len(data))
     time.sleep(60/90)
     x += 1
-print(data)
+print(len(data))
 with open("animedata.json", "w+") as f:
     json.dump(data, f)

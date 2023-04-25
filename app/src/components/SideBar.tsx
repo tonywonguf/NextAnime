@@ -95,7 +95,7 @@ function AnimeBox({title, selectedAnime}) {
                             <hr className={"border-[0.1vh]"}/>
                             Year: {selectedAnime.seasonYear} <br/>
                             <hr className={"border-[0.1vh]"}/>
-                            Studio: {selectedAnime.studios.map(info => info.name).join(", ")??""} <br/>
+                            Studio: {selectedAnime.studios.map(info => info.name).sort().join(", ")??""} <br/>
                         </p>}
                 </div>
                 <div className={"inner-anime-box justify-center flex"}>
