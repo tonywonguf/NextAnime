@@ -24,6 +24,8 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
                      className={`hover:bg-purple-500 order-last p-[0.25vh] text-[1.5vh] pointer-events-auto
                                 ${node === selectedAnime ? 'bg-green-300 font-bold' : ''}`}
                      onMouseDown={() => {
+                         animeGraph.nodes.clear()
+                         animeGraph.edges.clear()
                          setSelectedAnime(node);
                          if (!animeGraph.nodes.get(node.id))
                              animeGraph.nodes.add(node);
@@ -36,6 +38,8 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
 
     function keyboardEvents(keyPressed: String) {
         if (keyPressed == 'Enter' && searchedAnime.length != 0) {
+            animeGraph.nodes.clear()
+            animeGraph.edges.clear()
             const node = searchedAnime[0]
             setSelectedAnime(node);
             if (!animeGraph.nodes.get(node.id))

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .btn {
-    @apply bg-[#23272a] text-[#80848e] rounded-[1vh] text-[2vh] justify-center p-[1vh] m-[1vh] hover:brightness-150 block
+    @apply bg-[#23272a] text-[#B0B4Be] rounded-[1vh] text-[2vh] justify-center p-[1vh] m-[1vh] hover:brightness-150 block
 }
 
 .btn-param {

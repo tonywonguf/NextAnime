@@ -4,7 +4,7 @@ import {Edge, Node, nodes} from './Datafile'
 import {v4 as uuidv4} from 'uuid';
 import React from 'react';
 import {getWeight} from "./ToolBox";
-import VisButton from "./VisButton";
+import VisButton, {GraphSizeButton} from "./VisButton";
 
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
 
@@ -24,6 +24,7 @@ export class AnimeGraph {
     fitOptions: FitOptions
     options: object
     selectedParameters: object
+    graphSize: number
 
     constructor(info: AnimeGraphInfo) {
         this.containerRef = info.containerRef;
@@ -72,7 +73,7 @@ export class AnimeGraph {
                     id: uuidv4()
                 }));
         }
-        edges = edges.sort((a, b) => b.weight - a.weight).splice(0, 49);
+        edges = edges.sort((a, b) => b.weight - a.weight).splice(0, this.graphSize-1);
         // Get the top 50 nodes
         // @ts-ignore
         const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
@@ -203,7 +204,7 @@ export class AnimeGraph {
         }
 
         let sortedWeights = weights.sort((a, b) => b.weight - a.weight)
-            .splice(0, 50);
+            .splice(0, this.graphSize);
 
         sortedWeights = sortedWeights.map((e, i) => {
             if (i == 0) {
@@ -211,7 +212,8 @@ export class AnimeGraph {
                 this.nodes.update(updatedNode)
                 return {...e, color: 'rgb(255,0,0)'};
             }
-            return new Edge({...e, color: `rgb(${255},${i * 5.1},${i * 5.1})`, from: sortedWeights[i - 1].to})
+            return new Edge({...e, color: `rgb(${255},${i * (255/this.graphSize)},${i * (255/this.graphSize)})`,
+                            from: sortedWeights[i - 1].to})
         });
 
         this.edges.add(sortedWeights);
@@ -237,6 +239,7 @@ export class AnimeGraph {
     display() {
         return (<>
             <div className={"absolute z-10 w-0 h-0"}>
+                <GraphSizeButton animeGraph={this}/>
                 {/* Visualization Buttons*/}
                 <VisButton name="Refit!" func={() => this.refit()}/>
                 <VisButton name="Recolor!" func={() => this.recolor()}/>
