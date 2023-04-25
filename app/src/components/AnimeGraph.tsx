@@ -74,49 +74,59 @@ export class AnimeGraph {
         this.edges.update(updatedEdges);
         // this.network.redraw();
     }
+    getWeight(a: Node, b: Node) {
+        const similarTitle = 5/this.levenshteinDistance(a.label, b.label) + (b.label.indexOf(a.label)!==-1 ? 41 : 0) + (a.label.indexOf(b.label)!==-1 ? 41 : 0);
 
-    createMSTusingPrims() {
-        if (this.nodes.length != 1 || this.edges.length > 0) return;
-        let ids = this.nodes.getIds();
-        let weights: Edge[] = []
+        const interTags = a.tags.filter(tag => b.tags.includes(tag));
 
+        const arrayA = a.studios.map(info => info.name)
+        const arrayB = b.studios.map(info => info.name)
+        const interStudios = arrayA.filter(studio => arrayB.includes(studio));
 
+        const similarYear = Math.abs(a.seasonYear-b.seasonYear) < 3 ? 7: Math.abs(a.seasonYear - b.seasonYear) < 7 ? 3 : 1;
 
+        const similarEpisodes = Math.abs(a.episodes-b.episodes) < 12 ? 7: Math.abs(a.episodes - b.episodes) < 50 ? 3 : 1;
 
+        const similarChapters = Math.abs(a.chapters-b.chapters) < 25 ? 7: Math.abs(a.chapters - b.chapters) < 50 ? 3 : 1;
 
-        /*for (let i = 0; i < ids.length; i++) {
-            for (let j = 0; j < nodes.length; j++) {
-                if (ids[i] == j) continue;
-                weights.push(new Edge({
-                    from: ids[i],
-                    to: j,
-                    weight: this.getWeight(this.nodes.get(ids[i]), nodes.get(j)),
-                    color: randColor(),
-                    id: uuidv4()
-                }));
-            }
-        }
-        */
+        const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
+
+        return (
+            this.selectedParameters["Title"] && similarTitle
+            + (this.selectedParameters["Genre"] && (interTags.length+1)*(interTags.length+2)/2))
+            + (this.selectedParameters["Studio"] && (interStudios.length)*(interStudios.length+1)/2)
+            + (this.selectedParameters["Year"] && similarYear)
+            + (this.selectedParameters["Episodes"] && similarEpisodes)
+            + (this.selectedParameters["Chapters"] && similarChapters)
+            + (this.selectedParameters["MediaType"] && sameMediaType);
     }
+    initializeWeights(nodes, ids, weights) {
+        //if (nodes.length != 1 || this.edges.length > 0) return;
 
-    createMSTusingKruskal() {
-        if (this.nodes.length <= 1) return;
-        let ids = this.nodes.getIds();
-        let weights: Edge[] = [];
-        //init weights
         for (let i = 0; i < ids.length; i++) {
             for (let j = 0; j < nodes.length; j++) {
                 if (ids[i] == j) continue;
                 weights.push(new Edge({
                     from: ids[i],
                     to: j,
-                    weight: this.getWeight(this.nodes.get(ids[i]), nodes.get(j)),
+                    weight: this.getWeight(nodes.get(ids[i]), nodes.get(j)),
                     color: randColor(),
                     id: uuidv4()
                 }));
             }
         }
         weights.sort((a, b) => b.weight - a.weight)
+    }
+    createMSTusingPrims() {
+        if (this.nodes.length != 1 || this.edges.length > 0) return;
+        let ids = this.nodes.getIds();
+        let weights: Edge[] = []
+
+    }
+
+    createMSTusingKruskal() {
+        if (this.nodes.length <= 1) return;
+
 
     }
     levenshteinDistance(string1, string2){
@@ -147,36 +157,14 @@ export class AnimeGraph {
         }
         return distances[string1.length-1][string2.length-1];
     }
-    getWeight(a: Node, b: Node) {
-        const similarTitle = this.levenshteinDistance(a.label, b.label);
-
-        const interTags = a.tags.filter(tag => b.tags.includes(tag));
-
-        const arrayA = a.studios.map(info => info.name)
-        const arrayB = b.studios.map(info => info.name)
-        const interStudios = arrayA.filter(studio => arrayB.includes(studio));
-
-        const similarYear = Math.abs(a.seasonYear-b.seasonYear) < 3 ? 7: Math.abs(a.seasonYear - b.seasonYear) < 7 ? 3 : 1;
-
-        const similarEpisodes = Math.abs(a.episodes-b.episodes) < 12 ? 7: Math.abs(a.episodes - b.episodes) < 50 ? 3 : 1;
-
-        const similarChapters = Math.abs(a.chapters-b.chapters) < 25 ? 7: Math.abs(a.chapters - b.chapters) < 50 ? 3 : 1;
-
-        const sameMediaType = (a.mediaType == b.mediaType) ? 1 : 0
-
-        return (this.selectedParameters["Title"] && 20/(similarTitle*similarTitle)
-            + (this.selectedParameters["Genre"] && (interTags.length+1)*(interTags.length+2)/2))
-            + (this.selectedParameters["Studio"] && (interStudios.length)*(interStudios.length+1)/2)
-            + (this.selectedParameters["Year"] && similarYear)
-            + (this.selectedParameters["Episodes"] && similarEpisodes)
-            + (this.selectedParameters["Chapters"] && similarChapters)
-            + (this.selectedParameters["MediaType"] && sameMediaType);
-    }
 
     suggestedAnimeList() {
         if (this.nodes.length != 1 || this.edges.length > 0) return;
+        //let nodes = this.nodes;
         let ids = this.nodes.getIds();
         let weights: Edge[] = []
+
+        //this.initializeWeights(nodes, ids, weights);
 
         for (let i = 0; i < ids.length; i++) {
             for (let j = 0; j < nodes.length; j++) {
