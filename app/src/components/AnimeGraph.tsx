@@ -67,7 +67,7 @@ export class AnimeGraph {
             suggNode: Node = nodes.get(suggID);
 
         // Set all edges to gray
-        this.edges.update(this.edges.map(e => ({...e, color: '#d3d3d3'})));
+        this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
         await this.delay();
 
         // BFS (with edge color updates)
@@ -92,7 +92,6 @@ export class AnimeGraph {
                     }
                 });
 
-                let edgeColored = false;
                 for (const n of neighbors) {
                     if (!V.has(n)) {
                         Q.push(n);
@@ -100,23 +99,21 @@ export class AnimeGraph {
 
                         this.edges.forEach(e => {
                             if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
-                                const c = Math.round(255 * Math.pow(7 / 12, depth));
+                                const c = Math.round(255 * Math.pow(8 / 12, depth));
                                 this.edges.update([{
                                     ...e,
-                                    color: this.rgbToHex(c, 0, 0)
+                                    color: this.rgbToHex(255, 255 - c, 255 - c)
                                 }]);
                             }
                         });
-
-                        edgeColored = true; //not necessarily true
                     }
                 }
-                if (edgeColored) await this.delay();
             } else {
                 Q.shift();
                 ++depth;
                 if (Q.length > 0)
                     Q.push(null);
+                await this.delay();
             }
         }
     }
