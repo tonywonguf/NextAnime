@@ -26,13 +26,6 @@ const options = {
         length: 20
     },
     physics: {
-        forceAtlas2Based: {
-            gravitationalConstant: -200,
-            centralGravity: 0.03,
-            springLength: 150,
-            avoidOverlap: 1,
-            theta: 0.8
-        },
         barnesHut: {
             gravitationalConstant: -50000,
             centralGravity: 0.8,

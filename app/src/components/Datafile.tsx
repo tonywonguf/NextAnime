@@ -1,6 +1,5 @@
 import animeData from "../data/animedata.json";
 import {DataSet} from 'vis-data'
-import {v4 as uuidv4} from 'uuid';
 import {removeDiacritics, catImages, getWeight} from "./ToolBox";
 
 export class Node {
@@ -74,7 +73,7 @@ for (let i = 0; i < animeData.length; i++) {
         nodes.get(i).imageMedium = defaultImage;
         nodes.get(i).imageLarge = defaultImage;
     }
-    
+
     nodes.get(i).titles.english = removeDiacritics(nodes.get(i).titles.english);
     nodes.get(i).titles.romaji = removeDiacritics(nodes.get(i).titles.romaji);
 }
