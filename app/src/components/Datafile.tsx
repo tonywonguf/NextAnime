@@ -78,6 +78,3 @@ for (let i = 0; i < animeData.length; i++) {
     nodes.get(i).titles.english = removeDiacritics(nodes.get(i).titles.english);
     nodes.get(i).titles.romaji = removeDiacritics(nodes.get(i).titles.romaji);
 }
-
-export const edges: DataSet<Edge> = new DataSet<Edge>();
-

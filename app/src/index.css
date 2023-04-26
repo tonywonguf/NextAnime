@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .btn {
-    @apply bg-[#23272a] text-[#B0B4Be] rounded-[1vh] text-[2vh] justify-center p-[1vh] m-[1vh] hover:brightness-150 block
+    @apply bg-[#23272a] text-[#B0B4Be] rounded-[1vh] text-[2vh] justify-center p-[1vh] m-[1vh] hover:brightness-200 block
 }
 
 .btn-param {
-    @apply text-[#222222] rounded-[0.5vh] text-[2vh] m-[0.5vh] hover:bg-violet-200
+    @apply text-[#222222] rounded-[0.5vh] text-[2vh] m-[0.5vh] hover:brightness-[1.09]
            block flex-grow flex-nowrap whitespace-nowrap overflow-hidden font-mono font-bold
 }
 
