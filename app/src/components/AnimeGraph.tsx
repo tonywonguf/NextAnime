@@ -16,6 +16,7 @@ export type AnimeGraphInfo = {
     fitOptions?: FitOptions
     options: object
 }
+
 //entire graph info
 export class AnimeGraph {
     containerRef
@@ -26,6 +27,7 @@ export class AnimeGraph {
     options: object
     selectedParameters: object
     graphSize: number
+
     //uses passed in info to initialize graph
     constructor(info: AnimeGraphInfo) {
         this.containerRef = info.containerRef;
@@ -44,12 +46,14 @@ export class AnimeGraph {
     refit() {
         this.network.fit(this.fitOptions);
     }
+
     //recolors all the existing edges with a random color
     //time: O(E), goes through all edges
     //space: O(1), doesnt augment space
     recolor() {
         this.edges.update(this.edges.map(e => ({...e, color: randColor()})));
     }
+
     //recolors adjacents of a random node
     //time: O(E), checks edgeList for node and updates adjacents
     //space: O(1), does not occupy space XD
@@ -127,13 +131,17 @@ export class AnimeGraph {
         // Color the adjacent edges and nodes
         // Edges recolored
         // Update the data sets and the network
-        this.edges.update(this.network.getConnectedEdges(this.nodes.getIds()[Math.floor(Math.random() * this.nodes.length)]).map((edgeId) => ({...this.edges.get(edgeId), color: '#ffffff'})))
+        this.edges.update(this.network.getConnectedEdges(this.nodes.getIds()[Math.floor(Math.random() * this.nodes.length)]).map((edgeId) => ({
+            ...this.edges.get(edgeId),
+            color: '#ffffff'
+        })))
     }
+
     //time: O(nodes*getWeight() + graphSize^2)
     //iterates through all nodes making weights,
     //iterates through graphSize making all edges (and sorts)
     //space: O(nodes + graphSize^2)
-    initializeWeights(suggID, suggNode) : [Node[], Edge[]] {
+    initializeWeights(suggID, suggNode): [Node[], Edge[]] {
         let edges: Edge[] = [];
         //makes outward edges using suggNode
         for (let j = 0; j < nodes.length; ++j) {
@@ -146,7 +154,7 @@ export class AnimeGraph {
                     id: uuidv4()
                 }));
         }
-        edges = edges.sort((a, b) => b.weight - a.weight).splice(0, this.graphSize-1);
+        edges = edges.sort((a, b) => b.weight - a.weight).splice(0, this.graphSize - 1);
         // Get the top nodes
         const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
 
@@ -170,7 +178,11 @@ export class AnimeGraph {
         topEdges = topEdges.sort((a, b) => b.weight - a.weight);
         return [topNodes, topEdges];
     }
-    //time: O()
+
+    setTime(time: number) {
+        document.getElementById('time').textContent = (time / 1000).toFixed(3) + ' sec';
+    }
+
     createMSTusingPrims() {
         if (this.nodes.length != 1) {
             if (this.nodes.length > 1)
@@ -201,7 +213,7 @@ export class AnimeGraph {
 
         }
         const timeEnd = performance.now();
-        console.log(((timeEnd - timeStart) / 1000).toFixed(3));
+        this.setTime(timeEnd - timeStart);
 
         this.nodes.add(topNodes.slice(1));
         this.edges.add(mstEdges);
@@ -244,7 +256,7 @@ export class AnimeGraph {
             addedNode.add(currEdge.to);
         }
         const timeEnd = performance.now();
-        console.log(((timeEnd - timeStart) / 1000).toFixed(3));
+        this.setTime(timeEnd - timeStart);
 
         this.nodes.add(topNodes.slice(1));
         this.edges.add(mstEdges);
@@ -333,7 +345,6 @@ export class AnimeGraph {
             </div>
 
             <div id='graph' ref={this.containerRef} className={"h-full relative flex-shrink-0 flex-grow w-8/12"}/>
-
         </>);
     }
 

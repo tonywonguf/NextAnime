@@ -53,7 +53,8 @@ export default function NextAnime() {
             nodes: new DataSet<Node>(),
             edges: new DataSet<Edge>(),
             options: options
-        });
+        }
+    );
     //sets the visual effects for the graph based on its container, the nodes, edges, and the defined options
     useLayoutEffect(() => {
         animeGraph.network = new Network(containerRef.current, {
@@ -69,6 +70,10 @@ export default function NextAnime() {
             {animeGraph.display()}
 
             <SideBar animeGraph={animeGraph}/>
+
+            <div id="time" className={"z-20 absolute bottom-0 left-0 rounded m-2 p-2 bg-white"}>
+                Run an algorithm for timing!
+            </div>
         </main>
     );
 }

@@ -128,26 +128,26 @@ function SimilarityBox({sA, sSA, sP}) {
     const aLabel = a.label.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
     const bLabel = b.label.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
 
-    const lcsTitle = longestCommonSubstring(aLabel,bLabel);
-    const lcsTitleSimilarity = (aLabel.length != 0) ? lcsTitle.length/aLabel.length : 0;
+    const lcsTitle = longestCommonSubstring(aLabel, bLabel);
+    const lcsTitleSimilarity = (aLabel.length != 0) ? lcsTitle.length / aLabel.length : 0;
 
     const interTags = a.tags.filter(tag => b.tags.includes(tag))
-    const interTagsSimilarity = (a.tags.length != 0) ? interTags.length/a.tags.length : 0;
+    const interTagsSimilarity = (a.tags.length != 0) ? interTags.length / a.tags.length : 0;
 
-    const episodeSimilarity = (a.episodes && b.episodes) ? 1-(Math.min(Math.abs(a.episodes-b.episodes),12)/12) : 0;
+    const episodeSimilarity = (a.episodes && b.episodes) ? 1 - (Math.min(Math.abs(a.episodes - b.episodes), 12) / 12) : 0;
 
-    const yearSimilarity = (a.seasonYear && b.seasonYear) ? 1-(Math.min(Math.abs(a.seasonYear-b.seasonYear),20)/20) : 0;
+    const yearSimilarity = (a.seasonYear && b.seasonYear) ? 1 - (Math.min(Math.abs(a.seasonYear - b.seasonYear), 20) / 20) : 0;
 
     const arrayA = a.studios.map(info => info.name)
     const arrayB = b.studios.map(info => info.name)
     const interStudios = arrayA.filter(studio => arrayB.includes(studio))
-    const interStudiosSimilarity = (arrayA.length != 0) ? interStudios.length/arrayA.length : 0;
+    const interStudiosSimilarity = (arrayA.length != 0) ? interStudios.length / arrayA.length : 0;
 
-    const totalSimilarity = (sP["Title"] && 4*lcsTitleSimilarity)
-        + (sP["Genre"] && 2*interTagsSimilarity)
+    const totalSimilarity = (sP["Title"] && 4 * lcsTitleSimilarity)
+        + (sP["Genre"] && 2 * interTagsSimilarity)
         + (sP["Episodes"] && episodeSimilarity)
         + (sP["Year"] && yearSimilarity)
-        + (sP["Studio"]  && 3*interStudiosSimilarity);
+        + (sP["Studio"] && 3 * interStudiosSimilarity);
     const similarityDivisor = (sP["Title"] && aLabel.length != 0 && 4)
         + (sP["Genre"] && a.tags.length != 0 && 2)
         + (sP["Episodes"] && a.episodes && b.episodes && 1)
@@ -157,24 +157,26 @@ function SimilarityBox({sA, sSA, sP}) {
     return (
         <div className={"similarity-box"}>
 
-            <SimilarityEntry text={`LCS between Titles: ${lcsTitle.length != 0 ? "\""+lcsTitle+"\"" : 'NONE'}`}
-                             percent={(aLabel.length != 0) ? (100*lcsTitleSimilarity).toFixed(2) + '%': "N/A"}/>
+            <SimilarityEntry text={`LCS between Titles: ${lcsTitle.length != 0 ? "\"" + lcsTitle + "\"" : 'NONE'}`}
+                             percent={(aLabel.length != 0) ? (100 * lcsTitleSimilarity).toFixed(2) + '%' : "N/A"}/>
 
             <SimilarityEntry text={`Common Genres: ${interTags.join(", ")}`}
-                             percent={(a.tags.length != 0) ? (100*interTagsSimilarity).toFixed(2) + '%': "N/A"}/>
+                             percent={(a.tags.length != 0) ? (100 * interTagsSimilarity).toFixed(2) + '%' : "N/A"}/>
 
-            <SimilarityEntry text={`Episode Difference: ${(a.episodes && b.episodes) ? Math.abs(a.episodes-b.episodes): "N/A"}`}
-                             percent={(a.episodes && b.episodes) ? (100*episodeSimilarity).toFixed(2) + '%': "N/A"}/>
+            <SimilarityEntry
+                text={`Episode Difference: ${(a.episodes && b.episodes) ? Math.abs(a.episodes - b.episodes) : "N/A"}`}
+                percent={(a.episodes && b.episodes) ? (100 * episodeSimilarity).toFixed(2) + '%' : "N/A"}/>
 
-            <SimilarityEntry text={`Year Difference: ${(a.seasonYear && b.seasonYear) ? Math.abs(a.seasonYear-b.seasonYear) : "N/A"}`}
-                             percent={(a.seasonYear && b.seasonYear) ? (100*yearSimilarity).toFixed(2) + '%': "N/A"}/>
+            <SimilarityEntry
+                text={`Year Difference: ${(a.seasonYear && b.seasonYear) ? Math.abs(a.seasonYear - b.seasonYear) : "N/A"}`}
+                percent={(a.seasonYear && b.seasonYear) ? (100 * yearSimilarity).toFixed(2) + '%' : "N/A"}/>
 
             <SimilarityEntry text={`Common Studios: ${interStudios.join(", ")}`}
-                             percent={(arrayA.length != 0) ? (100*interStudiosSimilarity).toFixed(2) + '%': "N/A"}/>
+                             percent={(arrayA.length != 0) ? (100 * interStudiosSimilarity).toFixed(2) + '%' : "N/A"}/>
 
             <div className={"flex text-[2.5vh]"}>
                 <p className={"flex-grow"}>Total Similarity: </p>
-                <p>{(100*totalSimilarity/similarityDivisor).toFixed(2)}%</p>
+                <p>{(100 * totalSimilarity / similarityDivisor).toFixed(2)}%</p>
             </div>
 
         </div>
@@ -183,13 +185,13 @@ function SimilarityBox({sA, sSA, sP}) {
 //specific similarity text within similarity box
 function SimilarityEntry({text, percent}) {
     return (
-    <>
-    <div className={"flex"}>
-        <p className={"flex-grow"}>{text}</p>
-        <p>{percent}</p>
-    </div>
-    <hr className={"border-[0.1vh]"}/>
-    </>);
+        <>
+            <div className={"flex"}>
+                <p className={"flex-grow"}>{text}</p>
+                <p>{percent}</p>
+            </div>
+            <hr className={"border-[0.1vh]"}/>
+        </>);
 }
 //the functional sideBar component which allows for:
 //anime selection
