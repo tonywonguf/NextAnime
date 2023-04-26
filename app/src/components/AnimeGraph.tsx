@@ -6,6 +6,7 @@ import React from 'react';
 import {getWeight} from "./ToolBox";
 import VisButton, {GraphSizeButton} from "./VisButton";
 
+//function for randomizing color strings
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
 
 export type AnimeGraphInfo = {
@@ -15,7 +16,7 @@ export type AnimeGraphInfo = {
     fitOptions?: FitOptions
     options: object
 }
-
+//entire graph info
 export class AnimeGraph {
     containerRef
     network: Network
@@ -25,7 +26,7 @@ export class AnimeGraph {
     options: object
     selectedParameters: object
     graphSize: number
-
+    //uses passed in info to initialize graph
     constructor(info: AnimeGraphInfo) {
         this.containerRef = info.containerRef;
         this.nodes = info.nodes;
@@ -39,31 +40,31 @@ export class AnimeGraph {
         }
         this.graphSize = 100;
     }
-
     refit() {
         this.network.fit(this.fitOptions);
     }
-
+    //recolors all the existing edges with a random color
+    //time: O(E), goes through all edges
+    //space: O(1), doesnt augment space
     recolor() {
         this.edges.update(this.edges.map(e => ({...e, color: randColor()})));
-        console.log(this.selectedParameters);
     }
-
+    //recolors adjacents of a random node
+    //time: O(E), checks edgeList for node and updates adjacents
+    //space: O(1), does not occupy space XD
     chooseRandomNodeAndColorAdjacents() {
-        const randomNodeId = this.nodes.getIds()[Math.floor(Math.random() * this.nodes.length)];
-
         // Color the adjacent edges and nodes
-        const adjacentEdges = this.network.getConnectedEdges(randomNodeId);
-
-        const color = "#ffffff"
-        const updatedEdges = adjacentEdges.map((edgeId) => ({...this.edges.get(edgeId), color: color}));
-
+        // Edges recolored
         // Update the data sets and the network
-        this.edges.update(updatedEdges);
+        this.edges.update(this.network.getConnectedEdges(this.nodes.getIds()[Math.floor(Math.random() * this.nodes.length)]).map((edgeId) => ({...this.edges.get(edgeId), color: '#ffffff'})))
     }
-
+    //time: O(nodes*getWeight() + graphSize^2)
+    //iterates through all nodes making weights,
+    //iterates through graphSize making all edges (and sorts)
+    //space: O(nodes + graphSize^2)
     initializeWeights(suggID, suggNode) : [Node[], Edge[]] {
         let edges: Edge[] = [];
+        //makes outward edges using suggNode
         for (let j = 0; j < nodes.length; ++j) {
             if (j != suggID)
                 edges.push(new Edge({
@@ -75,8 +76,7 @@ export class AnimeGraph {
                 }));
         }
         edges = edges.sort((a, b) => b.weight - a.weight).splice(0, this.graphSize-1);
-        // Get the top 50 nodes
-        // @ts-ignore
+        // Get the top nodes
         const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
 
         let topEdges: Edge[] = [];
@@ -99,7 +99,7 @@ export class AnimeGraph {
         topEdges = topEdges.sort((a, b) => b.weight - a.weight);
         return [topNodes, topEdges];
     }
-
+    //time: O()
     createMSTusingPrims() {
         if (this.nodes.length != 1) {
             if (this.nodes.length > 1)

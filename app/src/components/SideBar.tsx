@@ -70,7 +70,7 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
         </div>
     )
 }
-
+//button for associated parameter to change weights on graph
 function CheckButton({name, sP, sSP}) {
     let newSelectedParameters = {...sP}
     newSelectedParameters[name] = !newSelectedParameters[name];
@@ -83,7 +83,7 @@ function CheckButton({name, sP, sSP}) {
     );
 
 }
-
+//boxes used to display content of specific anime
 function AnimeBox({selectedAnime}) {
     return (
         <div
@@ -114,12 +114,12 @@ function AnimeBox({selectedAnime}) {
         </div>
     )
 }
-
+//function for collapsing sidebar
 function collapseSidebar() {
     const sidebar = document.getElementById("side-bar")
     sidebar.classList.toggle("invisible");
 }
-
+//box for showing similarity content of selected Anime and selected Suggested Anime
 function SimilarityBox({sA, sSA, sP}) {
     const a = sA;
     const b = sSA;
@@ -180,7 +180,7 @@ function SimilarityBox({sA, sSA, sP}) {
         </div>
     )
 }
-
+//specific similarity text within similarity box
 function SimilarityEntry({text, percent}) {
     return (
     <>
@@ -191,7 +191,11 @@ function SimilarityEntry({text, percent}) {
     <hr className={"border-[0.1vh]"}/>
     </>);
 }
-
+//the functional sideBar component which allows for:
+//anime selection
+//parameter manipulation
+//anime content retrieval
+//similarity characterstic retrieval
 export default function SideBar({animeGraph}) {
 
     let [selectedAnime, setSelectedAnime] = useState(null);
@@ -203,12 +207,12 @@ export default function SideBar({animeGraph}) {
         Year: true,
         Episodes: true
     });
-
+    //updates selectedParameters on animeGraph
     useEffect(() => {
         animeGraph.selectedParameters = selectedParameters;
     }, [selectedParameters]);
 
-
+    //sets the selectedSuggestedAnime based on clicking an image
     if (animeGraph.network)
         animeGraph.network.on("click", (e) => {
             const id = e.nodes[0]

@@ -74,11 +74,11 @@ for (let i = 0; i < animeData.length; i++) {
         nodes.get(i).imageMedium = defaultImage;
         nodes.get(i).imageLarge = defaultImage;
     }
-
+    
     nodes.get(i).titles.english = removeDiacritics(nodes.get(i).titles.english);
     nodes.get(i).titles.romaji = removeDiacritics(nodes.get(i).titles.romaji);
 }
-let edgeList = {};
+//let edgeList = {};
 /*function generateToggleVariations(): Array<{[key: string]: boolean}> {
     const initial = {Title: true, Genre: true, Studio: true, Year: true, Episodes: true};
     const result = [initial];

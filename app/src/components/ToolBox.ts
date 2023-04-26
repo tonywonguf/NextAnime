@@ -104,6 +104,8 @@ export const catImages = [
 ];
 
 // https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
+// time: O(len), checks each location, maps to non diacritic O(1) -> O(len) * O(1) = O(len)
+// space: O(1), doesnt allocate extra space
 export function removeDiacritics (str) {
     if (!str) return str;
 
@@ -201,7 +203,8 @@ export function removeDiacritics (str) {
     return str;
 
 }
-
+// time: O(len(s1) * len(s2)), updates each value in a matrix which is len(s1) x len(s2)
+// space: O(len(s1) * len(s2)), makes a matrix which is len(s12) x len(s2)
 export function longestCommonSubstring(s1: string, s2: string): string {
     let longest = '';
     const memo: number[][] = [];
@@ -209,21 +212,28 @@ export function longestCommonSubstring(s1: string, s2: string): string {
     for (let i = 0; i <= s1.length; i++) {
         memo[i] = [];
         for (let j = 0; j <= s2.length; j++) {
+            //start -> 0
             if (i === 0 || j === 0) {
                 memo[i][j] = 0;
-            } else if (s1[i - 1] === s2[j - 1]) {
+            }
+            //if the previous letters match, dynamically update previous value
+            // diagonals in matrix represent matching substrings
+            else if (s1[i - 1] === s2[j - 1]) {
                 memo[i][j] = memo[i-1][j-1] + 1;
                 const substring = s1.substring(i - memo[i][j], i);
                 if (substring.length > longest.length)
                     longest = substring;
-            } else
+            }
+            //no match, 0
+            else
                 memo[i][j] = 0;
         }
     }
-
     return longest;
 }
-
+// time: O(len(label)^2 + len(tags)^2 + len(studios)^2)
+// space: O(len(label) + len(tags) + len(studios))
+// ***note: assumes that each parameter is similarly sized (so use the max-sized)
 export function getWeight(a: Node, b: Node, selectedParameters: {}) {
     const aLabel = a.label.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
     const bLabel = b.label.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();

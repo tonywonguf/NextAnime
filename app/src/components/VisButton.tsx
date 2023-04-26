@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
+//button for visual effects on the graph
 export default function VisButton({name, func}) {
     return (<button
         className={"btn"}
@@ -7,7 +8,7 @@ export default function VisButton({name, func}) {
         {name}
     </button>);
 }
-
+//specific button for re-sizing amount of nodes used in graph
 export function GraphSizeButton({animeGraph}) {
     let [graphSize, setGraphSize] = useState(animeGraph.graphSize);
     useEffect(() => {

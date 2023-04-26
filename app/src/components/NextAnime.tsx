@@ -5,6 +5,7 @@ import {Network} from "vis-network"
 import {DataSet} from "vis-data"
 import {Edge, Node} from './Datafile'
 
+//graph options
 const options = {
     layout: {
         hierarchical: false
@@ -50,7 +51,7 @@ const options = {
     },
     height: '100%'
 };
-
+//the entire application
 export default function NextAnime() {
     let containerRef = useRef<HTMLDivElement>(null);
     let animeGraph = new AnimeGraph(
@@ -60,7 +61,7 @@ export default function NextAnime() {
             edges: new DataSet<Edge>(),
             options: options
         });
-
+    //sets the visual effects for the graph based on its container, the nodes, edges, and the defined options
     useLayoutEffect(() => {
         animeGraph.network = new Network(containerRef.current, {
             nodes: animeGraph.nodes,
