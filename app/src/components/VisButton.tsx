@@ -23,9 +23,10 @@ export function GraphSizeButton({animeGraph}) {
             setGraphSize(graphSize == 25 ? 400 : graphSize/2)
     };
 
-    return (<button
-        className={"w-[5vh] btn"}
+    return (
+    <button
+        className={"w-[15.16vh] btn"}
         onClick={handleClick} onContextMenu={handleClick}>
-        {graphSize}
+        Max Nodes: {graphSize}
     </button>);
 }

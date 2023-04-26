@@ -203,9 +203,6 @@ export function removeDiacritics (str) {
 }
 
 export function longestCommonSubstring(s1: string, s2: string): string {
-    s1 = s1.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
-    s2 = s2.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
-
     let longest = '';
     const memo: number[][] = [];
 
@@ -228,21 +225,29 @@ export function longestCommonSubstring(s1: string, s2: string): string {
 }
 
 export function getWeight(a: Node, b: Node, selectedParameters: {}) {
-    const similarTitle = longestCommonSubstring(a.label,b.label).length/a.label.length;
+    const aLabel = a.label.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
+    const bLabel = b.label.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
 
-    const interTags = a.tags.filter(tag => b.tags.includes(tag)).length/a.tags.length;
+    const lcsTitle = longestCommonSubstring(aLabel,bLabel);
+    const lcsTitleSimilarity = (aLabel.length != 0) ? lcsTitle.length/aLabel.length : 0;
+
+    const interTags = a.tags.filter(tag => b.tags.includes(tag))
+    const interTagsSimilarity = (a.tags.length != 0) ? interTags.length/a.tags.length : 0;
+
+    const episodeSimilarity = (a.episodes && b.episodes) ? 1-(Math.min(Math.abs(a.episodes-b.episodes),12)/12) : 0;
+
+    const yearSimilarity = (a.seasonYear && b.seasonYear) ? 1-(Math.min(Math.abs(a.seasonYear-b.seasonYear),20)/20) : 0;
 
     const arrayA = a.studios.map(info => info.name)
     const arrayB = b.studios.map(info => info.name)
-    const interStudios = arrayA.filter(studio => arrayB.includes(studio)).length/arrayA.length;
+    const interStudios = arrayA.filter(studio => arrayB.includes(studio))
+    const interStudiosSimilarity = (arrayA.length != 0) ? interStudios.length/arrayA.length : 0;
 
-    const similarYear = (a.seasonYear && b.seasonYear) ? 1-(Math.min(Math.abs(a.seasonYear-b.seasonYear),20)/20) : 0;
+    const totalSimilarity = (selectedParameters["Title"] && 4*lcsTitleSimilarity)
+        + (selectedParameters["Genre"] && 2*interTagsSimilarity)
+        + (selectedParameters["Episodes"] && episodeSimilarity)
+        + (selectedParameters["Year"] && yearSimilarity)
+        + (selectedParameters["Studio"] && 3*interStudiosSimilarity);
 
-    const similarEpisodes = (a.episodes && b.episodes) ? 1-(Math.abs(a.episodes-b.episodes)/a.episodes) : 0;
-
-    return (selectedParameters["Title"] && 4*similarTitle)
-        + (selectedParameters["Genre"] && 2*interTags)
-        + (selectedParameters["Studio"] && 3*interStudios)
-        + (selectedParameters["Year"] && similarYear)
-        + (selectedParameters["Episodes"] && similarEpisodes);
+    return totalSimilarity;
 }
