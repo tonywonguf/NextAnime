@@ -134,6 +134,7 @@ export class AnimeGraph {
 
         this.nodes.add(topNodes.slice(1));
         this.edges.add(mstEdges);
+        console.log(mstEdges);
     }
 
     createMSTusingKruskal() {

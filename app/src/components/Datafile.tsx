@@ -1,6 +1,7 @@
 import animeData from "../data/animedata.json";
 import {DataSet} from 'vis-data'
-import {removeDiacritics, catImages} from "./ToolBox";
+import {v4 as uuidv4} from 'uuid';
+import {removeDiacritics, catImages, getWeight} from "./ToolBox";
 
 export class Node {
     id?
@@ -78,6 +79,70 @@ for (let i = 0; i < animeData.length; i++) {
     nodes.get(i).titles.english = removeDiacritics(nodes.get(i).titles.english);
     nodes.get(i).titles.romaji = removeDiacritics(nodes.get(i).titles.romaji);
 }
+/*
+let edgeList = {};
+function generateToggleVariations(): Array<{[key: string]: boolean}> {
+    const initial = {Title: true, Genre: true, Studio: true, Year: true, Episodes: true};
+    const result = [initial];
+
+    for (let i = 0; i < 5; i++) {
+        const size = result.length;
+        for (let j = 0; j < size; j++) {
+            const current = result[j];
+            const toggled = {...current, [Object.keys(current)[i]]: !current[Object.keys(current)[i]]};
+            result.push(toggled);
+        }
+    }
+
+    return result;
+}
+
+const useParameters = generateToggleVariations();
+
+function initEdgeList(){
+    nodes.forEach(node => {
+        edgeList[node.id] = {};
+        useParameters.forEach(pList => {
+
+            let edges: Edge[] = [];
+            for (let j = 0; j < nodes.length; ++j) {
+                if (j != node.id)
+                    edges.push(new Edge({
+                        from: node.id,
+                        to: j,
+                        weight: getWeight(node, nodes.get(j), pList),
+                        color: 'FFFFFF',
+                        id: uuidv4()
+                    }));
+            }
+            edges = edges.sort((a, b) => b.weight - a.weight).splice(0, 399);
+            // Get the top 50 nodes
+            // @ts-ignore
+            const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
+
+            let topEdges: Edge[] = [];
+            topNodes.forEach(n1 =>
+                topNodes.forEach(n2 => {
+                        if (n1 != n2) {
+                            const n1_id = n1.id,
+                                n2_id = n2.id;
+                            topEdges.push(new Edge({
+                                from: n1_id,
+                                to: n2_id,
+                                weight: getWeight(n1, n2, this.selectedParameters),
+                                color: 'FFFFFF',
+                                id: uuidv4()
+                            }));
+                        }
+                    }
+                )
+            );
+            topEdges = topEdges.sort((a, b) => b.weight - a.weight);
+
+            edgeList[node.id][pList] = {topEdges};
+        })
+    });
+}*/
 
 export const edges: DataSet<Edge> = new DataSet<Edge>();
 
