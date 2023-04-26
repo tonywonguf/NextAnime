@@ -37,7 +37,7 @@ export class AnimeGraph {
                 easingFunction: "linear"
             }
         }
-        this.graphSize = 25;
+        this.graphSize = 100;
     }
 
     refit() {
@@ -70,7 +70,7 @@ export class AnimeGraph {
                     from: suggID,
                     to: j,
                     weight: getWeight(suggNode, nodes.get(j), this.selectedParameters),
-                    color: randColor(),
+                    color: 'rbg(127, 0, 255)',
                     id: uuidv4()
                 }));
         }
@@ -89,7 +89,7 @@ export class AnimeGraph {
                             from: n1_id,
                             to: n2_id,
                             weight: getWeight(n1, n2, this.selectedParameters),
-                            color: randColor(),
+                            color: 'rgb(200,73,255)',
                             id: uuidv4()
                         }));
                     }
@@ -216,7 +216,7 @@ export class AnimeGraph {
 
         sortedWeights = sortedWeights.map((e, i) => {
             if (i == 0) {
-                const updatedNode = {...this.nodes.get(e.from), size: 50};
+                const updatedNode = {...this.nodes.get(e.from), size: 50, fixed: true};
                 this.nodes.update(updatedNode)
                 return {...e, color: 'rgb(127,0,255)'};
             }

@@ -16,21 +16,33 @@ const options = {
         },
         shape: 'image',
         image: 'https://www.shutterstock.com/image-photo/little-beautiful-funny-british-kitten-260nw-1521783215.jpg',
-        labelHighlightBold: false
+        labelHighlightBold: false,
+        size: 50
     },
     edges: {
         color: "#000000",
         width: 3,
-        length: 100
+        length: 20
     },
     physics: {
         forceAtlas2Based: {
-            gravitationalConstant: -100,
-            centralGravity: 0.02,
-            springLength: 200
+            gravitationalConstant: -200,
+            centralGravity: 0.03,
+            springLength: 150,
+            avoidOverlap: 1,
+            theta: 0.8
+        },
+        barnesHut: {
+            gravitationalConstant: -50000,
+            centralGravity: 0.8,
+            springLength: 200,
+            springConstant: 0.3,
+            damping: 0.3,
+            avoidOverlap: 0.2,
+            theta: 0.8
         },
         maxVelocity: 50,
-        solver: 'forceAtlas2Based'
+        solver: 'barnesHut'
     },
     interaction: {
         selectable: true,

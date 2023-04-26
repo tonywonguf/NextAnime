@@ -49,9 +49,8 @@ export class Edge {
 
 export const nodes: DataSet<Node> = new DataSet<Node>();
 
-// @ts-ignore
+// init nodes using animedata.json
 for (let i = 0; i < animeData.length; i++) {
-
     nodes.add(
         new Node({
             id: i,
@@ -79,9 +78,8 @@ for (let i = 0; i < animeData.length; i++) {
     nodes.get(i).titles.english = removeDiacritics(nodes.get(i).titles.english);
     nodes.get(i).titles.romaji = removeDiacritics(nodes.get(i).titles.romaji);
 }
-/*
 let edgeList = {};
-function generateToggleVariations(): Array<{[key: string]: boolean}> {
+/*function generateToggleVariations(): Array<{[key: string]: boolean}> {
     const initial = {Title: true, Genre: true, Studio: true, Year: true, Episodes: true};
     const result = [initial];
 
@@ -95,11 +93,10 @@ function generateToggleVariations(): Array<{[key: string]: boolean}> {
     }
 
     return result;
-}
+}*/
+//const useParameters = generateToggleVariations();
 
-const useParameters = generateToggleVariations();
-
-function initEdgeList(){
+/*function initEdgeList(){
     nodes.forEach(node => {
         edgeList[node.id] = {};
         useParameters.forEach(pList => {
@@ -143,6 +140,11 @@ function initEdgeList(){
         })
     });
 }*/
+//initEdgeList();
 
-export const edges: DataSet<Edge> = new DataSet<Edge>();
+//const jsonString = JSON.stringify(edgeList, null, 2);
+
+//fs.writeFileSync('animeEdgeList.json', jsonString);
+
+//export const edges: DataSet<Edge> = new DataSet<Edge>();
 
