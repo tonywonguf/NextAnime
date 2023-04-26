@@ -49,6 +49,78 @@ export class AnimeGraph {
         console.log(this.selectedParameters);
     }
 
+    delay(ms: number = 1000) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+
+    rgbToHex(r: number, g: number, b: number): string {
+        const componentToHex = (c: number): string => {
+            const hex = c.toString(16);
+            return hex.length == 1 ? "0" + hex : hex;
+        }
+        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    async bfsAnimation() {
+        const suggID = this.nodes.getIds()[0],
+            suggNode: Node = nodes.get(suggID);
+
+        // Set all edges to gray
+        this.edges.update(this.edges.map(e => ({...e, color: '#d3d3d3'})));
+        await this.delay();
+
+        // BFS (with edge color updates)
+        const Q: (Node | null)[] = [suggNode, null];
+        const V: Set<Node> = new Set<Node>();
+        V.add(suggNode);
+
+        let depth = 0;
+        while (Q.length > 0) {
+            if (Q.at(0) != null) {
+                const N: Node = Q.at(0);
+                Q.shift();
+
+                // Get neighbors (ignore direction, treat as undirected)
+                const neighbors: Node[] = [];
+                this.edges.forEach(e => {
+                    if (e.from == N.id) { // @ts-ignore
+                        neighbors.push(nodes.get(e.to));
+                    }
+                    if (e.to == N.id) { // @ts-ignore
+                        neighbors.push(nodes.get(e.from));
+                    }
+                });
+
+                let edgeColored = false;
+                for (const n of neighbors) {
+                    if (!V.has(n)) {
+                        Q.push(n);
+                        V.add(n);
+
+                        this.edges.forEach(e => {
+                            if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
+                                const c = Math.round(255 * Math.pow(7 / 12, depth));
+                                this.edges.update([{
+                                    ...e,
+                                    color: this.rgbToHex(c, 0, 0)
+                                }]);
+                            }
+                        });
+
+                        edgeColored = true; //not necessarily true
+                    }
+                }
+                if (edgeColored) await this.delay();
+            } else {
+                Q.shift();
+                ++depth;
+                if (Q.length > 0)
+                    Q.push(null);
+            }
+        }
+    }
+
     chooseRandomNodeAndColorAdjacents() {
         const randomNodeId = this.nodes.getIds()[Math.floor(Math.random() * this.nodes.length)];
 
@@ -62,7 +134,7 @@ export class AnimeGraph {
         this.edges.update(updatedEdges);
     }
 
-    initializeWeights(suggID, suggNode) : [Node[], Edge[]] {
+    initializeWeights(suggID, suggNode): [Node[], Edge[]] {
         let edges: Edge[] = [];
         for (let j = 0; j < nodes.length; ++j) {
             if (j != suggID)
@@ -74,7 +146,7 @@ export class AnimeGraph {
                     id: uuidv4()
                 }));
         }
-        edges = edges.sort((a, b) => b.weight - a.weight).splice(0, this.graphSize-1);
+        edges = edges.sort((a, b) => b.weight - a.weight).splice(0, this.graphSize - 1);
         // Get the top 50 nodes
         // @ts-ignore
         const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
@@ -113,7 +185,7 @@ export class AnimeGraph {
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
-        const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
+        const [topNodes, topEdges] = this.initializeWeights(suggID, suggNode)
 
         //Prim's Algorithm
         const timeStart = performance.now();
@@ -123,14 +195,14 @@ export class AnimeGraph {
         while (processedNode.size < topNodes.length) {
             const e: Edge = topEdges[0];
             topEdges.shift();
-            if(processedNode.has(e.from) && !processedNode.has(e.to)){
+            if (processedNode.has(e.from) && !processedNode.has(e.to)) {
                 mstEdges.push(e);
                 processedNode.add(e.to);
             }
 
         }
         const timeEnd = performance.now();
-        console.log(((timeEnd-timeStart)/1000).toFixed(3));
+        console.log(((timeEnd - timeStart) / 1000).toFixed(3));
 
         this.nodes.add(topNodes.slice(1));
         this.edges.add(mstEdges);
@@ -150,7 +222,7 @@ export class AnimeGraph {
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
-        const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
+        const [topNodes, topEdges] = this.initializeWeights(suggID, suggNode)
 
         // Kruskal's Algorithm
         const timeStart = performance.now();
@@ -173,7 +245,7 @@ export class AnimeGraph {
             addedNode.add(currEdge.to);
         }
         const timeEnd = performance.now();
-        console.log(((timeEnd-timeStart)/1000).toFixed(3));
+        console.log(((timeEnd - timeStart) / 1000).toFixed(3));
 
         this.nodes.add(topNodes.slice(1));
         this.edges.add(mstEdges);
@@ -220,8 +292,10 @@ export class AnimeGraph {
                 this.nodes.update(updatedNode)
                 return {...e, color: 'rgb(127,0,255)'};
             }
-            return new Edge({...e, color: `rgb(${127+i*(127/this.graphSize)}, ${i*(255/this.graphSize)}, ${255})`,
-                            from: sortedWeights[i - 1].to})
+            return new Edge({
+                ...e, color: `rgb(${127 + i * (127 / this.graphSize)}, ${i * (255 / this.graphSize)}, ${255})`,
+                from: sortedWeights[i - 1].to
+            })
         });
 
         this.edges.add(sortedWeights);
@@ -254,6 +328,7 @@ export class AnimeGraph {
                 <VisButton name="Poop!" func={() => this.chooseRandomNodeAndColorAdjacents()}/>
                 <VisButton name="primsMST!" func={() => this.createMSTusingPrims()}/>
                 <VisButton name="kruskalMST!" func={() => this.createMSTusingKruskal()}/>
+                <VisButton name="BFS Animation!" func={() => this.bfsAnimation()}/>
                 <VisButton name="suggestedAnimeList!" func={() => this.suggestedAnimeList()}/>
                 <VisButton name="clear!" func={() => this.clear()}/>
             </div>
