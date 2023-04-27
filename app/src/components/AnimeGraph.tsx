@@ -5,6 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 import React from 'react';
 import {getWeight} from "./ToolBox";
 import VisButton, {GraphSizeButton} from "./VisButton";
+import {Id} from "vis-data/declarations/data-interface";
 
 //function for randomizing color strings
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
@@ -58,7 +59,7 @@ export class AnimeGraph {
     //time: O(E), checks edgeList for node and updates adjacents
     //space: O(1), does not occupy space XD
 
-    delay(ms: number = 1000) {
+    delay(ms: number = 200) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
@@ -126,13 +127,38 @@ export class AnimeGraph {
         }
     }
 
+    edgePath(start: Node, end: Node): Edge[] {
+        const pathNodes: Id[] = [start.id];
+        const visited: Set<Id> = new Set<Id>();
+        let currID: Id = start.id;
+        while (currID != end.id) {
+            visited.add(currID);
+            // @ts-ignore
+            const unvisitedNeighbors: Id[] = this.network.getConnectedNodes(currID).filter(n => !visited.has(n));
+            if (unvisitedNeighbors.length == 0) { // Back-track
+                pathNodes.pop();
+                currID = pathNodes.at(-1);
+            } else { // Go deeper
+                pathNodes.push(unvisitedNeighbors[0]);
+                currID = unvisitedNeighbors[0];
+            }
+        }
+
+        const pathEdges: Edge[] = [];
+        for (let i = 0; i < pathNodes.length - 1; ++i) {
+            const n_id1 = pathNodes[i],
+                n_id2 = pathNodes[i + 1];
+            this.edges.forEach(e => {
+                if (e.from == n_id1 && e.to == n_id2 || e.from == n_id2 && e.to == n_id1)
+                    pathEdges.push(e);
+            });
+        }
+        return pathEdges;
+    }
+
     async dfsAnimation() {
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
-
-        // Set all edges to gray
-        this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
-        await this.delay();
 
         // DFS (with edge color updates)
         const stack: Node[] = [suggNode];
@@ -143,9 +169,14 @@ export class AnimeGraph {
             if (!visited.has(N)) {
                 visited.add(N);
 
-                this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
-                this.edges.update(this.network.getConnectedEdges(N.id)
-                    .map(e_id => ({...this.edges.get(e_id), color: '#ff0000'})));
+                // Animation
+                this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
+                const path: Edge[] = this.edgePath(suggNode, N);
+                path.forEach((e, i) => {
+                    const c = Math.round(255 * Math.pow(8 / 12, i));
+                    this.edges.update({...e, color: this.rgbToHex(255, 255 - c, 255 - c)})
+                });
+
                 await this.delay();
 
                 this.network.getConnectedNodes(N.id).map(n_id => this.nodes.get(n_id)).forEach(n => {
@@ -158,7 +189,7 @@ export class AnimeGraph {
                 );
             }
         }
-        this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
+        this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
     }
 
     chooseRandomNodeAndColorAdjacents() {
