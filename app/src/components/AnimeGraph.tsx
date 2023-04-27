@@ -62,12 +62,25 @@ export class AnimeGraph {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    rgbToHex(r: number, g: number, b: number): string {
-        const componentToHex = (c: number): string => {
-            const hex = c.toString(16);
-            return hex.length == 1 ? "0" + hex : hex;
+    longestPath(n: Id): number {
+
+        const Q: {id: Id, d: number}[] = [{id: n, d: 0}];
+        const V: Set<Id> = new Set<Id>();
+        V.add(n)
+
+        let depth = 0;
+        while (Q.length > 0) {
+            const front = Q.shift();
+            this.network.getConnectedNodes(front.id).forEach(id => {
+                if (!V.has(id)) {
+                    depth = front.d+1;
+                    Q.push({id, d: depth})
+                    V.add(id)
+                }
+            })
         }
-        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+
+        return depth;
     }
 
     hideShowSidebar() {
@@ -80,6 +93,8 @@ export class AnimeGraph {
 
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
+
+        const colorDivisor = this.longestPath(suggID);
 
         // Set all edges to gray
         this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
@@ -114,10 +129,10 @@ export class AnimeGraph {
 
                         this.edges.forEach(e => {
                             if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
-                                const c = Math.round(255 * Math.pow(5 / 6, depth));
+                                const c = depth*255/colorDivisor;
                                 this.edges.update([{
                                     ...e,
-                                    color: this.rgbToHex(255, 255 - c, 255 - c)
+                                    color: `rgb(${255},${c},${c})`
                                 }]);
                             }
                         });
@@ -128,7 +143,7 @@ export class AnimeGraph {
                 ++depth;
                 if (Q.length > 0)
                     Q.push(null);
-                await this.delay(5000);
+                await this.delay(500);
             }
         }
         this.hideShowSidebar();
@@ -169,6 +184,8 @@ export class AnimeGraph {
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
+        const colorDivisor = Math.sqrt(this.longestPath(suggID));
+
         // DFS (with edge color updates)
         const stack: Node[] = [suggNode];
         const visited: Set<Node> = new Set<Node>();
@@ -182,8 +199,8 @@ export class AnimeGraph {
                 this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
                 const path: Edge[] = this.edgePath(suggNode, N);
                 path.forEach((e, i) => {
-                    const c = Math.round(255 * Math.pow(8 / 12, i));
-                    this.edges.update({...e, color: this.rgbToHex(255, 255 - c, 255 - c)})
+                    const c = i*255/colorDivisor;
+                    this.edges.update({...e, color: `rgb(${255},${c},${c})`})
                 });
                 await this.delay(250);
 
@@ -286,7 +303,7 @@ export class AnimeGraph {
         //time: O(Edges^2), go through edges until done :D
         //space: O(graphSize), as many nodes as graphSize
         const timeStart = performance.now();
-        let processedNode: Set<number> = new Set<number>();
+        let processedNode: Set<Id> = new Set<Id>();
         let mstEdges: Edge[] = [];
         processedNode.add(suggNode.id);
         while (processedNode.size < topNodes.length) {
@@ -328,7 +345,7 @@ export class AnimeGraph {
         // time: O(Edges log(Edges))
         // space: O(graphSize)
         const timeStart = performance.now();
-        let addedNode: Set<number> = new Set<number>();
+        let addedNode: Set<Id> = new Set<Id>();
         let mstEdges: Edge[] = [];
         let components: Set<number>[] = topNodes.map(n => new Set([n.id]));
         while (addedNode.size < topNodes.length) {
@@ -355,7 +372,7 @@ export class AnimeGraph {
 
     //time: O(log(Edges)) checks through sorted edges if contains node
     //space: O(1) adds to end
-    kruskalFind(components: Set<number>[], node: number) {
+    kruskalFind(components: Set<Id>[], node: number) {
         for (const c of components)
             if (c.has(node))
                 return c;
@@ -424,8 +441,8 @@ export class AnimeGraph {
                     <VisButton name="Poop!" func={() => this.chooseRandomNodeAndColorAdjacents()}/>
                     <VisButton name="primsMST!" func={() => this.createMSTusingPrims()}/>
                     <VisButton name="kruskalMST!" func={() => this.createMSTusingKruskal()}/>
-                    <VisButton name="BFS Animation!" func={() => this.bfsAnimation()}/>
-                    <VisButton name="DFS Animation!" func={() => this.dfsAnimation()}/>
+                    <VisButton name="BFS!" func={() => this.bfsAnimation()}/>
+                    <VisButton name="DFS!" func={() => this.dfsAnimation()}/>
                     <VisButton name="suggestedAnimeList!" func={() => this.suggestedAnimeList()}/>
                     <VisButton name="clear!" func={() => this.clear()}/>
                 </div>
