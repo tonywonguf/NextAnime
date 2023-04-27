@@ -5,10 +5,8 @@ import {v4 as uuidv4} from 'uuid';
 import React from 'react';
 import {getWeight} from "./ToolBox";
 import VisButton, {GraphSizeButton} from "./VisButton";
-
 //function for randomizing color strings
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
-
 export type AnimeGraphInfo = {
     containerRef
     nodes: DataSet<Node>
@@ -16,7 +14,6 @@ export type AnimeGraphInfo = {
     fitOptions?: FitOptions
     options: object
 }
-
 //entire graph info
 export class AnimeGraph {
     containerRef
@@ -27,7 +24,6 @@ export class AnimeGraph {
     options: object
     selectedParameters: object
     graphSize: number
-
     //uses passed in info to initialize graph
     constructor(info: AnimeGraphInfo) {
         this.containerRef = info.containerRef;
@@ -42,26 +38,18 @@ export class AnimeGraph {
         }
         this.graphSize = 50;
     }
-
     refit() {
         this.network.fit(this.fitOptions);
     }
-
     //recolors all the existing edges with a random color
     //time: O(E), goes through all edges
     //space: O(1), doesnt augment space
     recolor() {
         this.edges.update(this.edges.map(e => ({...e, color: randColor()})));
     }
-
-    //recolors adjacents of a random node
-    //time: O(E), checks edgeList for node and updates adjacents
-    //space: O(1), does not occupy space XD
-
     delay(ms: number = 1000) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-
     rgbToHex(r: number, g: number, b: number): string {
         const componentToHex = (c: number): string => {
             const hex = c.toString(16);
@@ -69,7 +57,6 @@ export class AnimeGraph {
         }
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
-
     async bfsAnimation() {
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
@@ -160,7 +147,9 @@ export class AnimeGraph {
         }
         this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
     }
-
+    //recolors adjacents of a random node
+    //time: O(E), checks edgeList for node and updates adjacents
+    //space: O(1), does not occupy space XD
     chooseRandomNodeAndColorAdjacents() {
         // Color the adjacent edges and nodes
         // Edges recolored
@@ -170,14 +159,12 @@ export class AnimeGraph {
             color: '#ffffff'
         })))
     }
-
     //time: O(nodes*getWeight() + graphSize^2)
     //iterates through all nodes making weights,
     //iterates through graphSize making all edges (and sorts)
     //space: O(nodes + graphSize^2)
     initializeWeights(suggID, suggNode): [Node[], Edge[]] {
         let edges: Edge[] = [];
-
         //makes outward edges using suggNode
         for (let j = 0; j < nodes.length; ++j) {
             if (j != suggID)
@@ -189,7 +176,6 @@ export class AnimeGraph {
                     id: uuidv4()
                 }));
         }
-
         edges = edges.sort((a, b) => b.weight - a.weight).splice(0, this.graphSize - 1);
         // Get the top nodes
         const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
@@ -214,13 +200,11 @@ export class AnimeGraph {
         topEdges = topEdges.sort((a, b) => b.weight - a.weight);
         return [topNodes, topEdges];
     }
-
     //time: O(nodes + graphSize^2), same as initWeights
     //space: O(nodes + graphSize^2), same as initWeights
     setTime(time: number) {
         document.getElementById('time').textContent = (time / 1000).toFixed(3) + ' sec';
     }
-
     createMSTusingPrims() {
         if (this.nodes.length == 0) {
             alert("You must select an anime!")
@@ -260,7 +244,6 @@ export class AnimeGraph {
 
         console.log(mstEdges);
     }
-
     //time: O(nodes + graphSize^2), same as initWeights
     //space: O(nodes + graphSize^2), same as initWeights
     createMSTusingKruskal() {
@@ -306,7 +289,6 @@ export class AnimeGraph {
         this.nodes.add(topNodes.slice(1));
         this.edges.add(mstEdges);
     }
-
     //time: O(log(Edges)) checks through sorted edges if contains node
     //space: O(1) adds to end
     kruskalFind(components: Set<number>[], node: number) {
@@ -315,7 +297,6 @@ export class AnimeGraph {
                 return c;
         return null;
     }
-
     //time: O(nodes)
     //space: O(edges)
     suggestedAnimeList() {
@@ -362,12 +343,10 @@ export class AnimeGraph {
         this.edges.add(sortedWeights);
         this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
     }
-
     clear() {
         this.nodes.clear();
         this.edges.clear();
     }
-
     display() {
         return (<>
                 <div className={"absolute z-10 w-0 h-0"}>
