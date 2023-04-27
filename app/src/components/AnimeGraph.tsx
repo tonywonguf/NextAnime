@@ -58,7 +58,6 @@ export class AnimeGraph {
     //recolors adjacents of a random node
     //time: O(E), checks edgeList for node and updates adjacents
     //space: O(1), does not occupy space XD
-
     delay(ms: number = 200) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -191,7 +190,9 @@ export class AnimeGraph {
         }
         this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
     }
-
+    //recolors adjacents of a random node
+    //time: O(E), checks edgeList for node and updates adjacents
+    //space: O(1), does not occupy space XD
     chooseRandomNodeAndColorAdjacents() {
         // Color the adjacent edges and nodes
         // Edges recolored
