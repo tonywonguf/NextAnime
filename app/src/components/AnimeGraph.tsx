@@ -126,6 +126,41 @@ export class AnimeGraph {
         }
     }
 
+    async dfsAnimation() {
+        const suggID = this.nodes.getIds()[0],
+            suggNode: Node = nodes.get(suggID);
+
+        // Set all edges to gray
+        this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
+        await this.delay();
+
+        // DFS (with edge color updates)
+        const stack: Node[] = [suggNode];
+        const visited: Set<Node> = new Set<Node>();
+        while (stack.length > 0) {
+            const N: Node = stack.pop();
+
+            if (!visited.has(N)) {
+                visited.add(N);
+
+                this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
+                this.edges.update(this.network.getConnectedEdges(N.id)
+                    .map(e_id => ({...this.edges.get(e_id), color: '#ff0000'})));
+                await this.delay();
+
+                this.network.getConnectedNodes(N.id).map(n_id => this.nodes.get(n_id)).forEach(n => {
+                        // @ts-ignore
+                        if (!visited.has(n)) {
+                            // @ts-ignore
+                            stack.push(n);
+                        }
+                    }
+                );
+            }
+        }
+        this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
+    }
+
     chooseRandomNodeAndColorAdjacents() {
         // Color the adjacent edges and nodes
         // Edges recolored
@@ -335,21 +370,22 @@ export class AnimeGraph {
 
     display() {
         return (<>
-            <div className={"absolute z-10 w-0 h-0"}>
-                <GraphSizeButton animeGraph={this}/>
-                {/* Visualization Buttons*/}
-                <VisButton name="Refit!" func={() => this.refit()}/>
-                <VisButton name="Recolor!" func={() => this.recolor()}/>
-                <VisButton name="Poop!" func={() => this.chooseRandomNodeAndColorAdjacents()}/>
-                <VisButton name="primsMST!" func={() => this.createMSTusingPrims()}/>
-                <VisButton name="kruskalMST!" func={() => this.createMSTusingKruskal()}/>
-                <VisButton name="BFS Animation!" func={() => this.bfsAnimation()}/>
-                <VisButton name="suggestedAnimeList!" func={() => this.suggestedAnimeList()}/>
-                <VisButton name="clear!" func={() => this.clear()}/>
-            </div>
+                <div className={"absolute z-10 w-0 h-0"}>
+                    <GraphSizeButton animeGraph={this}/>
+                    {/* Visualization Buttons*/}
+                    <VisButton name="Refit!" func={() => this.refit()}/>
+                    <VisButton name="Recolor!" func={() => this.recolor()}/>
+                    <VisButton name="Poop!" func={() => this.chooseRandomNodeAndColorAdjacents()}/>
+                    <VisButton name="primsMST!" func={() => this.createMSTusingPrims()}/>
+                    <VisButton name="kruskalMST!" func={() => this.createMSTusingKruskal()}/>
+                    <VisButton name="BFS Animation!" func={() => this.bfsAnimation()}/>
+                    <VisButton name="DFS Animation!" func={() => this.dfsAnimation()}/>
+                    <VisButton name="suggestedAnimeList!" func={() => this.suggestedAnimeList()}/>
+                    <VisButton name="clear!" func={() => this.clear()}/>
+                </div>
 
-            <div id='graph' ref={this.containerRef} className={"h-full relative flex-shrink-0 flex-grow w-8/12"}/>
-        </>);
+                <div id='graph' ref={this.containerRef} className={"h-full relative flex-shrink-0 flex-grow w-8/12"}/>
+            </>
+        );
     }
-
 }
