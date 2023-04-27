@@ -88,119 +88,132 @@ export class AnimeGraph {
         buttons.classList.toggle('invisible');
     }
 
-    async bfsAnimation() {
+    // async bfsAnimation() {
+    //     this.hideShowSidebar();
+    //
+    //     const suggID = this.nodes.getIds()[0],
+    //         suggNode: Node = nodes.get(suggID);
+    //
+    //     const colorDivisor = this.longestPath(suggID);
+    //
+    //     // Set all edges to gray
+    //     this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
+    //     await this.delay(450);
+    //
+    //     // BFS (with edge color updates)
+    //     const Q: (Node | null)[] = [suggNode, null];
+    //     const V: Set<Node> = new Set<Node>();
+    //     V.add(suggNode);
+    //
+    //     let depth = 0;
+    //     while (Q.length > 0) {
+    //         const N: Node = Q.shift()
+    //
+    //         if (N == null) {
+    //             depth++;
+    //             if (Q.length > 0) {
+    //                 Q.push(null);
+    //                 await this.delay(85-20*(Math.log2(this.graphSize/25)));
+    //             }
+    //             continue;
+    //         }
+    //
+    //         // Get neighbors (ignore direction, treat as undirected)
+    //         const neighbors: Node[] = [];
+    //         this.edges.forEach(e => {
+    //             if (e.from == N.id) { // @ts-ignore
+    //                 neighbors.push(nodes.get(e.to));
+    //             }
+    //             if (e.to == N.id) { // @ts-ignore
+    //                 neighbors.push(nodes.get(e.from));
+    //             }
+    //         });
+    //         const updatedNodes = []
+    //         for (const n of neighbors) {
+    //             if (!V.has(n)) {
+    //                 Q.push(n);
+    //                 V.add(n);
+    //
+    //
+    //                 this.edges.forEach(e => {
+    //                     if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
+    //                         const c = depth*255/colorDivisor;
+    //                         updatedNodes.push({...e, color: `rgb(${255},${c},${c})`, width: 25})
+    //                     }
+    //                 });
+    //             }
+    //         }
+    //         this.edges.update(updatedNodes);
+    //     }
+    //     this.hideShowSidebar();
+    // }
+
+    bfsAnimation() {
         this.hideShowSidebar();
 
-        const suggID = this.nodes.getIds()[0],
-            suggNode: Node = nodes.get(suggID);
+        const suggID = this.nodes.getIds()[0];
+        const suggNode = this.nodes.get(suggID);
 
         const colorDivisor = this.longestPath(suggID);
 
         // Set all edges to gray
-        this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
-        await this.delay(450);
+        this.edges.update(this.edges.map(e => ({ ...e, color: "#2c2f33" })));
 
         // BFS (with edge color updates)
-        const Q: (Node | null)[] = [suggNode, null];
-        const V: Set<Node> = new Set<Node>();
+        const Q = [suggNode, null];
+        const V = new Set();
         V.add(suggNode);
 
         let depth = 0;
-        while (Q.length > 0) {
-            const N: Node = Q.shift()
+        let lastTimestamp = null;
+        const update = (timestamp) => {
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            lastTimestamp = timestamp;
 
+            if (Q.length > 0) {
+                requestAnimationFrame(update);
+            }
+
+            const N = Q.shift();
             if (N == null) {
                 depth++;
                 if (Q.length > 0) {
                     Q.push(null);
-                    await this.delay(85-20*(Math.log2(this.graphSize/25)));
                 }
-                continue;
+                return;
             }
 
             // Get neighbors (ignore direction, treat as undirected)
-            const neighbors: Node[] = [];
+            const neighbors = [];
             this.edges.forEach(e => {
-                if (e.from == N.id) { // @ts-ignore
-                    neighbors.push(nodes.get(e.to));
+                if (e.from == N.id) {
+                    neighbors.push(this.nodes.get(e.to));
                 }
-                if (e.to == N.id) { // @ts-ignore
-                    neighbors.push(nodes.get(e.from));
+                if (e.to == N.id) {
+                    neighbors.push(this.nodes.get(e.from));
                 }
             });
-            const updatedNodes = []
+
+            const updatedEdges = [];
             for (const n of neighbors) {
                 if (!V.has(n)) {
                     Q.push(n);
                     V.add(n);
 
-
                     this.edges.forEach(e => {
                         if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
-                            const c = depth*255/colorDivisor;
-                            updatedNodes.push({...e, color: `rgb(${255},${c},${c})`, width: 25})
+                            const c = depth * 255 / colorDivisor;
+                            updatedEdges.push({ ...e, color: `rgb(${255},${c},${c})`, width: 25 });
                         }
                     });
                 }
             }
-            this.edges.update(updatedNodes);
-        }
-        this.hideShowSidebar();
-    }
-
-    /*
-    async dfsAnimation() {
-        this.hideShowSidebar();
-
-        const suggID = this.nodes.getIds()[0],
-            suggNode: Node = nodes.get(suggID);
-
-        const colorDivisor = this.longestPath(suggID);
-
-        // Set all edges to gray
-        this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
-        await this.delay(450);
-
-        // DFS (with edge color updates)
-        const S: {node: Node,d: number}[] = [{node: suggNode, d: 0}];
-        const V: Set<Node> = new Set<Node>();
-        V.add(suggNode);
-
-        while (S.length > 0) {
-            const N: {node: Node,d: number} = S.pop();
-
-            // Get neighbors (ignore direction, treat as undirected)
-            const neighbors: {node: Node, d: number}[] = [];
-            this.edges.forEach(e => {
-                if (e.from == N.node.id) { // @ts-ignore
-                    neighbors.push({node: nodes.get(e.to), d: N.d+1});
-                }
-                if (e.to == N.node.id) { // @ts-ignore
-                    neighbors.push({node: nodes.get(e.from), d: N.d+1});
-                }
-            });
-
-            for (const n of neighbors) {
-                if (!V.has(n.node)) {
-                    V.add(n.node);
-                    S.push({node: n.node, d: N.d+1});
-
-                    this.edges.forEach(e => {
-                        if (e.from == S.at(-1).node.id && e.to == N.node.id || e.from == N.node.id && e.to == S.at(-1).node.id) {
-                            const c = N.d*255/colorDivisor;
-                            const updatedNode = {...e, color: `rgb(${255},${c},${c})`, width: 15}
-                            this.edges.update(updatedNode);
-                        }
-                    });
-
-                    await this.delay(85-20*(Math.log2(this.graphSize/25)));
-                }
-            }
-        }
+            this.edges.update(updatedEdges);
+        };
+        requestAnimationFrame(update);
 
         this.hideShowSidebar();
     }
-    */
 
     /**
      * // TODO: comments!
@@ -281,7 +294,7 @@ export class AnimeGraph {
                     const updatedEdge = {...e, color: `rgb(${200},${c},${c})`, width: 15}
                     this.edges.update(updatedEdge)
                 });
-                await this.delay(85-20*(Math.log2(this.graphSize/25)));
+                await this.delay(21-5*(Math.log2(this.graphSize/25)));
 
                 this.network.getConnectedNodes(N.id).map(n_id => this.nodes.get(n_id)).forEach(n => {
                         // @ts-ignore
