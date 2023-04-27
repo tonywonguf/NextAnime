@@ -207,7 +207,7 @@ export class AnimeGraph {
                 this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
                 const path: Edge[] = this.edgePath(suggNode, N);
                 path.forEach((e, i) => {
-                    const c = i * 255 / colorDivisor;
+                    const c = 255 * (i / path.length);
                     const updatedEdge = {...e, color: `rgb(${255},${c},${c})`, width: 15}
                     this.edges.update(updatedEdge)
                 });
