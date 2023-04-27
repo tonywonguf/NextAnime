@@ -70,7 +70,14 @@ export class AnimeGraph {
         return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
 
+    hideShowSidebar() {
+        const buttons = document.getElementById("buttons");
+        buttons.classList.toggle('invisible');
+    }
+
     async bfsAnimation() {
+        this.hideShowSidebar();
+
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
@@ -107,7 +114,7 @@ export class AnimeGraph {
 
                         this.edges.forEach(e => {
                             if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
-                                const c = Math.round(255 * Math.pow(8 / 12, depth));
+                                const c = Math.round(255 * Math.pow(5 / 6, depth));
                                 this.edges.update([{
                                     ...e,
                                     color: this.rgbToHex(255, 255 - c, 255 - c)
@@ -124,6 +131,7 @@ export class AnimeGraph {
                 await this.delay();
             }
         }
+        this.hideShowSidebar();
     }
 
     edgePath(start: Node, end: Node): Edge[] {
@@ -156,6 +164,8 @@ export class AnimeGraph {
     }
 
     async dfsAnimation() {
+        this.hideShowSidebar();
+
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
@@ -189,6 +199,7 @@ export class AnimeGraph {
             }
         }
         this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
+        this.hideShowSidebar();
     }
 
     //recolors adjacents of a random node
@@ -403,7 +414,7 @@ export class AnimeGraph {
 
     display() {
         return (<>
-                <div className={"absolute z-10 w-0 h-0"}>
+                <div id={"buttons"} className={"absolute z-10 w-0 h-0"}>
                     <GraphSizeButton animeGraph={this}/>
                     {/* Visualization Buttons*/}
                     <VisButton name="Refit!" func={() => this.refit()}/>

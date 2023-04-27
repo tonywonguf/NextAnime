@@ -2,11 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 //button for visual effects on the graph
 export default function VisButton({name, func}) {
-    return (<button
-        className={"btn"}
-        onClick={func}>
-        {name}
-    </button>);
+    return <button id={name} className={"btn"} onClick={func}>{name}</button>;
 }
 
 //specific button for re-sizing amount of nodes used in graph
