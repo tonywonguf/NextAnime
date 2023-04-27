@@ -58,7 +58,7 @@ export class AnimeGraph {
     //recolors adjacents of a random node
     //time: O(E), checks edgeList for node and updates adjacents
     //space: O(1), does not occupy space XD
-    delay(ms: number = 200) {
+    delay(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
@@ -83,7 +83,7 @@ export class AnimeGraph {
 
         // Set all edges to gray
         this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
-        await this.delay();
+        await this.delay(500);
 
         // BFS (with edge color updates)
         const Q: (Node | null)[] = [suggNode, null];
@@ -128,7 +128,7 @@ export class AnimeGraph {
                 ++depth;
                 if (Q.length > 0)
                     Q.push(null);
-                await this.delay();
+                await this.delay(5000);
             }
         }
         this.hideShowSidebar();
@@ -185,8 +185,7 @@ export class AnimeGraph {
                     const c = Math.round(255 * Math.pow(8 / 12, i));
                     this.edges.update({...e, color: this.rgbToHex(255, 255 - c, 255 - c)})
                 });
-
-                await this.delay();
+                await this.delay(250);
 
                 this.network.getConnectedNodes(N.id).map(n_id => this.nodes.get(n_id)).forEach(n => {
                         // @ts-ignore
@@ -262,7 +261,10 @@ export class AnimeGraph {
     //time: O(nodes + graphSize^2), same as initWeights
     //space: O(nodes + graphSize^2), same as initWeights
     setTime(time: number) {
-        document.getElementById('time').textContent = (time / 1000).toFixed(3) + ' sec';
+        const element = document.getElementById('time');
+
+        time /= 1000;
+        element.textContent = time < 0.001 ? '<0.001 sec' : `${time.toFixed(3)} sec`;
     }
 
     createMSTusingPrims() {
