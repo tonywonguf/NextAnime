@@ -22,21 +22,18 @@ const options = {
     },
     edges: {
         color: "#000000",
-        width: 3,
-        length: 20
+        width: 10,
     },
     physics: {
-        barnesHut: {
-            gravitationalConstant: -50000,
-            centralGravity: 0.8,
-            springLength: 200,
-            springConstant: 0.3,
-            damping: 0.3,
+        repulsion: {
+            nodeDistance: 400,
+            springLength: 10,
             avoidOverlap: 0.2,
-            theta: 0.8
+            damping: 0.015
         },
-        maxVelocity: 50,
-        solver: 'barnesHut'
+        maxVelocity: 200,
+        minVelocity: 10,
+        solver: 'repulsion'
     },
     interaction: {
         selectable: true,

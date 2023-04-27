@@ -70,6 +70,7 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
         </div>
     )
 }
+
 //button for associated parameter to change weights on graph
 function CheckButton({name, sP, sSP}) {
     let newSelectedParameters = {...sP}
@@ -83,6 +84,7 @@ function CheckButton({name, sP, sSP}) {
     );
 
 }
+
 //boxes used to display content of specific anime
 function AnimeBox({selectedAnime}) {
     return (
@@ -114,6 +116,7 @@ function AnimeBox({selectedAnime}) {
         </div>
     )
 }
+
 //function for collapsing sidebar
 function collapseSidebar() {
     const sidebar = document.getElementById("side-bar")
@@ -157,31 +160,30 @@ function SimilarityBox({sA, sSA, sP}) {
     return (
         <div className={"similarity-box"}>
 
-            <SimilarityEntry text={`LCS between Titles: ${lcsTitle.length != 0 ? "\"" + lcsTitle + "\"" : 'NONE'}`}
-                             percent={(aLabel.length != 0) ? (100 * lcsTitleSimilarity).toFixed(2) + '%' : "N/A"}/>
+            <SimilarityEntry text={`LCS between Titles: ${lcsTitle.length != 0 ? "\""+lcsTitle+"\"" : 'NONE'}`}
+                             percent={(aLabel.length != 0) ? (100*4*lcsTitleSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
 
             <SimilarityEntry text={`Common Genres: ${interTags.join(", ")}`}
-                             percent={(a.tags.length != 0) ? (100 * interTagsSimilarity).toFixed(2) + '%' : "N/A"}/>
+                             percent={(a.tags.length != 0) ? (100*2*interTagsSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
 
-            <SimilarityEntry
-                text={`Episode Difference: ${(a.episodes && b.episodes) ? Math.abs(a.episodes - b.episodes) : "N/A"}`}
-                percent={(a.episodes && b.episodes) ? (100 * episodeSimilarity).toFixed(2) + '%' : "N/A"}/>
+            <SimilarityEntry text={`Episode Difference: ${(a.episodes && b.episodes) ? Math.abs(a.episodes-b.episodes): "N/A"}`}
+                             percent={(a.episodes && b.episodes) ? (100*episodeSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
 
-            <SimilarityEntry
-                text={`Year Difference: ${(a.seasonYear && b.seasonYear) ? Math.abs(a.seasonYear - b.seasonYear) : "N/A"}`}
-                percent={(a.seasonYear && b.seasonYear) ? (100 * yearSimilarity).toFixed(2) + '%' : "N/A"}/>
+            <SimilarityEntry text={`Year Difference: ${(a.seasonYear && b.seasonYear) ? Math.abs(a.seasonYear-b.seasonYear) : "N/A"}`}
+                             percent={(a.seasonYear && b.seasonYear) ? (100*yearSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
 
             <SimilarityEntry text={`Common Studios: ${interStudios.join(", ")}`}
-                             percent={(arrayA.length != 0) ? (100 * interStudiosSimilarity).toFixed(2) + '%' : "N/A"}/>
+                             percent={(arrayA.length != 0) ? (100*3*interStudiosSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
 
             <div className={"flex text-[2.5vh]"}>
-                <p className={"flex-grow"}>Total Similarity: </p>
-                <p>{(100 * totalSimilarity / similarityDivisor).toFixed(2)}%</p>
+                <p className={"flex-grow"}>Cumulative Total Similarity: </p>
+                <p>{(100*totalSimilarity/similarityDivisor).toFixed(2)}%</p>
             </div>
 
         </div>
     )
 }
+
 //specific similarity text within similarity box
 function SimilarityEntry({text, percent}) {
     return (
@@ -193,6 +195,7 @@ function SimilarityEntry({text, percent}) {
             <hr className={"border-[0.1vh]"}/>
         </>);
 }
+
 //the functional sideBar component which allows for:
 //anime selection
 //parameter manipulation
@@ -209,6 +212,7 @@ export default function SideBar({animeGraph}) {
         Year: true,
         Episodes: true
     });
+
     //updates selectedParameters on animeGraph
     useEffect(() => {
         animeGraph.selectedParameters = selectedParameters;
@@ -236,9 +240,9 @@ export default function SideBar({animeGraph}) {
             <div className={"flex bg-violet-300 h-[5.5vh] rounded-[0.5vh] text-[1vh] p-[0.5vh] pointer-events-auto"}>
                 <CheckButton name="Title" sP={selectedParameters} sSP={setSelectedParameters}/>
                 <CheckButton name="Genre" sP={selectedParameters} sSP={setSelectedParameters}/>
-                <CheckButton name="Studio" sP={selectedParameters} sSP={setSelectedParameters}/>
-                <CheckButton name="Year" sP={selectedParameters} sSP={setSelectedParameters}/>
                 <CheckButton name="Episodes" sP={selectedParameters} sSP={setSelectedParameters}/>
+                <CheckButton name="Year" sP={selectedParameters} sSP={setSelectedParameters}/>
+                <CheckButton name="Studio" sP={selectedParameters} sSP={setSelectedParameters}/>
             </div>
 
             {/* Container boxes */}

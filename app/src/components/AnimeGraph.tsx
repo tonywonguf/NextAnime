@@ -16,6 +16,7 @@ export type AnimeGraphInfo = {
     fitOptions?: FitOptions
     options: object
 }
+
 //entire graph info
 export class AnimeGraph {
     containerRef
@@ -26,6 +27,7 @@ export class AnimeGraph {
     options: object
     selectedParameters: object
     graphSize: number
+
     //uses passed in info to initialize graph
     constructor(info: AnimeGraphInfo) {
         this.containerRef = info.containerRef;
@@ -38,12 +40,13 @@ export class AnimeGraph {
                 easingFunction: "linear"
             }
         }
-        this.graphSize = 100;
+        this.graphSize = 50;
     }
 
     refit() {
         this.network.fit(this.fitOptions);
     }
+
     //recolors all the existing edges with a random color
     //time: O(E), goes through all edges
     //space: O(1), doesnt augment space
@@ -131,12 +134,14 @@ export class AnimeGraph {
             color: '#ffffff'
         })))
     }
+
     //time: O(nodes*getWeight() + graphSize^2)
     //iterates through all nodes making weights,
     //iterates through graphSize making all edges (and sorts)
     //space: O(nodes + graphSize^2)
     initializeWeights(suggID, suggNode): [Node[], Edge[]] {
         let edges: Edge[] = [];
+
         //makes outward edges using suggNode
         for (let j = 0; j < nodes.length; ++j) {
             if (j != suggID)
@@ -148,6 +153,7 @@ export class AnimeGraph {
                     id: uuidv4()
                 }));
         }
+
         edges = edges.sort((a, b) => b.weight - a.weight).splice(0, this.graphSize - 1);
         // Get the top nodes
         const topNodes: Node[] = [suggNode, ...edges.map(e => nodes.get(e.to))];
@@ -172,27 +178,27 @@ export class AnimeGraph {
         topEdges = topEdges.sort((a, b) => b.weight - a.weight);
         return [topNodes, topEdges];
     }
+
     //time: O(nodes + graphSize^2), same as initWeights
     //space: O(nodes + graphSize^2), same as initWeights
-
     setTime(time: number) {
         document.getElementById('time').textContent = (time / 1000).toFixed(3) + ' sec';
     }
 
     createMSTusingPrims() {
-        if (this.nodes.length != 1) {
-            if (this.nodes.length > 1)
-                alert("Select only 1 anime!");
-            else
-                alert("You must select an anime before running Prim's!")
+        if (this.nodes.length == 0) {
+            alert("You must select an anime!")
             return;
         }
-        this.edges.clear();
 
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
-        const [topNodes, topEdges] = this.initializeWeights(suggID, suggNode)
+        this.edges.clear();
+        this.nodes.clear();
+        this.nodes.add(suggNode);
+
+        const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
 
         //Prim's Algorithm
         //time: O(Edges^2), go through edges until done :D
@@ -213,26 +219,28 @@ export class AnimeGraph {
         const timeEnd = performance.now();
         this.setTime(timeEnd - timeStart);
 
-        this.nodes.add(topNodes.slice(1));
-        this.edges.add(mstEdges);
+        this.nodes.add(topNodes.splice(1))
+        this.edges.add(mstEdges)
+
         console.log(mstEdges);
     }
+
     //time: O(nodes + graphSize^2), same as initWeights
     //space: O(nodes + graphSize^2), same as initWeights
     createMSTusingKruskal() {
-        if (this.nodes.length != 1) {
-            if (this.nodes.length > 1)
-                alert("Select only 1 anime!");
-            else
-                alert("You must select an anime before running Kruskal's!")
+        if (this.nodes.length == 0) {
+            alert("You must select an anime!")
             return;
         }
-        this.edges.clear();
 
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
-        const [topNodes, topEdges] = this.initializeWeights(suggID, suggNode)
+        this.edges.clear();
+        this.nodes.clear();
+        this.nodes.add(suggNode);
+
+        const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
 
         // Kruskal's Algorithm
         // time: O(Edges log(Edges))
@@ -262,6 +270,7 @@ export class AnimeGraph {
         this.nodes.add(topNodes.slice(1));
         this.edges.add(mstEdges);
     }
+
     //time: O(log(Edges)) checks through sorted edges if contains node
     //space: O(1) adds to end
     kruskalFind(components: Set<number>[], node: number) {
@@ -271,27 +280,30 @@ export class AnimeGraph {
         components.push(new Set([node]));
         return components.at(-1);
     }
+
     //time: O(nodes)
     //space: O(edges)
     suggestedAnimeList() {
-        if (this.nodes.length != 1) {
-            if (this.nodes.length > 1)
-                alert("Select only 1 anime!");
-            else
-                alert("You must select an anime!")
+        if (this.nodes.length == 0) {
+            alert("You must select an anime!")
             return;
         }
-        this.edges.clear();
 
-        let ids = this.nodes.getIds();
+        const suggID = this.nodes.getIds()[0],
+            suggNode: Node = nodes.get(suggID);
+
+        this.edges.clear();
+        this.nodes.clear();
+        this.nodes.add(suggNode);
+
         let weights: Edge[] = []
 
         for (let j = 0; j < nodes.length; j++) {
-            if (ids[0] == j) continue;
+            if (suggID == j) continue;
             weights.push(new Edge({
-                from: ids[0],
+                from: suggID,
                 to: j,
-                weight: getWeight(this.nodes.get(ids[0]), nodes.get(j), this.selectedParameters),
+                weight: getWeight(suggNode, nodes.get(j), this.selectedParameters),
                 color: randColor(),
                 id: uuidv4()
             }));
@@ -302,9 +314,9 @@ export class AnimeGraph {
 
         sortedWeights = sortedWeights.map((e, i) => {
             if (i == 0) {
-                const updatedNode = {...this.nodes.get(e.from), size: 50, fixed: true};
+                const updatedNode = {...suggNode, size: 80, fixed: true};
                 this.nodes.update(updatedNode)
-                return {...e, color: 'rgb(127,0,255)'};
+                return {...e, color: `rgb(127,0,255)`};
             }
             return new Edge({
                 ...e, color: `rgb(${127 + i * (127 / this.graphSize)}, ${i * (255 / this.graphSize)}, ${255})`,
@@ -314,17 +326,13 @@ export class AnimeGraph {
 
         this.edges.add(sortedWeights);
         this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
-        let printout = sortedWeights.map((e, i) => {
-            return {
-                name: ((nodes.get(e.to)) as Node).label,
-                weight: e.weight
-            }
-        });
     }
+
     clear() {
         this.nodes.clear();
         this.edges.clear();
     }
+
     display() {
         return (<>
             <div className={"absolute z-10 w-0 h-0"}>
