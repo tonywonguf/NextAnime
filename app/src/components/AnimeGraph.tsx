@@ -98,7 +98,7 @@ export class AnimeGraph {
 
         // Set all edges to gray
         this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
-        await this.delay(500);
+        await this.delay(450);
 
         // BFS (with edge color updates)
         const Q: (Node | null)[] = [suggNode, null];
@@ -107,48 +107,123 @@ export class AnimeGraph {
 
         let depth = 0;
         while (Q.length > 0) {
-            if (Q.at(0) != null) {
-                const N: Node = Q.at(0);
-                Q.shift();
+            const N: Node = Q.shift()
 
-                // Get neighbors (ignore direction, treat as undirected)
-                const neighbors: Node[] = [];
-                this.edges.forEach(e => {
-                    if (e.from == N.id) { // @ts-ignore
-                        neighbors.push(nodes.get(e.to));
-                    }
-                    if (e.to == N.id) { // @ts-ignore
-                        neighbors.push(nodes.get(e.from));
-                    }
-                });
-
-                for (const n of neighbors) {
-                    if (!V.has(n)) {
-                        Q.push(n);
-                        V.add(n);
-
-                        this.edges.forEach(e => {
-                            if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
-                                const c = depth*255/colorDivisor;
-                                this.edges.update([{
-                                    ...e,
-                                    color: `rgb(${255},${c},${c})`
-                                }]);
-                            }
-                        });
-                    }
-                }
-            } else {
-                Q.shift();
-                ++depth;
-                if (Q.length > 0)
+            if (N == null) {
+                depth++;
+                if (Q.length > 0) {
                     Q.push(null);
-                await this.delay(500);
+                    await this.delay(85-20*(Math.log2(this.graphSize/25)));
+                }
+                continue;
             }
+
+            // Get neighbors (ignore direction, treat as undirected)
+            const neighbors: Node[] = [];
+            this.edges.forEach(e => {
+                if (e.from == N.id) { // @ts-ignore
+                    neighbors.push(nodes.get(e.to));
+                }
+                if (e.to == N.id) { // @ts-ignore
+                    neighbors.push(nodes.get(e.from));
+                }
+            });
+            const updatedNodes = []
+            for (const n of neighbors) {
+                if (!V.has(n)) {
+                    Q.push(n);
+                    V.add(n);
+
+
+                    this.edges.forEach(e => {
+                        if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
+                            const c = depth*255/colorDivisor;
+                            updatedNodes.push({...e, color: `rgb(${255},${c},${c})`, width: 25})
+                        }
+                    });
+                }
+            }
+            this.edges.update(updatedNodes);
         }
         this.hideShowSidebar();
     }
 
+    /*
+    async dfsAnimation() {
+        this.hideShowSidebar();
+
+        const suggID = this.nodes.getIds()[0],
+            suggNode: Node = nodes.get(suggID);
+
+        const colorDivisor = this.longestPath(suggID);
+
+        // Set all edges to gray
+        this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
+        await this.delay(450);
+
+        // DFS (with edge color updates)
+        const S: {node: Node,d: number}[] = [{node: suggNode, d: 0}];
+        const V: Set<Node> = new Set<Node>();
+        V.add(suggNode);
+
+        while (S.length > 0) {
+            const N: {node: Node,d: number} = S.pop();
+
+            // Get neighbors (ignore direction, treat as undirected)
+            const neighbors: {node: Node, d: number}[] = [];
+            this.edges.forEach(e => {
+                if (e.from == N.node.id) { // @ts-ignore
+                    neighbors.push({node: nodes.get(e.to), d: N.d+1});
+                }
+                if (e.to == N.node.id) { // @ts-ignore
+                    neighbors.push({node: nodes.get(e.from), d: N.d+1});
+                }
+            });
+
+            for (const n of neighbors) {
+                if (!V.has(n.node)) {
+                    V.add(n.node);
+                    S.push({node: n.node, d: N.d+1});
+
+                    this.edges.forEach(e => {
+                        if (e.from == S.at(-1).node.id && e.to == N.node.id || e.from == N.node.id && e.to == S.at(-1).node.id) {
+                            const c = N.d*255/colorDivisor;
+                            const updatedNode = {...e, color: `rgb(${255},${c},${c})`, width: 15}
+                            this.edges.update(updatedNode);
+                        }
+                    });
+
+                    await this.delay(85-20*(Math.log2(this.graphSize/25)));
+                }
+            }
+        }
+
+        this.hideShowSidebar();
+    }
+    */
+
+    /**
+     * // TODO: comments!
+     * // FIXME: fuck me
+     *
+     * @param start - Node that designates start of path
+     * @param end - Node that designates end of path
+     * @returns {Edge[]} The list of edges from a start node to an end node
+     * @throws
+     * @deprecated click
+     * @inheritDoc the
+     * @callback brown
+     * @private text
+     * @protected while
+     * @public holding
+     * @readonly down
+     * @static CTRL
+     * @template
+     * @see {@link http://github.com}
+     * @see {@link https://www.pornhub.com} <-- look how epic this is written!
+     * @time O(nodes + grpahSize^2)
+     * @space O(nodes + graphSize^2)
+     */
     edgePath(start: Node, end: Node): Edge[] {
         const pathNodes: Id[] = [start.id];
         const visited: Set<Id> = new Set<Id>();
@@ -178,13 +253,16 @@ export class AnimeGraph {
         return pathEdges;
     }
 
+    /**
+     * // FIXME: this shit takes way too long on 400 graph size pls fix
+     */
     async dfsAnimation() {
         this.hideShowSidebar();
 
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
-        const colorDivisor = Math.sqrt(this.longestPath(suggID));
+        const colorDivisor = this.longestPath(suggID);
 
         // DFS (with edge color updates)
         const stack: Node[] = [suggNode];
@@ -199,10 +277,11 @@ export class AnimeGraph {
                 this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
                 const path: Edge[] = this.edgePath(suggNode, N);
                 path.forEach((e, i) => {
-                    const c = i*255/colorDivisor;
-                    this.edges.update({...e, color: `rgb(${255},${c},${c})`})
+                    const c = i*200/colorDivisor;
+                    const updatedEdge = {...e, color: `rgb(${200},${c},${c})`, width: 15}
+                    this.edges.update(updatedEdge)
                 });
-                await this.delay(250);
+                await this.delay(85-20*(Math.log2(this.graphSize/25)));
 
                 this.network.getConnectedNodes(N.id).map(n_id => this.nodes.get(n_id)).forEach(n => {
                         // @ts-ignore
@@ -216,19 +295,6 @@ export class AnimeGraph {
         }
         this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
         this.hideShowSidebar();
-    }
-
-    //recolors adjacents of a random node
-    //time: O(E), checks edgeList for node and updates adjacents
-    //space: O(1), does not occupy space XD
-    chooseRandomNodeAndColorAdjacents() {
-        // Color the adjacent edges and nodes
-        // Edges recolored
-        // Update the data sets and the network
-        this.edges.update(this.network.getConnectedEdges(this.nodes.getIds()[Math.floor(Math.random() * this.nodes.length)]).map((edgeId) => ({
-            ...this.edges.get(edgeId),
-            color: '#ffffff'
-        })))
     }
 
     //time: O(nodes*getWeight() + graphSize^2)
@@ -275,16 +341,14 @@ export class AnimeGraph {
         return [topNodes, topEdges];
     }
 
-    //time: O(nodes + graphSize^2), same as initWeights
-    //space: O(nodes + graphSize^2), same as initWeights
-    setTime(time: number) {
+    setTime(algorithm: string, time: number) {
         const element = document.getElementById('time');
 
         time /= 1000;
-        element.textContent = time < 0.001 ? '<0.001 sec' : `${time.toFixed(3)} sec`;
+        element.textContent = algorithm + " ran in " + (time < 0.001 ? '<0.001 sec' : `${time.toFixed(3)} sec`);
     }
 
-    createMSTusingPrims() {
+    async createMSTusingPrims() {
         if (this.nodes.length == 0) {
             alert("You must select an anime!")
             return;
@@ -316,17 +380,15 @@ export class AnimeGraph {
 
         }
         const timeEnd = performance.now();
-        this.setTime(timeEnd - timeStart);
+        await this.setTime("Prim's",timeEnd - timeStart);
 
-        this.nodes.add(topNodes.splice(1))
-        this.edges.add(mstEdges)
-
-        console.log(mstEdges);
+        this.nodes.update(topNodes.slice(1));
+        this.edges.add(mstEdges);
     }
 
     //time: O(nodes + graphSize^2), same as initWeights
     //space: O(nodes + graphSize^2), same as initWeights
-    createMSTusingKruskal() {
+    async createMSTusingKruskal() {
         if (this.nodes.length == 0) {
             alert("You must select an anime!")
             return;
@@ -364,9 +426,9 @@ export class AnimeGraph {
             addedNode.add(currEdge.to);
         }
         const timeEnd = performance.now();
-        this.setTime(timeEnd - timeStart);
+        await this.setTime("Kruskal's", timeEnd - timeStart);
 
-        this.nodes.add(topNodes.slice(1));
+        this.nodes.update(topNodes.slice(1));
         this.edges.add(mstEdges);
     }
 
@@ -438,7 +500,6 @@ export class AnimeGraph {
                     {/* Visualization Buttons*/}
                     <VisButton name="Refit!" func={() => this.refit()}/>
                     <VisButton name="Recolor!" func={() => this.recolor()}/>
-                    <VisButton name="Poop!" func={() => this.chooseRandomNodeAndColorAdjacents()}/>
                     <VisButton name="primsMST!" func={() => this.createMSTusingPrims()}/>
                     <VisButton name="kruskalMST!" func={() => this.createMSTusingKruskal()}/>
                     <VisButton name="BFS!" func={() => this.bfsAnimation()}/>
