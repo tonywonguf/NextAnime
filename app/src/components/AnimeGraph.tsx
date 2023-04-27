@@ -223,8 +223,8 @@ export class AnimeGraph {
                 this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
                 const path: Edge[] = this.edgePath(suggNode, N);
                 path.forEach((e, i) => {
-                    const c = i * 200 / colorDivisor;
-                    const updatedEdge = {...e, color: `rgb(${200},${c},${c})`, width: 15}
+                    const c = i * 255 / colorDivisor;
+                    const updatedEdge = {...e, color: `rgb(${255},${c},${c})`, width: 15}
                     this.edges.update(updatedEdge)
                 });
                 await this.delay(21 - 5 * (Math.log2(this.graphSize / 25)));
