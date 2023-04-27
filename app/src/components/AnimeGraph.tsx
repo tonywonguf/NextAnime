@@ -53,6 +53,7 @@ export class AnimeGraph {
     recolor() {
         this.edges.update(this.edges.map(e => ({...e, color: randColor()})));
     }
+
     //recolors adjacents of a random node
     //time: O(E), checks edgeList for node and updates adjacents
     //space: O(1), does not occupy space XD
@@ -198,7 +199,7 @@ export class AnimeGraph {
         this.nodes.clear();
         this.nodes.add(suggNode);
 
-        const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
+        const [topNodes, topEdges] = this.initializeWeights(suggID, suggNode)
 
         //Prim's Algorithm
         //time: O(Edges^2), go through edges until done :D
@@ -240,7 +241,7 @@ export class AnimeGraph {
         this.nodes.clear();
         this.nodes.add(suggNode);
 
-        const [topNodes, topEdges] = this.initializeWeights(suggID,suggNode)
+        const [topNodes, topEdges] = this.initializeWeights(suggID, suggNode)
 
         // Kruskal's Algorithm
         // time: O(Edges log(Edges))
@@ -316,7 +317,7 @@ export class AnimeGraph {
             if (i == 0) {
                 const updatedNode = {...suggNode, size: 80, fixed: true};
                 this.nodes.update(updatedNode)
-                return {...e, color: `rgb(127,0,255)`};
+                return {...e, color: `rgb(127, 0, 255)`};
             }
             return new Edge({
                 ...e, color: `rgb(${127 + i * (127 / this.graphSize)}, ${i * (255 / this.graphSize)}, ${255})`,
