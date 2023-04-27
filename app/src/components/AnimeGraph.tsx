@@ -64,7 +64,7 @@ export class AnimeGraph {
 
     longestPath(n: Id): number {
 
-        const Q: {id: Id, d: number}[] = [{id: n, d: 0}];
+        const Q: { id: Id, d: number }[] = [{id: n, d: 0}];
         const V: Set<Id> = new Set<Id>();
         V.add(n)
 
@@ -73,7 +73,7 @@ export class AnimeGraph {
             const front = Q.shift();
             this.network.getConnectedNodes(front.id).forEach(id => {
                 if (!V.has(id)) {
-                    depth = front.d+1;
+                    depth = front.d + 1;
                     Q.push({id, d: depth})
                     V.add(id)
                 }
@@ -88,130 +88,63 @@ export class AnimeGraph {
         buttons.classList.toggle('invisible');
     }
 
-    // async bfsAnimation() {
-    //     this.hideShowSidebar();
-    //
-    //     const suggID = this.nodes.getIds()[0],
-    //         suggNode: Node = nodes.get(suggID);
-    //
-    //     const colorDivisor = this.longestPath(suggID);
-    //
-    //     // Set all edges to gray
-    //     this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
-    //     await this.delay(450);
-    //
-    //     // BFS (with edge color updates)
-    //     const Q: (Node | null)[] = [suggNode, null];
-    //     const V: Set<Node> = new Set<Node>();
-    //     V.add(suggNode);
-    //
-    //     let depth = 0;
-    //     while (Q.length > 0) {
-    //         const N: Node = Q.shift()
-    //
-    //         if (N == null) {
-    //             depth++;
-    //             if (Q.length > 0) {
-    //                 Q.push(null);
-    //                 await this.delay(85-20*(Math.log2(this.graphSize/25)));
-    //             }
-    //             continue;
-    //         }
-    //
-    //         // Get neighbors (ignore direction, treat as undirected)
-    //         const neighbors: Node[] = [];
-    //         this.edges.forEach(e => {
-    //             if (e.from == N.id) { // @ts-ignore
-    //                 neighbors.push(nodes.get(e.to));
-    //             }
-    //             if (e.to == N.id) { // @ts-ignore
-    //                 neighbors.push(nodes.get(e.from));
-    //             }
-    //         });
-    //         const updatedNodes = []
-    //         for (const n of neighbors) {
-    //             if (!V.has(n)) {
-    //                 Q.push(n);
-    //                 V.add(n);
-    //
-    //
-    //                 this.edges.forEach(e => {
-    //                     if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
-    //                         const c = depth*255/colorDivisor;
-    //                         updatedNodes.push({...e, color: `rgb(${255},${c},${c})`, width: 25})
-    //                     }
-    //                 });
-    //             }
-    //         }
-    //         this.edges.update(updatedNodes);
-    //     }
-    //     this.hideShowSidebar();
-    // }
-
-    bfsAnimation() {
+    async bfsAnimation() {
         this.hideShowSidebar();
 
-        const suggID = this.nodes.getIds()[0];
-        const suggNode = this.nodes.get(suggID);
+        const suggID = this.nodes.getIds()[0],
+            suggNode: Node = nodes.get(suggID);
 
         const colorDivisor = this.longestPath(suggID);
 
         // Set all edges to gray
-        this.edges.update(this.edges.map(e => ({ ...e, color: "#2c2f33" })));
+        this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
+        await this.delay(450);
 
         // BFS (with edge color updates)
-        const Q = [suggNode, null];
-        const V = new Set();
+        const Q: (Node | null)[] = [suggNode, null];
+        const V: Set<Node> = new Set<Node>();
         V.add(suggNode);
 
         let depth = 0;
-        let lastTimestamp = null;
-        const update = (timestamp) => {
-            if (!lastTimestamp) lastTimestamp = timestamp;
-            lastTimestamp = timestamp;
+        while (Q.length > 0) {
+            const N: Node = Q.shift()
 
-            if (Q.length > 0) {
-                requestAnimationFrame(update);
-            }
-
-            const N = Q.shift();
             if (N == null) {
                 depth++;
                 if (Q.length > 0) {
                     Q.push(null);
+                    await this.delay(85 - 20 * (Math.log2(this.graphSize / 25)));
                 }
-                return;
+                continue;
             }
 
             // Get neighbors (ignore direction, treat as undirected)
-            const neighbors = [];
+            const neighbors: Node[] = [];
             this.edges.forEach(e => {
-                if (e.from == N.id) {
-                    neighbors.push(this.nodes.get(e.to));
+                if (e.from == N.id) { // @ts-ignore
+                    neighbors.push(nodes.get(e.to));
                 }
-                if (e.to == N.id) {
-                    neighbors.push(this.nodes.get(e.from));
+                if (e.to == N.id) { // @ts-ignore
+                    neighbors.push(nodes.get(e.from));
                 }
             });
-
-            const updatedEdges = [];
+            const updatedNodes = []
             for (const n of neighbors) {
                 if (!V.has(n)) {
                     Q.push(n);
                     V.add(n);
 
+
                     this.edges.forEach(e => {
                         if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
                             const c = depth * 255 / colorDivisor;
-                            updatedEdges.push({ ...e, color: `rgb(${255},${c},${c})`, width: 25 });
+                            updatedNodes.push({...e, color: `rgb(${255},${c},${c})`, width: 25})
                         }
                     });
                 }
             }
-            this.edges.update(updatedEdges);
-        };
-        requestAnimationFrame(update);
-
+            this.edges.update(updatedNodes);
+        }
         this.hideShowSidebar();
     }
 
@@ -290,11 +223,11 @@ export class AnimeGraph {
                 this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
                 const path: Edge[] = this.edgePath(suggNode, N);
                 path.forEach((e, i) => {
-                    const c = i*200/colorDivisor;
+                    const c = i * 200 / colorDivisor;
                     const updatedEdge = {...e, color: `rgb(${200},${c},${c})`, width: 15}
                     this.edges.update(updatedEdge)
                 });
-                await this.delay(21-5*(Math.log2(this.graphSize/25)));
+                await this.delay(21 - 5 * (Math.log2(this.graphSize / 25)));
 
                 this.network.getConnectedNodes(N.id).map(n_id => this.nodes.get(n_id)).forEach(n => {
                         // @ts-ignore
@@ -393,7 +326,7 @@ export class AnimeGraph {
 
         }
         const timeEnd = performance.now();
-        await this.setTime("Prim's",timeEnd - timeStart);
+        await this.setTime("Prim's", timeEnd - timeStart);
 
         this.nodes.update(topNodes.slice(1));
         this.edges.add(mstEdges);
