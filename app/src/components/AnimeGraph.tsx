@@ -249,7 +249,7 @@ export class AnimeGraph {
         const timeStart = performance.now();
         let addedNode: Set<number> = new Set<number>();
         let mstEdges: Edge[] = [];
-        let components: Set<number>[] = [];
+        let components: Set<number>[] = topNodes.map(n => new Set([n.id]));
         while (addedNode.size < topNodes.length) {
             const currEdge: Edge = topEdges[0];
             topEdges.shift();
@@ -278,8 +278,7 @@ export class AnimeGraph {
         for (const c of components)
             if (c.has(node))
                 return c;
-        components.push(new Set([node]));
-        return components.at(-1);
+        return null;
     }
 
     //time: O(nodes)
