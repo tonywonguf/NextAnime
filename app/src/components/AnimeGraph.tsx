@@ -190,6 +190,7 @@ export class AnimeGraph {
         }
         this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
     }
+
     //recolors adjacents of a random node
     //time: O(E), checks edgeList for node and updates adjacents
     //space: O(1), does not occupy space XD
