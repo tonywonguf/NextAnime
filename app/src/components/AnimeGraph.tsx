@@ -252,14 +252,15 @@ export class AnimeGraph {
 
         //makes outward edges using suggNode
         for (let j = 0; j < nodes.length; ++j) {
-            if (j != suggID)
+            if (j != suggID) {
                 edges.push(new Edge({
                     from: suggID,
-                    to: j,
+                    to: j as Id,
                     weight: getWeight(suggNode, nodes.get(j), this.selectedParameters),
                     color: 'rbg(127, 0, 255)',
                     id: uuidv4()
                 }));
+            }
         }
 
         edges = edges.sort((a, b) => b.weight - a.weight).splice(0, this.graphSize - 1);
@@ -270,11 +271,9 @@ export class AnimeGraph {
         topNodes.forEach(n1 =>
             topNodes.forEach(n2 => {
                     if (n1 != n2) {
-                        const n1_id = n1.id,
-                            n2_id = n2.id;
                         topEdges.push(new Edge({
-                            from: n1_id,
-                            to: n2_id,
+                            from: n1.id,
+                            to: n2.id,
                             weight: getWeight(n1, n2, this.selectedParameters),
                             color: 'rgb(200,73,255)',
                             id: uuidv4()
@@ -283,6 +282,7 @@ export class AnimeGraph {
                 }
             )
         );
+
         topEdges = topEdges.sort((a, b) => b.weight - a.weight);
         return [topNodes, topEdges];
     }
@@ -366,10 +366,11 @@ export class AnimeGraph {
                 c2.forEach(n => c1.add(n));
                 components = components.filter(c => c != c2);
                 mstEdges.push(currEdge);
+
+                addedNode.add(currEdge.from);
+                addedNode.add(currEdge.to);
             }
 
-            addedNode.add(currEdge.from);
-            addedNode.add(currEdge.to);
         }
         const timeEnd = performance.now();
         await this.setTime("Kruskal's", timeEnd - timeStart);
