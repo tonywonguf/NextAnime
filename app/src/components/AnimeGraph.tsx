@@ -41,7 +41,7 @@ export class AnimeGraph {
                 easingFunction: "linear"
             }
         }
-        this.graphSize = 50;
+        this.graphSize = 100;
     }
 
     refit() {
@@ -69,8 +69,9 @@ export class AnimeGraph {
         V.add(n)
 
         let depth = 0;
-        while (Q.length > 0) {
-            const front = Q.shift();
+        let index = 0;
+        while (index < Q.length) {
+            const front = Q[index++];
             this.network.getConnectedNodes(front.id).forEach(id => {
                 if (!V.has(id)) {
                     depth = front.d + 1;
@@ -106,12 +107,13 @@ export class AnimeGraph {
         V.add(suggNode);
 
         let depth = 0;
-        while (Q.length > 0) {
-            const N: Node = Q.shift()
+        let index = 0;
+        while (index < Q.length) {
+            const N: Node = Q[index++];
 
             if (N == null) {
                 depth++;
-                if (Q.length > 0) {
+                if (index < Q.length) {
                     Q.push(null);
                     await this.delay(3000 / longestPathLength);
                 }
@@ -183,9 +185,6 @@ export class AnimeGraph {
         return pathEdges;
     }
 
-    /**
-     * // FIXME: this shit takes way too long on 400 graph size pls fix
-     */
     async dfsAnimation() {
         this.hideShowSidebar();
 
@@ -289,7 +288,7 @@ export class AnimeGraph {
         this.nodes.clear();
         this.nodes.add(suggNode);
 
-        const [topNodes, topEdges] = this.initializeWeights(suggID, suggNode)
+        let [topNodes, topEdges] = this.initializeWeights(suggID, suggNode)
 
         //Prim's Algorithm
         //time: O(Edges^2), go through edges until done :D
@@ -297,16 +296,20 @@ export class AnimeGraph {
         const timeStart = performance.now();
         let processedNode: Set<Id> = new Set<Id>();
         let mstEdges: Edge[] = [];
-        processedNode.add(suggNode.id);
-        while (processedNode.size < topNodes.length) {
-            const e: Edge = topEdges[0];
-            topEdges.shift();
-            if (processedNode.has(e.from) && !processedNode.has(e.to)) {
-                mstEdges.push(e);
-                processedNode.add(e.to);
-            }
+        processedNode.add(suggID);
 
+        while (mstEdges.length < topNodes.length-1) {
+            for (let i = 0; i < topEdges.length; i++) {
+                const e = topEdges[i];
+                if ((processedNode.has(e.from) && !processedNode.has(e.to)) || (!processedNode.has(e.from) && processedNode.has(e.to))) {
+                    mstEdges.push(e);
+                    processedNode.add(e.from);
+                    processedNode.add(e.to);
+                    break;
+                }
+            }
         }
+
         const timeEnd = performance.now();
         let weightMST = 0;
         mstEdges.forEach(e => weightMST += e.weight)
@@ -340,15 +343,16 @@ export class AnimeGraph {
         let mstEdges: Edge[] = [];
         let components: Set<number>[] = topNodes.map(n => new Set([n.id]));
         while (mstEdges.length < topNodes.length - 1) {
-            const currEdge: Edge = topEdges[0];
-            topEdges.shift();
+            for (let i = 0; i < topEdges.length; i++) {
+                const currEdge: Edge = topEdges[i];
 
-            let c1 = this.kruskalFind(components, currEdge.from),
-                c2 = this.kruskalFind(components, currEdge.to);
-            if (c1 != c2) {
-                c2.forEach(n => c1.add(n));
-                components = components.filter(c => c != c2);
-                mstEdges.push(currEdge);
+                let c1 = this.kruskalFind(components, currEdge.from),
+                    c2 = this.kruskalFind(components, currEdge.to);
+                if (c1 != c2) {
+                    c2.forEach(n => c1.add(n));
+                    components = components.filter(c => c != c2);
+                    mstEdges.push(currEdge);
+                }
             }
         }
         const timeEnd = performance.now();
