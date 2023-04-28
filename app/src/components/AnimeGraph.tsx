@@ -268,11 +268,12 @@ export class AnimeGraph {
         return [topNodes, topEdges];
     }
 
-    setTime(algorithm: string, time: number) {
+    setWeightAndTime(algorithm: string, weight: number, time: number) {
         const element = document.getElementById('time');
 
         time /= 1000;
-        element.textContent = algorithm + " ran in " + (time < 0.001 ? '<0.001 sec' : `${time.toFixed(3)} sec`);
+        element.innerHTML = algorithm + " ran in " + (time < 0.001 ? '<0.001s' : `${time.toFixed(3)}s`)
+                              + `<br\>Max Spanning Tree weight: ${weight.toFixed(2)}`;
     }
 
     async createMSTusingPrims() {
@@ -307,7 +308,9 @@ export class AnimeGraph {
 
         }
         const timeEnd = performance.now();
-        await this.setTime("Prim's", timeEnd - timeStart);
+        let weightMST = 0;
+        mstEdges.forEach(e => weightMST += e.weight)
+        await this.setWeightAndTime("Prim's", weightMST, timeEnd - timeStart);
 
         this.nodes.update(topNodes.slice(1));
         this.edges.add(mstEdges);
@@ -349,7 +352,9 @@ export class AnimeGraph {
             }
         }
         const timeEnd = performance.now();
-        await this.setTime("Kruskal's", timeEnd - timeStart);
+        let weightMST = 0;
+        mstEdges.forEach(e => weightMST += e.weight)
+        await this.setWeightAndTime("Kruskal's", weightMST, timeEnd - timeStart);
 
         this.nodes.update(topNodes.slice(1));
         this.edges.add(mstEdges);
