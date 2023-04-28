@@ -192,8 +192,6 @@ export class AnimeGraph {
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
-        const colorDivisor = this.longestPath(suggID);
-
         // DFS (with edge color updates)
         const stack: Node[] = [suggNode];
         const visited: Set<Node> = new Set<Node>();
