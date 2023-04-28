@@ -94,11 +94,11 @@ export class AnimeGraph {
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
-        const colorDivisor = this.longestPath(suggID);
+        const longestPathLength = this.longestPath(suggID);
 
         // Set all edges to gray
         this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
-        await this.delay(450);
+        await this.delay(500);
 
         // BFS (with edge color updates)
         const Q: (Node | null)[] = [suggNode, null];
@@ -113,7 +113,7 @@ export class AnimeGraph {
                 depth++;
                 if (Q.length > 0) {
                     Q.push(null);
-                    await this.delay(85 - 20 * (Math.log2(this.graphSize / 25)));
+                    await this.delay(3000 / longestPathLength);
                 }
                 continue;
             }
@@ -134,10 +134,9 @@ export class AnimeGraph {
                     Q.push(n);
                     V.add(n);
 
-
                     this.edges.forEach(e => {
                         if (e.from == n.id && e.to == N.id || e.from == N.id && e.to == n.id) {
-                            const c = depth * 255 / colorDivisor;
+                            const c = depth * 255 / longestPathLength;
                             updatedNodes.push({...e, color: `rgb(${255},${c},${c})`, width: 25})
                         }
                     });
@@ -149,24 +148,9 @@ export class AnimeGraph {
     }
 
     /**
-     * // TODO: comments!
-     * // FIXME: fuck me
-     *
      * @param start - Node that designates start of path
      * @param end - Node that designates end of path
      * @returns {Edge[]} The list of edges from a start node to an end node
-     * @throws
-     * @deprecated click
-     * @inheritDoc the
-     * @callback brown
-     * @private text
-     * @protected while
-     * @public holding
-     * @readonly down
-     * @static CTRL
-     * @template
-     * @see {@link http://github.com}
-     * @see {@link https://www.pornhub.com} <-- look how epic this is written!
      * @time O(nodes + grpahSize^2)
      * @space O(nodes + graphSize^2)
      */
@@ -223,11 +207,11 @@ export class AnimeGraph {
                 this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
                 const path: Edge[] = this.edgePath(suggNode, N);
                 path.forEach((e, i) => {
-                    const c = i * 255 / colorDivisor;
+                    const c = 255 * (i / path.length);
                     const updatedEdge = {...e, color: `rgb(${255},${c},${c})`, width: 15}
                     this.edges.update(updatedEdge)
                 });
-                await this.delay(21 - 5 * (Math.log2(this.graphSize / 25)));
+                await this.delay(3000 / this.graphSize);
 
                 this.network.getConnectedNodes(N.id).map(n_id => this.nodes.get(n_id)).forEach(n => {
                         // @ts-ignore
