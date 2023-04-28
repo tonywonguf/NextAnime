@@ -3,11 +3,21 @@ import {Node} from "vis-network"
 import {nodes} from "./Datafile";
 import {longestCommonSubstring} from "./ToolBox";
 
+/**
+ *
+ * @param animeGraph
+ * @param selectedAnime
+ * @param setSelectedAnime
+ * @constructor
+ */
 function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     let [searchString, setSearchString] = useState("")
     let [isFocused, setIsFocused] = useState(false);
-
-    // reads all the current nodes and creates the search results, depending on searchString
+    /**
+     * reads all the current nodes and creates the search results, depending on searchString
+     * @time: O(nodes)
+     * @space: O(nodes)
+     */
     function getSearchAnime(): Node[] {
         return nodes.get().filter(node => {
             return Object.values(node.titles)
@@ -16,8 +26,11 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     }
 
     const searchedAnime = getSearchAnime();
-
-    // creates Divs for putting in search dropdown
+    /**
+     * creates divs for search dropdown, clears current graph based on selected Anime
+     * @time: O(searchedAnime)
+     * @space: O(1)
+     */
     function searchAnimeDivs() {
         return (
             searchedAnime.map(node => (
@@ -36,7 +49,12 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
             ))
         )
     }
-
+    /**
+     *
+     * @time: O(1)
+     * @space: O(1)
+     * @param keyPressed
+     */
     function keyboardEvents(keyPressed: String) {
         if (keyPressed == 'Enter' && searchedAnime.length != 0) {
             animeGraph.nodes.clear()
@@ -49,7 +67,6 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
         if (keyPressed == 'Escape')
             document.getElementById("search-bar").blur()
     }
-
     return (
         <div className={"flex flex-row pb-[1vh] h-[5.5vh] relative pointer-events-auto"}>
             <input id={"search-bar"}
@@ -71,7 +88,16 @@ function SearchBar({animeGraph, selectedAnime, setSelectedAnime}) {
     )
 }
 
-//button for associated parameter to change weights on graph
+
+/**
+ * button for associated parameter to change weights on graph
+ * @time: O(1)
+ * @space: O(1)
+ * @param name
+ * @param sP
+ * @param sSP
+ * @constructor
+ */
 function CheckButton({name, sP, sSP}) {
     let newSelectedParameters = {...sP}
     newSelectedParameters[name] = !newSelectedParameters[name];
@@ -84,8 +110,13 @@ function CheckButton({name, sP, sSP}) {
     );
 
 }
-
-//boxes used to display content of specific anime
+/**
+ * boxes used to display content of specific anime
+ * @time: O(1)
+ * @space: O(1)
+ * @param selectedAnime
+ * @constructor
+ */
 function AnimeBox({selectedAnime}) {
     return (
         <div
@@ -118,12 +149,24 @@ function AnimeBox({selectedAnime}) {
 }
 
 //function for collapsing sidebar
+/**
+ * collapses sidebar
+ * @time: O(1)
+ * @space: O(1)
+ */
 function collapseSidebar() {
     const sidebar = document.getElementById("side-bar")
     sidebar.classList.toggle("invisible");
 }
-
-//box for showing similarity content of selected Anime and selected Suggested Anime
+/**
+ * box for showing similarity content of selected Anime and selected Suggested Anime
+ * @time: O(title^2 + genreCount^2 + studioCount^2)
+ * @space: O(1)
+ * @param sA
+ * @param sSA
+ * @param sP
+ * @constructor
+ */
 function SimilarityBox({sA, sSA, sP}) {
     const a = sA;
     const b = sSA;
@@ -186,8 +229,14 @@ function SimilarityBox({sA, sSA, sP}) {
         </div>
     )
 }
-
-//specific similarity text within similarity box
+/**
+ * specific similarity text within similarity box
+ * @time: O(1)
+ * @space: O(1)
+ * @param text
+ * @param percent
+ * @constructor
+ */
 function SimilarityEntry({text, percent}) {
     return (
         <>
@@ -198,12 +247,15 @@ function SimilarityEntry({text, percent}) {
             <hr className={"border-[0.1vh]"}/>
         </>);
 }
-
-//the functional sideBar component which allows for:
-//anime selection
-//parameter manipulation
-//anime content retrieval
-//similarity characterstic retrieval
+/**
+ * the functional sideBar component which allows for:
+ * anime selection
+ * parameter manipulation
+ * anime content retrieval
+ * similarity characterstic retrieval
+ * @param animeGraph
+ * @constructor
+ */
 export default function SideBar({animeGraph}) {
 
     let [selectedAnime, setSelectedAnime] = useState(null);

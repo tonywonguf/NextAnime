@@ -14,7 +14,6 @@ export class Node {
     imageLarge?
     studios?
     isAdult?
-
     constructor(info: Node) {
         this.id = info.id;
         this.label = info.label;
@@ -29,14 +28,12 @@ export class Node {
         this.isAdult = info.isAdult;
     }
 }
-
 export class Edge {
     from?
     to?
     id?
     color?
     weight?
-
     constructor(info: Edge) {
         this.from = info.from
         this.to = info.to
@@ -45,10 +42,13 @@ export class Edge {
         this.weight = info.weight
     }
 }
-
 export const nodes: DataSet<Node> = new DataSet<Node>();
 
 // init nodes using animedata.json
+/**
+ * @time: O(nodes)
+ * @space: O(nodes)
+ */
 // @ts-ignore
 for (let i = 0; i < animeData.length; i++) {
     nodes.add(
@@ -74,7 +74,7 @@ for (let i = 0; i < animeData.length; i++) {
         nodes.get(i).imageMedium = defaultImage;
         nodes.get(i).imageLarge = defaultImage;
     }
-
+    // maps O(1)
     nodes.get(i).titles.english = removeDiacritics(nodes.get(i).titles.english);
     nodes.get(i).titles.romaji = removeDiacritics(nodes.get(i).titles.romaji);
 }

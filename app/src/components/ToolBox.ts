@@ -1,5 +1,9 @@
 import {Node} from "./Datafile";
-
+/**
+ * a ton of Cat Images :DDDDDDDD
+ * @time: O(1)
+ * @space: O(a lot of cat images)
+ */
 export const catImages = [
     "https://cdn2.thecatapi.com/images/brm.jpg",
     "https://cdn2.thecatapi.com/images/hYG6uIRWL.jpg",

@@ -9,7 +9,6 @@ import {Id} from "vis-data/declarations/data-interface";
 
 //function for randomizing color strings
 const randColor = (): string => Math.floor(Math.random() * 16777215).toString(16);
-
 export type AnimeGraphInfo = {
     containerRef
     nodes: DataSet<Node>
@@ -17,8 +16,6 @@ export type AnimeGraphInfo = {
     fitOptions?: FitOptions
     options: object
 }
-
-//entire graph info
 export class AnimeGraph {
     containerRef
     network: Network
@@ -47,21 +44,24 @@ export class AnimeGraph {
     refit() {
         this.network.fit(this.fitOptions);
     }
-
     //recolors all the existing edges with a random color
     //time: O(E), goes through all edges
     //space: O(1), doesnt augment space
     recolor() {
         this.edges.update(this.edges.map(e => ({...e, color: randColor()})));
     }
-
-    //recolors adjacents of a random node
-    //time: O(E), checks edgeList for node and updates adjacents
-    //space: O(1), does not occupy space XD
+    /**
+     *
+     * @param ms
+     */
     delay(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
-
+    /**
+     * time: O(nodes^2)
+     * space: O(nodes)
+     * @param n
+     */
     longestPathLength(n: Id): number {
         const Q: { id: Id, d: number }[] = [{id: n, d: 0}];
         const V: Set<Id> = new Set<Id>();
@@ -82,12 +82,17 @@ export class AnimeGraph {
 
         return depth;
     }
-
+    /**
+     * togglesSideBar
+     */
     hideShowSidebar() {
         const buttons = document.getElementById("buttons");
         buttons.classList.toggle('invisible');
     }
-
+    /**
+     * @time: O(node + edges)
+     * @space: O(node)
+     */
     async bfsAnimation() {
         this.hideShowSidebar();
 
@@ -147,7 +152,6 @@ export class AnimeGraph {
         }
         this.hideShowSidebar();
     }
-
     /**
      * @param start - Node that designates start of path
      * @param end - Node that designates end of path
@@ -183,7 +187,10 @@ export class AnimeGraph {
         }
         return pathEdges;
     }
-
+    /**
+     * @time: O(node + edges)
+     * @space: O(node)
+     */
     async dfsAnimation() {
         this.hideShowSidebar();
 
@@ -222,11 +229,14 @@ export class AnimeGraph {
         this.edges.update(this.edges.map(e => ({...e, color: '#808080'})));
         this.hideShowSidebar();
     }
-
-    //time: O(nodes*getWeight() + graphSize^2)
-    //iterates through all nodes making weights,
-    //iterates through graphSize making all edges (and sorts)
-    //space: O(nodes + graphSize^2)
+    /**
+     * @time: O(nodes*getWeight() + graphSize^2)
+     * iterates through all nodes making weights,
+     * iterates through graphSize making all edges (and sorts)
+     * @space: O(nodes + graphSize^2)
+     * @param suggID
+     * @param suggNode
+     */
     initializeWeights(suggID, suggNode): [Node[], Edge[]] {
         let edges: Edge[] = [];
 
@@ -265,7 +275,12 @@ export class AnimeGraph {
         topEdges = topEdges.sort((a, b) => b.weight - a.weight);
         return [topNodes, topEdges];
     }
-
+    /**
+     *
+     * @param algorithm
+     * @param weight
+     * @param time
+     */
     setWeightAndTime(algorithm: string, weight: number, time: number) {
         const element = document.getElementById('time');
 
@@ -273,7 +288,10 @@ export class AnimeGraph {
         element.innerHTML = algorithm + " ran in " + (time < 0.001 ? '<0.001s' : `${time.toFixed(3)}s`)
             + `<br\>Max Spanning Tree weight: ${weight.toFixed(2)}`;
     }
-
+    /**
+     * @time: O(nodes + graphSize^2), same as initWeights
+     * @space: O(nodes + graphSize^2), same as initWeights
+     */
     async createMSTusingPrims() {
         if (this.nodes.length == 0) {
             alert("You must select an anime!")
@@ -317,9 +335,10 @@ export class AnimeGraph {
         this.nodes.update(topNodes.slice(1));
         this.edges.add(mstEdges);
     }
-
-    //time: O(nodes + graphSize^2), same as initWeights
-    //space: O(nodes + graphSize^2), same as initWeights
+    /**
+     * @time: O(nodes + graphSize^2), same as initWeights
+     * @space: O(nodes + graphSize^2), same as initWeights
+     */
     async createMSTusingKruskal() {
         if (this.nodes.length == 0) {
             alert("You must select an anime!")
@@ -362,18 +381,22 @@ export class AnimeGraph {
         this.nodes.update(topNodes.slice(1));
         this.edges.add(mstEdges);
     }
-
-    //time: O(log(Edges)) checks through sorted edges if contains node
-    //space: O(1) adds to end
+    /**
+     * time: O(log(Edges)) checks through sorted edges if contains node
+     * space: O(1) adds to end
+     * @param components
+     * @param node
+     */
     kruskalFind(components: Set<Id>[], node: number) {
         for (const c of components)
             if (c.has(node))
                 return c;
         return null;
     }
-
-    //time: O(nodes)
-    //space: O(edges)
+    /**
+     * time: O(nodes)
+     * space: O(edges)
+     */
     suggestedAnimeList() {
         if (this.nodes.length == 0) {
             alert("You must select an anime!")
@@ -418,12 +441,20 @@ export class AnimeGraph {
         this.edges.add(sortedWeights);
         this.nodes.add(sortedWeights.map(e => (nodes.get(e.to) as Node)))
     }
-
+    /**
+     * clears edges and nodes
+     * time: O(nodes + edges)
+     * space: O(1)
+     */
     clear() {
         this.nodes.clear();
         this.edges.clear();
     }
-
+    /**
+     * displays all items
+     * time: O(1)
+     * space: O(1)
+     */
     display() {
         return (<>
                 <div id={"buttons"} className={"absolute z-10 w-0 h-0"}>

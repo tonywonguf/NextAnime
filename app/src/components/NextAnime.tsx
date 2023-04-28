@@ -5,7 +5,9 @@ import {Network} from "vis-network"
 import {DataSet} from "vis-data"
 import {Edge, Node} from './Datafile'
 
-//graph options
+/**
+ * graph's options
+ */
 const options = {
     layout: {
         hierarchical: false
@@ -40,7 +42,10 @@ const options = {
     },
     height: '100%'
 };
-//the entire application
+/**
+ * the entire application runs through NextAnime
+ * @constructor
+ */
 export default function NextAnime() {
     let containerRef = useRef<HTMLDivElement>(null);
     let animeGraph = new AnimeGraph(
