@@ -28,7 +28,6 @@ const options = {
         repulsion: {
             nodeDistance: 400,
             springLength: 10,
-            avoidOverlap: 0.2,
             damping: 0.015
         },
         maxVelocity: 200,
