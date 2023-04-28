@@ -122,6 +122,7 @@ function collapseSidebar() {
     const sidebar = document.getElementById("side-bar")
     sidebar.classList.toggle("invisible");
 }
+
 //box for showing similarity content of selected Anime and selected Suggested Anime
 function SimilarityBox({sA, sSA, sP}) {
     const a = sA;
@@ -160,24 +161,26 @@ function SimilarityBox({sA, sSA, sP}) {
     return (
         <div className={"similarity-box"}>
 
-            <SimilarityEntry text={`LCS between Titles: ${lcsTitle.length != 0 ? "\""+lcsTitle+"\"" : 'NONE'}`}
-                             percent={(aLabel.length != 0) ? (100*4*lcsTitleSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
+            <SimilarityEntry text={`LCS between Titles: ${lcsTitle.length != 0 ? "\"" + lcsTitle + "\"" : 'NONE'}`}
+                             percent={(aLabel.length != 0) ? (100 * 4 * lcsTitleSimilarity / similarityDivisor).toFixed(2) + '%' : "N/A"}/>
 
             <SimilarityEntry text={`Common Genres: ${interTags.join(", ")}`}
-                             percent={(a.tags.length != 0) ? (100*2*interTagsSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
+                             percent={(a.tags.length != 0) ? (100 * 2 * interTagsSimilarity / similarityDivisor).toFixed(2) + '%' : "N/A"}/>
 
-            <SimilarityEntry text={`Episode Difference: ${(a.episodes && b.episodes) ? Math.abs(a.episodes-b.episodes): "N/A"}`}
-                             percent={(a.episodes && b.episodes) ? (100*episodeSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
+            <SimilarityEntry
+                text={`Episode Difference: ${(a.episodes && b.episodes) ? Math.abs(a.episodes - b.episodes) : "N/A"}`}
+                percent={(a.episodes && b.episodes) ? (100 * episodeSimilarity / similarityDivisor).toFixed(2) + '%' : "N/A"}/>
 
-            <SimilarityEntry text={`Year Difference: ${(a.seasonYear && b.seasonYear) ? Math.abs(a.seasonYear-b.seasonYear) : "N/A"}`}
-                             percent={(a.seasonYear && b.seasonYear) ? (100*yearSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
+            <SimilarityEntry
+                text={`Year Difference: ${(a.seasonYear && b.seasonYear) ? Math.abs(a.seasonYear - b.seasonYear) : "N/A"}`}
+                percent={(a.seasonYear && b.seasonYear) ? (100 * yearSimilarity / similarityDivisor).toFixed(2) + '%' : "N/A"}/>
 
             <SimilarityEntry text={`Common Studios: ${interStudios.join(", ")}`}
-                             percent={(arrayA.length != 0) ? (100*3*interStudiosSimilarity/similarityDivisor).toFixed(2) + '%': "N/A"}/>
+                             percent={(arrayA.length != 0) ? (100 * 3 * interStudiosSimilarity / similarityDivisor).toFixed(2) + '%' : "N/A"}/>
 
             <div className={"flex text-[2.5vh]"}>
                 <p className={"flex-grow"}>Cumulative Total Similarity: </p>
-                <p>{(100*totalSimilarity/similarityDivisor).toFixed(2)}%</p>
+                <p>{(100 * totalSimilarity / similarityDivisor).toFixed(2)}%</p>
             </div>
 
         </div>

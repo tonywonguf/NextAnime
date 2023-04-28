@@ -1,6 +1,6 @@
 import animeData from "../data/animedata.json";
 import {DataSet} from 'vis-data'
-import {removeDiacritics, catImages, getWeight} from "./ToolBox";
+import {catImages, removeDiacritics} from "./ToolBox";
 
 export class Node {
     id?
@@ -69,7 +69,7 @@ for (let i = 0; i < animeData.length; i++) {
 
     // turns the picture into a cat if it's BAD BAD!
     if (nodes.get(i).isAdult) {
-        const defaultImage = catImages[Math.floor(catImages.length*Math.random())];
+        const defaultImage = catImages[Math.floor(catImages.length * Math.random())];
         nodes.get(i).image = defaultImage;
         nodes.get(i).imageMedium = defaultImage;
         nodes.get(i).imageLarge = defaultImage;

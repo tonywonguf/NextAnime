@@ -196,13 +196,14 @@ export function removeDiacritics (str) {
         {'base':'z','letters':/[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g}
     ];
 
-    for(var i=0; i<defaultDiacriticsRemovalMap.length; i++) {
+    for (var i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
         str = str.replace(defaultDiacriticsRemovalMap[i].letters, defaultDiacriticsRemovalMap[i].base);
     }
 
     return str;
 
 }
+
 // time: O(len(s1) * len(s2)), updates each value in a matrix which is len(s1) x len(s2)
 // space: O(len(s1) * len(s2)), makes a matrix which is len(s12) x len(s2)
 export function longestCommonSubstring(s1: string, s2: string): string {
@@ -216,10 +217,10 @@ export function longestCommonSubstring(s1: string, s2: string): string {
             if (i === 0 || j === 0) {
                 memo[i][j] = 0;
             }
-            //if the previous letters match, dynamically update previous value
+                //if the previous letters match, dynamically update previous value
             // diagonals in matrix represent matching substrings
             else if (s1[i - 1] === s2[j - 1]) {
-                memo[i][j] = memo[i-1][j-1] + 1;
+                memo[i][j] = memo[i - 1][j - 1] + 1;
                 const substring = s1.substring(i - memo[i][j], i);
                 if (substring.length > longest.length)
                     longest = substring;
@@ -231,6 +232,7 @@ export function longestCommonSubstring(s1: string, s2: string): string {
     }
     return longest;
 }
+
 // time: O(len(label)^2 + len(tags)^2 + len(studios)^2)
 // space: O(len(label) + len(tags) + len(studios))
 // ***note: assumes that each parameter is similarly sized (so use the max-sized)
@@ -238,26 +240,26 @@ export function getWeight(a: Node, b: Node, selectedParameters: {}) {
     const aLabel = a.label.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
     const bLabel = b.label.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
 
-    const lcsTitle = longestCommonSubstring(aLabel,bLabel);
-    const lcsTitleSimilarity = (aLabel.length != 0) ? lcsTitle.length/aLabel.length : 0;
+    const lcsTitle = longestCommonSubstring(aLabel, bLabel);
+    const lcsTitleSimilarity = (aLabel.length != 0) ? lcsTitle.length / aLabel.length : 0;
 
     const interTags = a.tags.filter(tag => b.tags.includes(tag))
-    const interTagsSimilarity = (a.tags.length != 0) ? interTags.length/a.tags.length : 0;
+    const interTagsSimilarity = (a.tags.length != 0) ? interTags.length / a.tags.length : 0;
 
-    const episodeSimilarity = (a.episodes && b.episodes) ? 1-(Math.min(Math.abs(a.episodes-b.episodes),12)/12) : 0;
+    const episodeSimilarity = (a.episodes && b.episodes) ? 1 - (Math.min(Math.abs(a.episodes - b.episodes), 12) / 12) : 0;
 
-    const yearSimilarity = (a.seasonYear && b.seasonYear) ? 1-(Math.min(Math.abs(a.seasonYear-b.seasonYear),20)/20) : 0;
+    const yearSimilarity = (a.seasonYear && b.seasonYear) ? 1 - (Math.min(Math.abs(a.seasonYear - b.seasonYear), 20) / 20) : 0;
 
     const arrayA = a.studios.map(info => info.name)
     const arrayB = b.studios.map(info => info.name)
     const interStudios = arrayA.filter(studio => arrayB.includes(studio))
-    const interStudiosSimilarity = (arrayA.length != 0) ? interStudios.length/arrayA.length : 0;
+    const interStudiosSimilarity = (arrayA.length != 0) ? interStudios.length / arrayA.length : 0;
 
-    const totalSimilarity = (selectedParameters["Title"] && 4*lcsTitleSimilarity)
-        + (selectedParameters["Genre"] && 2*interTagsSimilarity)
+    const totalSimilarity = (selectedParameters["Title"] && 4 * lcsTitleSimilarity)
+        + (selectedParameters["Genre"] && 2 * interTagsSimilarity)
         + (selectedParameters["Episodes"] && episodeSimilarity)
         + (selectedParameters["Year"] && yearSimilarity)
-        + (selectedParameters["Studio"] && 3*interStudiosSimilarity);
+        + (selectedParameters["Studio"] && 3 * interStudiosSimilarity);
 
     return totalSimilarity;
 }

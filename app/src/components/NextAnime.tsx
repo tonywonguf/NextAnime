@@ -68,7 +68,8 @@ export default function NextAnime() {
 
             <SideBar animeGraph={animeGraph}/>
 
-            <div id="time" className={"z-20 absolute bottom-0 left-0 rounded m-[1vh] p-[1vh] text-white font-mono text-[2vh]"}>
+            <div id="time"
+                 className={"z-20 absolute bottom-0 left-0 rounded m-[1vh] p-[1vh] text-white font-mono text-[2vh]"}>
                 Run an algorithm for timing!
             </div>
         </main>
