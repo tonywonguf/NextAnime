@@ -350,10 +350,10 @@ export class AnimeGraph {
                 c2.forEach(n => c1.add(n));
                 components = components.filter(c => c != c2);
                 mstEdges.push(currEdge);
-            }
 
-            addedNode.add(currEdge.from);
-            addedNode.add(currEdge.to);
+                addedNode.add(currEdge.from);
+                addedNode.add(currEdge.to);
+            }
         }
         const timeEnd = performance.now();
         await this.setTime("Kruskal's", timeEnd - timeStart);
