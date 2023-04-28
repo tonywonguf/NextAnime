@@ -62,8 +62,7 @@ export class AnimeGraph {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    longestPath(n: Id): number {
-
+    longestPathLength(n: Id): number {
         const Q: { id: Id, d: number }[] = [{id: n, d: 0}];
         const V: Set<Id> = new Set<Id>();
         V.add(n)
@@ -95,7 +94,7 @@ export class AnimeGraph {
         const suggID = this.nodes.getIds()[0],
             suggNode: Node = nodes.get(suggID);
 
-        const longestPathLength = this.longestPath(suggID);
+        const longestPathLength = this.longestPathLength(suggID);
 
         // Set all edges to gray
         this.edges.update(this.edges.map(e => ({...e, color: '#2c2f33'})));
@@ -272,7 +271,7 @@ export class AnimeGraph {
 
         time /= 1000;
         element.innerHTML = algorithm + " ran in " + (time < 0.001 ? '<0.001s' : `${time.toFixed(3)}s`)
-                              + `<br\>Max Spanning Tree weight: ${weight.toFixed(2)}`;
+            + `<br\>Max Spanning Tree weight: ${weight.toFixed(2)}`;
     }
 
     async createMSTusingPrims() {
@@ -298,7 +297,7 @@ export class AnimeGraph {
         let mstEdges: Edge[] = [];
         processedNode.add(suggID);
 
-        while (mstEdges.length < topNodes.length-1) {
+        while (mstEdges.length < topNodes.length - 1) {
             for (let i = 0; i < topEdges.length; i++) {
                 const e = topEdges[i];
                 if ((processedNode.has(e.from) && !processedNode.has(e.to)) || (!processedNode.has(e.from) && processedNode.has(e.to))) {
